@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="LaunchDebugger" type="CompoundRunConfigurationType">
+    <toRun name="Mono" type="ConnectRemote" />
+    <toRun name="ROR2 Launcher" type="RunUnityExe" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ROR2 Launcher" type="RunUnityExe" factoryName="Unity Executable">
+    <option name="EXE_PATH" value="$PROJECT_DIR$/../../../../SteamLibrary/steamapps/common/Risk of Rain 2/Risk of Rain 2.exe" />
+    <option name="PROGRAM_PARAMETERS" value="--doorstop-enabled true --doorstop-target-assembly &quot;C:\Users\zidan\AppData\Roaming\r2modmanPlus-local\RiskOfRain2\profiles\di\BepInEx\core\BepInEx.Preloader.dll&quot;" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../../../SteamLibrary/steamapps/common/Risk of Rain 2" />
+    <option name="PASS_PARENT_ENVS" value="1" />
+    <option name="USE_EXTERNAL_CONSOLE" value="0" />
+    <method v="2" />
+  </configuration>
+</component>
