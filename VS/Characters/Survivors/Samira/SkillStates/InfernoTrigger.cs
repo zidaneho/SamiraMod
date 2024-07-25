@@ -12,13 +12,13 @@ namespace SamiraMod.Survivors.Samira.SkillStates
     {
         private SamiraComboManager _comboManager;
         private Animator animator;
-        private static int attackID = 4;
+        private ChildLocator childLocator;
         private float duration = SamiraStaticValues.infernoTriggerDuration;
         private static float durationExtendOnKill = 0.25f;
         private static readonly int InDashing = Animator.StringToHash("inDashing");
-        private float attackSpeedMultiplier = 1f;
+        private float attackSpeedMultiplier = 0.9f;
         private static float baseAttackInterval = 0.2f;
-        private static float lifeStealPercentage = 0.1f;
+        private static float lifeStealPercentage = 0.05f;
         private int muzzleIndexer = 0;
         #region Attack Members
 
@@ -33,11 +33,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         private static readonly int InInfernoTrigger = Animator.StringToHash("inInfernoTrigger");
         public static GameObject tracerEffectPrefab =
             LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/Tracers/TracerGoldGat");
-
-        private ParticleSystem revolverMuzzleParticle;
-        private ParticleSystem pistolMuzzleParticle;
-
-        private string playbackRateParam = "InfernoTrigger.playbackRate";
+        
 
         #endregion
 
@@ -48,22 +44,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             _comboManager = characterBody.GetComponent<SamiraComboManager>();
             duration = SamiraStaticValues.infernoTriggerDuration;
             
-            var childLocator = GetModelChildLocator();
-            if (childLocator)
-            {
-                var pistolMuzzleTransform = childLocator.FindChild("PistolMuzzle");
-                if (pistolMuzzleTransform)
-                {
-                    pistolMuzzleParticle = pistolMuzzleTransform.GetComponentInChildren<ParticleSystem>();
-                }
-
-                var revolverMuzzleTransform = childLocator.FindChild("RevolverMuzzle");
-                if (revolverMuzzleTransform)
-                {
-                    revolverMuzzleParticle = revolverMuzzleTransform.GetComponentInChildren<ParticleSystem>();
-                }
-
-            }
+            childLocator = GetModelChildLocator();
             
             
             animator.SetBool(InInfernoTrigger, true);
@@ -78,7 +59,9 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         {
             if (this.attackIndicatorInstance) EntityState.Destroy(this.attackIndicatorInstance);
             _comboManager.ResetCombo(true);
+            animator.SetBool(InInfernoTrigger, false);
             base.OnExit();
+            
         }
         
         public override InterruptPriority GetMinimumInterruptPriority()
@@ -91,26 +74,31 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             base.FixedUpdate();
             
             //to guarantee attack comes out if at high attack speed the stopwatch skips past the firing duration between frames
-            float currentAttackSpeed = attackSpeedMultiplier * attackSpeedStat;
-            float currentInterval = baseAttackInterval / currentAttackSpeed;
-            timer += Time.fixedDeltaTime;
-            if (timer >= currentInterval)
-            {
-                FireAttack();
-                timer = 0f;
-            }
 
-            if (fixedAge >= duration && isAuthority)
+            if (base.isAuthority)
             {
-                animator.SetBool(InInfernoTrigger,false);
-                if (this.attackIndicatorInstance != null) EntityState.Destroy(this.attackIndicatorInstance);
-                outer.SetNextStateToMain();
+                float currentAttackSpeed = attackSpeedMultiplier * attackSpeedStat;
+                float currentInterval = baseAttackInterval / currentAttackSpeed;
+                timer += Time.fixedDeltaTime;
+                if (timer >= currentInterval)
+                {
+                    FireAttack();
+                    timer = 0f;
+                }
+
+                if (fixedAge >= duration && isAuthority)
+                {
+                    animator.SetBool(InInfernoTrigger,false);
+                    if (this.attackIndicatorInstance != null) EntityState.Destroy(this.attackIndicatorInstance);
+                    outer.SetNextStateToMain();
+                }
+                else
+                {
+                    if (attackIndicatorInstance == null) CreateIndicator();
+                    UpdateIndicator();
+                }
             }
-            else
-            {
-                if (attackIndicatorInstance == null) CreateIndicator();
-                UpdateIndicator();
-            }
+            
         }
         private void FireAttack()
         {
@@ -123,32 +111,21 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                 origin = this.attackIndicatorInstance.transform.position
             }.RefreshCandidates().FilterCandidatesByHurtBoxTeam(TeamMask.GetEnemyTeams(base.teamComponent.teamIndex)).FilterCandidatesByDistinctHurtBoxEntities().GetHurtBoxes().ToList();
 
-            if (HurtBoxes.Count > 0)
-            {
-                if (pistolMuzzleParticle) pistolMuzzleParticle.Play();
-                if (revolverMuzzleParticle) revolverMuzzleParticle.Play();
-            }
-
-            bool usePistol = muzzleIndexer % 2 == 0;
-            muzzleIndexer += 1;
             
-            string muzzleName = usePistol ? "Pistol_Muzzle" : "Revolver_Muzzle";
-            if (usePistol && HurtBoxes.Count > 0)
-            {
-                if (pistolMuzzleParticle) pistolMuzzleParticle.Play();
-            }
-            else if (HurtBoxes.Count > 0)
-            {
-                if (revolverMuzzleParticle) revolverMuzzleParticle.Play();
-            }
+            
             float range = 250f;
             foreach (HurtBox hurtbox in HurtBoxes)
             {
+                bool usePistol = muzzleIndexer % 2 == 0;
+                muzzleIndexer += 1;
+                string muzzleName = usePistol ? "PistolMuzzle" : "RevolverMuzzle";
+                EffectManager.SimpleMuzzleFlash(SamiraAssets.bulletMuzzleEffect,gameObject,muzzleName,false);
+                
                 var bulletAttack = new BulletAttack
                 {
                     bulletCount = 1,
                     aimVector = hurtbox.transform.position - transform.position,
-                    origin = characterBody.corePosition,
+                    origin = childLocator.FindChild(muzzleName).position,
                     damage = SamiraStaticValues.GetInfernoTriggerDamage(damageStat,characterBody.level),
                     damageColorIndex = DamageColorIndex.Default,
                     damageType = DamageType.Generic,
@@ -184,43 +161,22 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         bool OnBulletHit(BulletAttack bulletAttack, ref BulletAttack.BulletHit hitInfo)
         {
             // Custom logic when a bullet hits something
-            if (hitInfo.hitHurtBox)
+            var result = BulletAttack.defaultHitCallback(bulletAttack, ref hitInfo);
+            
+            HealthComponent enemyHealthComponent = hitInfo.hitHurtBox ? hitInfo.hitHurtBox.healthComponent : null;
+            if (enemyHealthComponent && enemyHealthComponent.alive && hitInfo.hitHurtBox.teamIndex != base.teamComponent.teamIndex)
             {
-                HealthComponent healthComponent = hitInfo.hitHurtBox.healthComponent;
-                if (healthComponent != null)
-                {
-                    DamageInfo damageInfo = new DamageInfo
-                    {
-                        damage = bulletAttack.damage,
-                        attacker = bulletAttack.owner,
-                        crit = bulletAttack.isCrit,
-                        procChainMask = bulletAttack.procChainMask,
-                        procCoefficient = bulletAttack.procCoefficient,
-                        position = hitInfo.point,
-                        force = bulletAttack.force * bulletAttack.aimVector,
-                        damageType = bulletAttack.damageType
-                    };
-                    
-                    healthComponent.TakeDamage(damageInfo);
-                    GlobalEventManager.instance.OnHitEnemy(damageInfo, hitInfo.hitHurtBox.gameObject);
-                    GlobalEventManager.instance.OnHitAll(damageInfo, hitInfo.hitHurtBox.gameObject);
-                    
-                    //additional logic
-                    Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject, attackSpeedMultiplier);
-                    float lifeSteal = SamiraStaticValues.GetInfernoTriggerDamage(damageStat,characterBody.level) * lifeStealPercentage;
-                    healthComponent.Heal(lifeSteal, default(ProcChainMask), true);
-
-                    if (!healthComponent.alive)
-                    {
-                        duration += durationExtendOnKill;
-                        Debug.Log("Inferno Trigger duration extended because enemy was killed");   
-                    }
-                    
-                    return true; // Indicate that the hit was processed
-                }
+                Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
+                float lifeSteal = SamiraStaticValues.GetInfernoTriggerDamage(damageStat,characterBody.level) * lifeStealPercentage;
+                healthComponent.Heal(lifeSteal, default(ProcChainMask), true);
             }
-
-            return false; // Indicate that the hit was not processed
+            if (enemyHealthComponent && !enemyHealthComponent.alive)
+            {
+                duration += durationExtendOnKill;
+                Debug.Log("Inferno Trigger duration extended because enemy was killed");   
+            }
+            
+            return result;
         }
         
         void CreateIndicator()

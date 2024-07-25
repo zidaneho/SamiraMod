@@ -39,6 +39,9 @@ namespace SamiraMod.Survivors.Samira.Components
         private void ReleaseFinishedOnOnEnter(ReleaseFinished.orig_OnEnter orig, EntityStates.SurvivorPod.ReleaseFinished self)
         {
             orig(self);
+
+            if (!characterBody.isLocalPlayer) return;
+            
             characterBody = GetComponent<CharacterBody>();
             if (characterBody.isPlayerControlled && Modules.Config.enableVoiceLines.Value)
             {
@@ -47,6 +50,8 @@ namespace SamiraMod.Survivors.Samira.Components
         }
         private void BossGroup_OnBossGroupDefeatedServer(BossGroup obj)
         {
+            if (!characterBody.isLocalPlayer) return;
+            
             if (Modules.Config.enableVoiceLines.Value)
             {
                 PlaySound("Play_SamiraVO_ChampionKill");
@@ -56,9 +61,9 @@ namespace SamiraMod.Survivors.Samira.Components
 
         private void Update()
         {
-            if (!Modules.Config.enableVoiceLines.Value) return;
+            if (!Modules.Config.enableVoiceLines.Value || !characterBody.isLocalPlayer) return;
             
-
+            
             if (characterBody.outOfCombat && characterDirection.moveVector != Vector3.zero)
             {
                 moveTimer += Time.deltaTime;

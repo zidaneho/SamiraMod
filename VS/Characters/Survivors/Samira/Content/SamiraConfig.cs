@@ -15,7 +15,6 @@ namespace SamiraMod.Survivors.Samira
 
         public static void Init()
         {
-            string section = "Samira";
             
     
 

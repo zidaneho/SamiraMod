@@ -1,5 +1,6 @@
 using EntityStates;
 using RoR2;
+using SamiraMod.Survivors.Samira.Components;
 using UnityEngine;
 
 namespace SamiraMod.Survivors.Samira.SkillStates
@@ -7,6 +8,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
     public class SamiraDeathState : GenericCharacterDeath
     {
         private Animator animator;
+        
         private float velocityMagnitude = 10f;
         public override InterruptPriority GetMinimumInterruptPriority()
         {
@@ -31,7 +33,8 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         }
 
         public override void OnExit()
-        {
+        { 
+            
             base.OnExit();
         }
     }

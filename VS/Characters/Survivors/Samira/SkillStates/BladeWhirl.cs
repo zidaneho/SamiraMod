@@ -39,16 +39,12 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         protected float attackRecoil = 0.75f;
         protected string meleeMuzzleString = "SwingCenter";
         protected string swingSoundString = "";
-        protected string hitSoundString = "";
         protected string playbackRateParam = "Slash.playbackRate";
         protected GameObject swingEffectPrefab;
         
-        private OverlapAttack attack;
         protected bool inHitPause;
         private bool hasFired;
         protected float stopwatch;
-        private HitStopCachedState hitStopCachedState;
-        private Vector3 storedVelocity;
         private GameObject attackIndicatorInstance;
         
 

@@ -145,7 +145,6 @@ namespace SamiraMod.Survivors.Samira
         private void AdditionalBodySetup()
         {
             AddHitboxes();
-            bodyPrefab.AddComponent<SamiraWeaponComponent>();
             var comboManager = bodyPrefab.AddComponent<SamiraComboManager>();
             bodyPrefab.AddComponent<SamiraWildRushReset>();
             bodyPrefab.AddComponent<SamiraVoiceController>();
@@ -173,6 +172,7 @@ namespace SamiraMod.Survivors.Samira
             //example of how to create a HitBoxGroup. see summary for more details
             Prefabs.SetupHitBoxGroup(characterModelObject, "AAHitbox", "AAHitbox");
             Prefabs.SetupHitBoxGroup(characterModelObject, "WildRushHitbox", "WildRushHitbox");
+            Prefabs.SetupHitBoxGroup(characterModelObject, "FlairMeleeHitbox","FlairMeleeHitbox");
         }
 
         public override void InitializeEntityStateMachines() 
@@ -213,7 +213,6 @@ namespace SamiraMod.Survivors.Samira
                 enabled = true,
                 skillNameToken = SAMIRA_PREFIX + "PASSIVE_NAME",
                 skillDescriptionToken = SAMIRA_PREFIX + "PASSIVE_DESCRIPTION",
-                keywordToken = "KEYWORD_STUNNING",
                 icon = assetBundle.LoadAsset<Sprite>("texSamiraP"),
             };
 
@@ -271,11 +270,11 @@ namespace SamiraMod.Survivors.Samira
                     skillIcon = assetBundle.LoadAsset<Sprite>("texSamiraQ"),
                     activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Flair)),
                     activationStateMachineName = "Weapon",
-                    keywordTokens = new string[] {"KEYWORD_AGILE"}
                 });
             //custom Skilldefs can have additional fields that you can set manually
-            primarySkillDef1.stepCount = 2;
-            primarySkillDef1.stepGraceDuration = 0.5f;
+            //step count translates to swing index, index starts at 0
+            primarySkillDef1.stepCount = SamiraStaticValues.attacksPerFlair;
+            primarySkillDef1.stepGraceDuration = 1f;
 
             Skills.AddPrimarySkills(bodyPrefab, primarySkillDef1);
         }
@@ -290,7 +289,6 @@ namespace SamiraMod.Survivors.Samira
                 skillName = "SamiraBladeWhirl",
                 skillNameToken = SAMIRA_PREFIX + "SECONDARY_BLADEWHIRL_NAME",
                 skillDescriptionToken = SAMIRA_PREFIX + "SECONDARY_BLADEWHIRL_DESCRIPTION",
-                keywordTokens = new string[] { "KEYWORD_AGILE" },
                 skillIcon = assetBundle.LoadAsset<Sprite>("texSamiraW"),
 
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.BladeWhirl)),

@@ -46,7 +46,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         protected float attackRecoil = 0.75f;
         protected string meleeMuzzleString = "SwingCenter";
         protected string playbackRateParam = "Slash.playbackRate";
-        protected GameObject swingEffectPrefab;
+        protected GameObject muzzleEffectPrefab;
         protected GameObject hitEffectPrefab;
         protected NetworkSoundEventIndex impactSound = NetworkSoundEventIndex.Invalid;
         
@@ -72,6 +72,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             base.characterMotor.Motor.RebuildCollidableLayers();
             animator = GetModelAnimator();
             _comboManager = characterBody.GetComponent<SamiraComboManager>();
+            muzzleEffectPrefab = SamiraAssets.bulletMuzzleEffect;
 
             if (isAuthority && inputBank && characterDirection)
             {
@@ -251,8 +252,6 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         {
             hasFired = true;
 
-            PlaySwingEffect();
-
             if (isAuthority)
             {
                 AddRecoil(-1f * attackRecoil, -2f * attackRecoil, -0.5f * attackRecoil, 0.5f * attackRecoil);
@@ -287,11 +286,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                 inHitPause = true;
             }
         }
-
-        protected virtual void PlaySwingEffect()
-        {
-            EffectManager.SimpleMuzzleFlash(swingEffectPrefab, gameObject, meleeMuzzleString, false);
-        }
+        
 
         private void RemoveHitstop()
         {

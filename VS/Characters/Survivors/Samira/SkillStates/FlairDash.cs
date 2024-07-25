@@ -13,6 +13,8 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         public List<HurtBox> hurtboxesToCheck = new List<HurtBox>();
         private SamiraComboManager _comboManager;
         private Animator animator;
+        private ChildLocator childLocator;
+        
 
         private string playbackRateParam = "FlairDash.playbackRate";
         
@@ -23,6 +25,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         
         protected float stopwatch;
         private bool hasFired;
+        private GameObject muzzleEffectPrefab;
         
         #region Attack Members
 
@@ -33,7 +36,6 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         public static float recoil = 3f;
         public static float range = 256f;
         public static GameObject tracerEffectPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/Tracers/TracerGoldGat");
-        private ParticleSystem muzzleParticle;
 
         #endregion
 
@@ -44,15 +46,10 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             animator = GetModelAnimator();
             _comboManager = characterBody.GetComponent<SamiraComboManager>();
             
-            var childLocator = GetModelChildLocator();
-            if (childLocator)
-            {
-                var muzzleTransform = childLocator.FindChild("PistolMuzzle");
-                if (muzzleTransform)
-                {
-                    muzzleParticle = muzzleTransform.GetComponentInChildren<ParticleSystem>();
-                }
-            }
+            childLocator = GetModelChildLocator();
+
+            muzzleEffectPrefab = SamiraAssets.bulletMuzzleEffect;
+            
 
             PlayAnimation("FullBody, Override", "FlairDash", playbackRateParam, duration);
         }
@@ -108,7 +105,8 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         private void FireBullets()
         {
-            if (muzzleParticle) muzzleParticle.Play();
+            EffectManager.SimpleMuzzleFlash(muzzleEffectPrefab, gameObject, "PistolMuzzle",false);
+            EffectManager.SimpleMuzzleFlash(muzzleEffectPrefab, gameObject, "RevolverMuzzle",false);
             
             if (hurtboxesToCheck == null || hurtboxesToCheck.Count <= 0)
             {
@@ -122,7 +120,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                 if (hurtbox != null && hurtbox.healthComponent && hurtbox.healthComponent.alive)
                 {
                     numberShot++;
-                    Fire(hurtbox.transform.position - muzzleParticle.transform.position);
+                    Fire(hurtbox.transform.position - characterBody.corePosition);
                 }
             }
 
@@ -134,12 +132,12 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         void Fire(Vector3 direction)
         {
-            Vector3 origin = characterBody.corePosition;
+            
             var bulletAttack = new BulletAttack
                 {
                     bulletCount = 1,
                     aimVector = direction,
-                    origin = origin,
+                    origin = characterBody.corePosition,
                     damage = SamiraStaticValues.GetFlairDamage(damageStat, characterBody.level),
                     damageColorIndex = DamageColorIndex.Default,
                     damageType = DamageType.Generic,
@@ -162,7 +160,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                     spreadPitchScale = 1f,
                     spreadYawScale = 1f,
                     queryTriggerInteraction = QueryTriggerInteraction.UseGlobal,
-                    muzzleName = "Pistol_Muzzle",
+                    muzzleName = "PistolMuzzle",
                     hitEffectPrefab = SamiraAssets.bulletHitEffect,
                     hitCallback = HitCallback
                 };
@@ -171,27 +169,15 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         private bool HitCallback(BulletAttack bulletAttack, ref BulletAttack.BulletHit hitInfo)
         {
-            if (hitInfo.hitHurtBox&& hitInfo.hitHurtBox.teamIndex != teamComponent.teamIndex)
+            var result = BulletAttack.defaultHitCallback(bulletAttack, ref hitInfo);
+            
+            HealthComponent healthComponent = hitInfo.hitHurtBox ? hitInfo.hitHurtBox.healthComponent : null;
+            if (healthComponent && healthComponent.alive && hitInfo.hitHurtBox.teamIndex != base.teamComponent.teamIndex)
             {
                 _comboManager.AddCombo(attackID);
-                Util.PlaySound("Play_SamiraSFX_BulletHit", gameObject);
-
-                HealthComponent healthComponent = hitInfo.hitHurtBox.healthComponent;
-                if (healthComponent != null)
-                {
-                    DamageInfo damageInfo = new DamageInfo
-                    {
-                        damage = bulletAttack.damage,
-                        attacker = gameObject,
-                        crit = false,
-                        procChainMask = default,
-                        procCoefficient = 1f,
-                        position = hitInfo.hitHurtBox.transform.position
-                    };
-                    healthComponent.TakeDamage(damageInfo);
-                }
+                Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
             }
-            return true;
+            return result;
         }
     }
 }

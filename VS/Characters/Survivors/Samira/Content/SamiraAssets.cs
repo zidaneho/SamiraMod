@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using RoR2.Projectile;
 using SamiraMod.Modules;
+using UnityEngine.Networking;
 
 namespace SamiraMod.Survivors.Samira
 {
@@ -10,6 +11,11 @@ namespace SamiraMod.Survivors.Samira
     {
         // particle effects
         public static GameObject bulletHitEffect;
+        public static GameObject bulletMuzzleEffect;
+
+        public static GameObject autoSwingEffect;
+        public static GameObject cleaveSwingEffect;
+        public static GameObject autoCritSwingEffect;
 
         // networked hit sounds
         public static NetworkSoundEventDef swordHitSoundEvent;
@@ -33,19 +39,19 @@ namespace SamiraMod.Survivors.Samira
      
         private static void CreateEffects()
         {
-            CreateBulletImpact();
+            bulletHitEffect = _assetBundle.LoadEffect("Bullet_GoldFire_Small_Impact_Template");
+            autoSwingEffect = _assetBundle.LoadEffect("SamiraAutoSlashEffect");
+            autoCritSwingEffect = _assetBundle.LoadEffect("SamiraAutoCritSlashEffect");
+            cleaveSwingEffect = _assetBundle.LoadEffect("SamiraCleaveSlashEffect");
         }
         
         private static void CreateProjectiles()
         {
-        }
-
-        private static void CreateBulletImpact()
-        {
-            bulletHitEffect = _assetBundle.LoadEffect("Bullet_GoldFire_Small_Impact_Template");
+            bulletMuzzleEffect = _assetBundle.LoadEffect("Bullet_GoldFire_Small_MuzzleFlare_Template");
             
         }
+
         
-        
+
     }
 }

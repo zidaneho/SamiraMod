@@ -35,8 +35,8 @@ namespace SamiraMod.Modules
             enableVoiceLines = MyConfig.Bind<bool>(
                 new ConfigDefinition("00 - Other", "Voice Lines"), true,
                 new ConfigDescription("Enable Voice Lines", null, Array.Empty<object>()));
-            baseHealth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Base Health"), 110f, new ConfigDescription("", null, Array.Empty<object>()));
-            healthGrowth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Health Growth"), 30f, new ConfigDescription("", null, Array.Empty<object>()));
+            baseHealth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Base Health"), 140f, new ConfigDescription("", null, Array.Empty<object>()));
+            healthGrowth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Health Growth"), 40f, new ConfigDescription("", null, Array.Empty<object>()));
 
             baseRegen = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Base Health Regen"), 1f, new ConfigDescription("", null, Array.Empty<object>()));
             regenGrowth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Health Regen Growth"), 0.2f, new ConfigDescription("", null, Array.Empty<object>()));
@@ -52,8 +52,6 @@ namespace SamiraMod.Modules
             baseCrit = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Base Crit"), 1f, new ConfigDescription("", null, Array.Empty<object>()));
 
             jumpCount = MyConfig.Bind<int>(new ConfigDefinition("01 - Character Stats", "Jump Count"), 1, new ConfigDescription("", null, Array.Empty<object>()));
-            
-            Debug.Log("Config was read aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         }
 
         /// <summary>

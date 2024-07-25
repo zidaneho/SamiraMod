@@ -1,8 +1,20 @@
 using RoR2;
+using RoR2.Projectile;
 using UnityEngine;
 
 namespace SamiraMod.Survivors.Samira.Components
 {
+    internal class SamiraBulletOnHit : MonoBehaviour, IProjectileImpactBehavior
+    {
+        public void OnProjectileImpact(ProjectileImpactInfo impactInfo)
+        {
+            
+            if (impactInfo.collider)
+            {
+                
+            }
+        }
+    }
     internal class SamiraWildRushReset : MonoBehaviour
     {
         void OnEnable()

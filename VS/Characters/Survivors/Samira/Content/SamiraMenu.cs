@@ -1,12 +1,18 @@
+using System;
+using On.RoR2.UI;
 using RoR2;
+using RoR2.Skills;
+using SamiraMod.Survivors.Samira;
 using UnityEngine;
 
 namespace SamiraMod.Modules.Characters
 {
     public class SamiraMenu : MonoBehaviour
     {
+        
         private uint playID;
         private uint playID2;
+        
 
         private void OnDestroy()
         {
@@ -27,5 +33,6 @@ namespace SamiraMod.Modules.Characters
             }
             //this.playID2 = Util.PlaySound("SettMenuSFX", base.gameObject);
         }
+        
     }
 }

@@ -1,13 +1,17 @@
 ﻿using System;
+using SamiraMod.Survivors.Samira.SkillStates;
 using UnityEngine;
 
 namespace SamiraMod.Survivors.Samira
 {
     public static class SamiraStaticValues
     {
-        public const float flairBaseDamage = 20;
-        public const float flairDamageMult = 1.4f;
+        public const float flairBaseDamage = 17;
+        public const float flairDamageMult = 1.3f;
         public const float flairDamageGrowthPerLevel = .4f;
+        public const float flairMeleeBonusMultiplier = 0.1f;
+        public const int attacksPerFlair = 5;
+        public const float flairUniqueBonusMultiplier = 0.4f;
         public const float bladeWhirlBaseDamage = 10f;
         public const float bladeWhirlDamageMult = 0.8f;
         public const float bladeWhirlDamageGrowthPerLevel = .2f;
@@ -16,15 +20,32 @@ namespace SamiraMod.Survivors.Samira
         public const float wildRushDamageMult = .7f;
         public const float wildRushDamageGrowthPerLevel = 1;
         public const float wildRushAttackSpeedMult = 0.3f;
-        public const float wildRushAttackSpeedDuration = 4.5f;
+        public const float wildRushAttackSpeedDuration = 3f;
         public const float infernoTriggerBaseDamage = 20;
-        public const float infernoTriggerDamageMult = 1.5f;
+        public const float infernoTriggerDamageMult = 1.6f;
         public const float infernoTriggerDamageGrowthPerLevel = .4f; // Assuming a growth per level
         public const float infernoTriggerDuration = 3f;
 
-        public static float GetFlairDamage(float damageStat, float currentLevel)
+        public static float GetFlairDamage(float damageStat, float currentLevel, bool isMelee = false, int swingIndex = 0)
         {
-            return GetDamage(flairBaseDamage, flairDamageMult, flairDamageGrowthPerLevel, damageStat, currentLevel);
+            float damage = GetDamage(flairBaseDamage, flairDamageMult, flairDamageGrowthPerLevel, damageStat,
+                currentLevel);
+
+            float bonusMultiplier = 0f;
+
+            if (swingIndex >= attacksPerFlair - 1)
+            {
+                bonusMultiplier += flairUniqueBonusMultiplier;
+            }
+
+            if (isMelee)
+            {
+                bonusMultiplier += flairMeleeBonusMultiplier;
+            }
+
+            damage += damage * bonusMultiplier;
+            
+            return damage;
         }
 
         public static float GetBladeWhirlDamage(float damageStat, float currentLevel)

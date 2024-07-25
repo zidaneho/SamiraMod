@@ -14,12 +14,8 @@ namespace SamiraMod.Survivors.Samira.Components
     {
         public int ComboIndex { get; private set; }
 
-        private float bonusMSPercentPerStyle = 3;
-
         public readonly int minimumCombo = 0;
         public readonly int maximumCombo = 6;
-
-        private static string resetSoundString;
 
         private int previousAttackID;
 
@@ -58,7 +54,12 @@ namespace SamiraMod.Survivors.Samira.Components
             ResetCombo();
         }
 
-        //Flair - 1, BladeWhirl - 2, Wild Rush - 3
+        private void OnDisable()
+        {
+            specialSkill.skillDef.icon = comboSprites[maximumCombo];
+        }
+
+        //AutoAttack - 1, BladeWhirl - 2, Wild Rush - 3, Flair - 4
         public void AddCombo(int attackID)
         {
             if (ComboIndex >= maximumCombo)
