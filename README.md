@@ -7,14 +7,14 @@
   <img src="readme/Samira_0.jpg" alt="Example Image 1"  />
 </div>
 
-<div style="display: flex; justify-content: space-around;">
-  <img src="readme/samira_background5.jpg" alt="Example Image 1" width="600" />
-  <img src="readme/samira_background2.jpg" alt="Example Image 2" width="600" />
+<div style="display: flex; justify-content: center;">
+  <img src="readme/samira_background5.jpg" alt="Example Image 1" width="400" />
+  <img src="readme/samira_background2.jpg" alt="Example Image 2" width="400" />
 </div>
 
-<div style="display: flex; justify-content: space-around;">
-  <img src="readme/samira_background3.jpg" alt="Example Image 1" width="600" />
-  <img src="readme/samira_background4.jpg" alt="Example Image 2" width="600" />
+<div style="display: flex; justify-content: center;">
+  <img src="readme/samira_background3.jpg" alt="Example Image 1" width="400" />
+  <img src="readme/samira_background4.jpg" alt="Example Image 2" width="400" />
 </div>
 
 
