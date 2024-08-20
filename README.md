@@ -70,33 +70,33 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 Patch 1.1.0
 - Credits to Dangobalang0 and anartoast for feedback to the mod! Again, any feedback is always appreciated.
 
-## Nerfs
+### Nerfs
 - **Wild Rush**: Nerfed Damage, Removed Attack Speed Buff 
 - **Blade Whirl**: Nerfed Damage 
 - **Inferno Trigger**: Nerfed Damage 
 - **Blade Whirl & Wild Rush**: Removed hidden buffs (invincibility/armor buffs)
 
-## Bugfixes and QOL
+### Bugfixes and QOL
 - Wild Rush can now be canceled into Secondary and Special skills (Blade Whirl & Inferno Trigger)
 - Blade Whirl can now be canceled into Special skills (Inferno Trigger)
 - Fixed a bug where bullet attacks did not grant on-hit effects such as: inferno trigger's lifesteal, style points from m1 and dash m1 abilities)
 - Made the transition from Wild Rush to Flair feel much less janky; the ability's duration is additionally scaled with attack speed now. 
 - Changed text colors in loadout because skill text and background were the same.
 
-## New Content
+### New Content
 - Lots of new skills!
 
-## Primary:
+### Primary:
 - **Explosive Shot**: Samira may only shoot her guns now, but every 4 attacks she fires an explosive shot which deals a high amount of damage. This unique attack does not grant a style point like Flair.
 - **Slashing Maniac**: Samira may only swing her sword now, but every time she hits an enemy, she will gain a movement speed and attack speed buff. This buff may infinitely stack, but has a duration. Additionally, this ability inherits Flair's unique attack, and does grant its style point.
 
-## Secondary:
+### Secondary:
 - **Exposing Whirl**: Just like Blade Whirl, but Samira will only damage her enemies once (in the beginning). Instead, Samira fires armor-penetrating bullets at nearby enemies.
 
-## Utility:
+### Utility:
 - **Quick Steps**: Samira gains two charges of dash. On press, Samira gains attack speed for a duration.
 
-## Special:
+### Special:
 - **Infinite Rain**: Samira unleashes a volley of bullets at nearby enemies. When enemeis are killed, the duration of the ability is extended.
 
 Patch 1.0.0
