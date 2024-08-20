@@ -67,6 +67,11 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 
 # Patch Notes
 
+Patch 1.1.1
+- Credit to anartoast for feedback again!
+- **Wild Rush/Quick Steps**: Added back the invincibility because players take damage if colliding with the environment
+- **Wild Rush**: Fixed a bug where cooldown was not being reset when enemies were killed.
+
 Patch 1.1.0
 - Credits to Dangobalang0 and anartoast for feedback to the mod! Again, any feedback is always appreciated.
 
