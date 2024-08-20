@@ -97,7 +97,7 @@ Patch 1.1.0
 - **Quick Steps**: Samira gains two charges of dash. On press, Samira gains attack speed for a duration.
 
 ### Special:
-- **Infinite Rain**: Samira unleashes a volley of bullets at nearby enemies. When enemeis are killed, the duration of the ability is extended.
+- **Infinite Rain**: Samira unleashes a volley of bullets at nearby enemies. When enemies are killed, the duration of the ability is extended.
 
 Patch 1.0.0
 - Initial Release
