@@ -148,6 +148,8 @@ namespace SamiraMod.Survivors.Samira
             var comboManager = bodyPrefab.AddComponent<SamiraComboManager>();
             bodyPrefab.AddComponent<SamiraWildRushReset>();
             bodyPrefab.AddComponent<SamiraVoiceController>();
+            bodyPrefab.AddComponent<SamiraBladeWhirlHandler>();
+            bodyPrefab.AddComponent<SamiraBuffMeleeOnHitHandler>();
             //bodyPrefab.AddComponent<HuntressTrackerComopnent>();
             //anything else here
             
@@ -275,8 +277,40 @@ namespace SamiraMod.Survivors.Samira
             //step count translates to swing index, index starts at 0
             primarySkillDef1.stepCount = SamiraStaticValues.attacksPerFlair;
             primarySkillDef1.stepGraceDuration = 1f;
+            
+            //the primary skill is created using a constructor for a typical primary
+            //it is also a SteppedSkillDef. Custom Skilldefs are very useful for custom behaviors related to casting a skill. see ror2's different skilldefs for reference
+            SteppedSkillDef primarySkillDef2 = Skills.CreateSkillDef<SteppedSkillDef>(new SkillDefInfo
+            {
+                skillName = "SamiraExplosiveShot",
+                skillNameToken = SAMIRA_PREFIX + "PRIMARY_EXPLOSIVESHOT_NAME",
+                skillDescriptionToken = SAMIRA_PREFIX + "PRIMARY_EXPLOSIVESHOT_DESCRIPTION",
+                skillIcon = assetBundle.LoadAsset<Sprite>("texSamiraQ"),
+                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.ExplosiveShot)),
+                activationStateMachineName = "Weapon",
+            });
+            //custom Skilldefs can have additional fields that you can set manually
+            //step count translates to swing index, index starts at 0
+            primarySkillDef2.stepCount = SamiraStaticValues.attacksPerExplosiveShot;
+            primarySkillDef2.stepGraceDuration = 1f;
+            
+            //the primary skill is created using a constructor for a typical primary
+            //it is also a SteppedSkillDef. Custom Skilldefs are very useful for custom behaviors related to casting a skill. see ror2's different skilldefs for reference
+            SteppedSkillDef primarySkillDef3 = Skills.CreateSkillDef<SteppedSkillDef>(new SkillDefInfo
+            {
+                skillName = "SamiraSlashingManiac",
+                skillNameToken = SAMIRA_PREFIX + "PRIMARY_SLASHINGMANIAC_NAME",
+                skillDescriptionToken = SAMIRA_PREFIX + "PRIMARY_SLASHINGMANIAC_DESCRIPTION",
+                skillIcon = assetBundle.LoadAsset<Sprite>("texSamiraQ"),
+                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.SlashingManiac)),
+                activationStateMachineName = "Weapon",
+            });
+            //custom Skilldefs can have additional fields that you can set manually
+            //step count translates to swing index, index starts at 0
+            primarySkillDef3.stepCount = SamiraStaticValues.attacksPerFlair;
+            primarySkillDef3.stepGraceDuration = 1f;
 
-            Skills.AddPrimarySkills(bodyPrefab, primarySkillDef1);
+            Skills.AddPrimarySkills(bodyPrefab, primarySkillDef1, primarySkillDef2, primarySkillDef3);
         }
 
         private void AddSecondarySkills()
@@ -314,8 +348,38 @@ namespace SamiraMod.Survivors.Samira
                 forceSprintDuringState = false,
 
             });
+            SkillDef secondarySkillDef2 = Skills.CreateSkillDef(new SkillDefInfo
+            {
+                skillName = "SamiraExposingWhirl",
+                skillNameToken = SAMIRA_PREFIX + "SECONDARY_EXPOSINGWHIRL_NAME",
+                skillDescriptionToken = SAMIRA_PREFIX + "SECONDARY_EXPOSINGWHIRL_DESCRIPTION",
+                skillIcon = assetBundle.LoadAsset<Sprite>("texSamiraW"),
 
-            Skills.AddSecondarySkills(bodyPrefab, secondarySkillDef1);
+                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.ExposingWhirl)),
+                activationStateMachineName = "Weapon",
+                interruptPriority = EntityStates.InterruptPriority.Skill,
+
+                baseRechargeInterval = 12f,
+                baseMaxStock = 1,
+
+                rechargeStock = 1,
+                requiredStock = 1,
+                stockToConsume = 1,
+
+                resetCooldownTimerOnUse = false,
+                fullRestockOnAssign = true,
+                dontAllowPastMaxStocks = false,
+                mustKeyPress = false,
+                beginSkillCooldownOnSkillEnd = false,
+
+                isCombatSkill = true,
+                canceledFromSprinting = false,
+                cancelSprintingOnActivation = false,
+                forceSprintDuringState = false,
+
+            });
+
+            Skills.AddSecondarySkills(bodyPrefab, secondarySkillDef1, secondarySkillDef2);
         }
 
         private void AddUtiitySkills()
@@ -352,8 +416,38 @@ namespace SamiraMod.Survivors.Samira
                 cancelSprintingOnActivation = false,
                 forceSprintDuringState = true,
             });
+            
+            SkillDef utilitySkillDef2 = Skills.CreateSkillDef(new SkillDefInfo
+            {
+                skillName = "SamiraQuickSteps",
+                skillNameToken = SAMIRA_PREFIX + "UTILITY_QUICKSTEPS_NAME",
+                skillDescriptionToken = SAMIRA_PREFIX + "UTILITY_QUICKSTEPS_DESCRIPTION",
+                skillIcon = assetBundle.LoadAsset<Sprite>("texSamiraE"),
 
-            Skills.AddUtilitySkills(bodyPrefab, utilitySkillDef1);
+                activationState = new EntityStates.SerializableEntityStateType(typeof(QuickSteps)),
+                activationStateMachineName = "Body",
+                interruptPriority = EntityStates.InterruptPriority.PrioritySkill,
+
+                baseRechargeInterval = 8f,
+                baseMaxStock = 2,
+
+                rechargeStock = 1,
+                requiredStock = 1,
+                stockToConsume = 1,
+
+                resetCooldownTimerOnUse = false,
+                fullRestockOnAssign = true,
+                dontAllowPastMaxStocks = false,
+                mustKeyPress = false,
+                beginSkillCooldownOnSkillEnd = false,
+
+                isCombatSkill = false,
+                canceledFromSprinting = false,
+                cancelSprintingOnActivation = false,
+                forceSprintDuringState = true,
+            });
+
+            Skills.AddUtilitySkills(bodyPrefab, utilitySkillDef1, utilitySkillDef2);
         }
 
         private void AddSpecialSkills()
@@ -384,7 +478,29 @@ namespace SamiraMod.Survivors.Samira
                 
             });
             
-            Skills.AddSpecialSkills(bodyPrefab, specialSkillDef1);
+            InfernoTriggerSkillDef specialSkillDef2 = Skills.CreateSkillDef<InfernoTriggerSkillDef>(new SkillDefInfo
+            {
+                skillName = "SamiraInfiniteRain",
+                skillNameToken = SAMIRA_PREFIX + "SPECIAL_INFINITERAIN_NAME",
+                skillDescriptionToken = SAMIRA_PREFIX + "SPECIAL_INFINITERAIN_DESCRIPTION",
+                skillIcon = assetBundle.LoadAsset<Sprite>("texSamiraR6"),
+
+                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.InfiniteRain)),
+                //setting this to the "weapon2" EntityStateMachine allows us to cast this skill at the same time primary, which is set to the "weapon" EntityStateMachine
+                activationStateMachineName = "Weapon", interruptPriority = EntityStates.InterruptPriority.Skill,
+
+                baseMaxStock = 1,
+                requiredStock = 1,
+                rechargeStock = 1,
+                stockToConsume = 1,
+                baseRechargeInterval = 7f,
+                beginSkillCooldownOnSkillEnd = false,
+
+                isCombatSkill = true,
+                mustKeyPress = false
+            });
+            
+            Skills.AddSpecialSkills(bodyPrefab, specialSkillDef1, specialSkillDef2);
         }
         #endregion skills
         
@@ -518,6 +634,17 @@ namespace SamiraMod.Survivors.Samira
             if (sender.HasBuff(SamiraBuffs.wildRushAttackSpeedBuff))
             {
                 args.attackSpeedMultAdd += 0.30f;
+            }
+
+            if (sender.HasBuff(SamiraBuffs.meleeOnHitBuff))
+            {
+                args.moveSpeedMultAdd += SamiraStaticValues.slashBonusMS;
+                args.attackSpeedMultAdd += SamiraStaticValues.slashBonusAS;
+            }
+
+            if (sender.HasBuff(SamiraBuffs.bladeWhirlArmorShredDebuff))
+            {
+                args.armorAdd -= SamiraStaticValues.exposeDebuffArmorPen;
             }
             
         }

@@ -18,6 +18,10 @@ namespace SamiraMod.Survivors.Samira
 
         public static BuffDef wildRushAttackSpeedBuff;
 
+        public static BuffDef meleeOnHitBuff;
+
+        public static BuffDef bladeWhirlArmorShredDebuff;
+
         public static void Init(AssetBundle assetBundle)
         {
             armorBuff = Modules.Content.CreateAndAddBuff("HenryArmorBuff",
@@ -33,6 +37,10 @@ namespace SamiraMod.Survivors.Samira
             comboBuff6 = CreateComboBuff("ComboBuff6",assetBundle.LoadAsset<Sprite>("texSamiraR6"));
             
             wildRushAttackSpeedBuff = Content.CreateAndAddBuff("WildRushAttackSpeedBuff",assetBundle.LoadAsset<Sprite>("texSamiraE"),Color.white,false,false);
+            
+            meleeOnHitBuff = Content.CreateAndAddBuff("SamiraMeleeOnHitBuff", assetBundle.LoadAsset<Sprite>("texSamiraQ"),Color.white,true,false);
+            
+            bladeWhirlArmorShredDebuff = Content.CreateAndAddBuff("SamiraBladeWhirlDefenseShredDebuff", assetBundle.LoadAsset<Sprite>("texSamiraW"),Color.white,false,true);
         }
 
         static BuffDef CreateComboBuff(string name, Sprite sprite)

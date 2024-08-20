@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 
 namespace SamiraMod.Survivors.Samira.SkillStates
 {
-    public class Flair : BaseSkillState, SteppedSkillDef.IStepSetter
+    public class Flair : BaseSkillState, SteppedSkillDef.IStepSetter 
     {
         public enum AttackType
         {
@@ -18,13 +18,12 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             Ranged
         }
 
-        public static int autoAttackID = 1;
-        public static int flairAttackID = 4;
-        public int attacksPerFlair => SamiraStaticValues.attacksPerFlair;
+        public static int autoAttackID = SamiraStaticValues.autoAttackID;
+        public static int flairAttackID = SamiraStaticValues.flairID;
+        public virtual int attacksPerFlair => SamiraStaticValues.attacksPerFlair;
         private static float maxDistance = 10f;
         private static float searchAngle = 45f;
         protected DamageType damageType = DamageType.Generic;
-        public static float damageCoefficient = SamiraStaticValues.bladeWhirlDamageMult;
         public static float procCoefficient = 1f;
 
 
@@ -83,9 +82,10 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         protected Animator animator;
         private HitStopCachedState hitStopCachedState;
         private Vector3 storedVelocity;
-        private static readonly int InDashing = Animator.StringToHash("inDashing");
 
         #endregion
+
+        private bool canUseFlair => swingIndex >= attacksPerFlair - 1;
 
 
         public override void OnEnter()
@@ -107,6 +107,12 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                 attackType = AttackType.Ranged;
                 SetupRangedAttack();
             }
+        }
+
+        public override void OnExit()
+        {
+            stopwatch = 0f;
+            base.OnExit();
         }
 
         public override void FixedUpdate()
@@ -190,8 +196,9 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         {
             duration = rangedBaseDuration / attackSpeedStat;
             fireTime = firePercentTime * duration;
-            //characterBody.SetAimTimer(0.5f * duration);
-            //PlayShootAnimation();
+            
+            PlayShootAnimation();
+            characterBody.SetAimTimer(0.5f * duration);
         }
 
         void SetupMeleeAttack()
@@ -199,7 +206,6 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             hitboxGroupName = "AAHitbox";
 
             damageType = DamageType.Generic;
-            damageCoefficient = SamiraStaticValues.wildRushDamageMult;
             procCoefficient = 1f;
             pushForce = 300f;
             bonusForce = Vector3.zero;
@@ -221,13 +227,16 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             //BaseMeleeAttack OnEnter
             duration = meleeBaseDuration / attackSpeedStat;
             StartAimMode(0.5f + duration, false);
+            
+            float damage = SamiraStaticValues.GetFlairDamage(damageStat, characterBody.level);
+            if (canUseFlair) damage +=  damage * SamiraStaticValues.flairUniqueBonusMultiplier;
 
             attack = new OverlapAttack();
             attack.damageType = damageType;
             attack.attacker = gameObject;
             attack.inflictor = gameObject;
             attack.teamIndex = GetTeam();
-            attack.damage = SamiraStaticValues.GetFlairDamage(damageStat, characterBody.level,true,swingIndex);
+            attack.damage = damage;
             attack.procCoefficient = procCoefficient;
             attack.hitEffectPrefab = hitEffectPrefab;
             attack.forceVector = bonusForce;
@@ -236,7 +245,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             attack.isCrit = crit;
             attack.impactSound = impactSound;
             
-            if (swingIndex >= attacksPerFlair - 1)
+            if (canUseFlair)
             {
                 swingEffectPrefab = SamiraAssets.cleaveSwingEffect;
                 meleeMuzzleString = "CleaveSlashMuzzle";
@@ -259,11 +268,9 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                 
                 Ray aimRay = GetAimRay();
                 characterBody.AddSpreadBloom(1.5f);
-                
-                PlayShootAnimation();
-                characterBody.SetAimTimer(0.5f * duration);
+ 
 
-                string rangedMuzzleString = swingIndex >= attacksPerFlair - 1 ? "RevolverMuzzle" : "PistolMuzzle";
+                string rangedMuzzleString = canUseFlair ? "RevolverMuzzle" : "PistolMuzzle";
                 EffectManager.SimpleMuzzleFlash(muzzleEffectPrefab,
                     gameObject, rangedMuzzleString, false);
 
@@ -272,15 +279,18 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                     AddRecoil(-1f * recoil, -2f * recoil, -0.5f * recoil, 0.5f * recoil);
                     Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
                     if (Modules.Config.enableVoiceLines.Value) Util.PlaySound("Play_SamiraVO_BasicAttackRanged", gameObject);
+                    
+                    float damage = SamiraStaticValues.GetFlairDamage(damageStat, characterBody.level);
+                    if (canUseFlair) damage +=  damage * SamiraStaticValues.flairUniqueBonusMultiplier;
 
-                    Vector3 origin = childLocator.FindChild("PistolMuzzle").position;
+                    Vector3 origin = childLocator.FindChild(rangedMuzzleString).position;
                     
                     var bulletAttack = new BulletAttack
                     {
                         bulletCount = 1,
                         aimVector = aimRay.direction,
                         origin = origin,
-                        damage = SamiraStaticValues.GetFlairDamage(damageStat,characterBody.level,false,swingIndex),
+                        damage = damage ,
                         damageColorIndex = DamageColorIndex.Default,
                         damageType = DamageType.Generic,
                         falloffModel = BulletAttack.FalloffModel.None,
@@ -319,7 +329,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             HealthComponent healthComponent = hitInfo.hitHurtBox ? hitInfo.hitHurtBox.healthComponent : null;
             if (healthComponent && healthComponent.alive && hitInfo.hitHurtBox.teamIndex != base.teamComponent.teamIndex)
             {
-                _comboManager.AddCombo(swingIndex >= attacksPerFlair - 1 ? flairAttackID : autoAttackID);
+                _comboManager.AddCombo(canUseFlair ? flairAttackID : autoAttackID);
                 Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
             }
             return result;
@@ -349,7 +359,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             var animString = swingIndex % 2 == 0 ?"Slash1" : "Slash2";
             if (crit) animString = "Slash1Crit";
 
-            if (swingIndex >= attacksPerFlair - 1)
+            if (canUseFlair)
             {
                 animString = "FlairMelee";
                 attack.hitBoxGroup = FindHitBoxGroup("FlairMeleeHitbox");
@@ -366,7 +376,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             playbackRateParam = "Shoot.playbackRate";
             if (crit) playbackRateParam = "ShootCrit.playbackRate";
 
-            if (swingIndex >= attacksPerFlair - 1)
+            if (canUseFlair)
             {
                 animString = "FlairRanged";
             }
@@ -413,7 +423,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         {
             if (Modules.Config.enableVoiceLines.Value) Util.PlayAttackSpeedSound("Play_SamiraVO_BasicAttackMelee", gameObject,attackSpeedStat);
             Util.PlaySound("Play_SamiraSFX_SwordHit", gameObject);
-            _comboManager.AddCombo(swingIndex >= attacksPerFlair - 1 ? flairAttackID : autoAttackID);
+            _comboManager.AddCombo(canUseFlair ? flairAttackID : autoAttackID);
 
             if (!hasHopped)
             {
@@ -454,7 +464,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         private bool IsEnemyInFront()
         {
-            string hitboxName = swingIndex >= attacksPerFlair - 1 ? "FlairMeleeHitbox" : "AAHitbox";
+            string hitboxName = canUseFlair ? "FlairMeleeHitbox" : "AAHitbox";
             Transform hitboxTransform = childLocator.FindChild(hitboxName);
 
             Collider[] colliders = Physics.OverlapBox(hitboxTransform.position, hitboxTransform.localScale / 2,

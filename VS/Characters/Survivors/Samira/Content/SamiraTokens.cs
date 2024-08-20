@@ -8,7 +8,8 @@ namespace SamiraMod.Survivors.Samira
     {
         public const string colorPrefix = "<color=#C23B22>";
         public const string damageColorPrefix = "<color=#FFD700>";
-        public const string characterLore =
+        public const string levelColorPrefix = "<color=#F5F5F5>";
+        public const string characterLore = 
             "After her Shuriman home was destroyed as a child, Samira found her true calling in Noxus, where she built a reputation as a stylish daredevil taking on dangerous missions of the highest caliber. Wielding black-powder pistols and a custom-engineered blade, Samira thrives in life-or-death circumstances, eliminating any who stand in her way with flash and flair.";
 
         public const string characterName = "Samira";
@@ -49,28 +50,43 @@ namespace SamiraMod.Survivors.Samira
             #region Passive
 
             
-            Language.Add(prefix + "PASSIVE_NAME", colorPrefix +"Daredevil Impulse</color>");
+            Language.Add(prefix + "PASSIVE_NAME", "Daredevil Impulse");
             Language.Add(prefix + "PASSIVE_DESCRIPTION", "Samira's unique attacks generate a stack of Style for 6 seconds. For each stack, Samira gains bonus movement speed. At maximum stacks, Samira can cast Inferno Trigger.");
             #endregion
 
             #region Primary
-            Language.Add(prefix + "PRIMARY_FLAIR_NAME", colorPrefix+"Flair</color>");
-            Language.Add(prefix + "PRIMARY_FLAIR_DESCRIPTION", $"Samira fires a shot or swings her sword, dealing {damageColorPrefix}({SamiraStaticValues.flairBaseDamage} <color=#F5F5F5>(based on level)</color> + {100f * SamiraStaticValues.flairDamageMult}%) damage</color>. Every {SamiraStaticValues.attacksPerFlair} uses triggers a unique attack, dealing {damageColorPrefix}{100f * SamiraStaticValues.flairUniqueBonusMultiplier}% additional damage</color>. Melee attacks deal an additional {damageColorPrefix}{100f * SamiraStaticValues.flairMeleeBonusMultiplier}% damage</color>.");
+            Language.Add(prefix + "PRIMARY_FLAIR_NAME", "Flair");
+            Language.Add(prefix + "PRIMARY_FLAIR_DESCRIPTION", $"Samira fires a shot or swings her sword, dealing {damageColorPrefix}({SamiraStaticValues.flairBaseDamage} {levelColorPrefix}(based on level)</color> + {100f * SamiraStaticValues.flairDamageMult}%) damage</color>. Every {SamiraStaticValues.attacksPerFlair} uses triggers a unique attack, dealing {damageColorPrefix}{100f * SamiraStaticValues.flairUniqueBonusMultiplier}% additional damage</color>. Melee attacks deal an additional {damageColorPrefix}{100f * SamiraStaticValues.flairMeleeBonusMultiplier}% damage</color>.");
+            
+            Language.Add(prefix + "PRIMARY_EXPLOSIVESHOT_NAME", "Explosive Shot");
+            Language.Add(prefix + "PRIMARY_EXPLOSIVESHOT_DESCRIPTION", $"Instead of swinging her sword, Samira only uses her guns, firing an explosive shot every 4 attacks, dealing {damageColorPrefix}{SamiraStaticValues.explosiveShotBonusMultiplier * 100}% additional damage</color>. Style is not generated from this ability.");
+            
+            Language.Add(prefix + "PRIMARY_SLASHINGMANIAC_NAME", "Slashing Maniac");
+            Language.Add(prefix + "PRIMARY_SLASHINGMANIAC_DESCRIPTION", $"Instead of firing her guns, Samira swings her sword for {damageColorPrefix}{100 * (SamiraStaticValues.slashBonusMultiplier + SamiraStaticValues.flairMeleeBonusMultiplier)}% additional damage</color>. On hit, she gains {damageColorPrefix}{100 * SamiraStaticValues.slashBonusMS}% Movement Speed and {100 * SamiraStaticValues.slashBonusAS} Attack Speed.");
             #endregion
 
             #region Secondary
-            Language.Add(prefix + "SECONDARY_BLADEWHIRL_NAME", colorPrefix+"Blade Whirl</color>");
-            Language.Add(prefix + "SECONDARY_BLADEWHIRL_DESCRIPTION", $"Samira slashes around her for {SamiraStaticValues.bladeWhirlDuration} seconds, damaging enemies twice for {damageColorPrefix}({SamiraStaticValues.bladeWhirlBaseDamage} <color=#F5F5F5>(based on level)</color>+ {100f * SamiraStaticValues.bladeWhirlDamageMult}%) damage</color> while destroying incoming enemy projectiles");
+            Language.Add(prefix + "SECONDARY_BLADEWHIRL_NAME", "Blade Whirl");
+            Language.Add(prefix + "SECONDARY_BLADEWHIRL_DESCRIPTION", $"Samira slashes around her for {SamiraStaticValues.bladeWhirlDuration} seconds, damaging enemies twice for {damageColorPrefix}({SamiraStaticValues.bladeWhirlBaseDamage} {levelColorPrefix}(based on level)</color>+ {100f * SamiraStaticValues.bladeWhirlBonusDamageMult}%) damage</color> while destroying incoming enemy projectiles.");
+            
+            Language.Add(prefix + "SECONDARY_EXPOSINGWHIRL_NAME", "Exposing Whirl");
+            Language.Add(prefix + "SECONDARY_EXPOSINGWHIRL_DESCRIPTION", $"Samira slashes around her, damaging enemies once for {damageColorPrefix}{100 * SamiraStaticValues.exposingWhirlDamageMult}% of Blade Whirl's damage</color>. Samira will have {damageColorPrefix}{SamiraStaticValues.exposeDebuffArmorPen} armor penetration against  hit enemies.");
             #endregion
 
             #region Utility
-            Language.Add(prefix + "UTILITY_WILDRUSH_NAME", colorPrefix+"Wild Rush</color>");
-            Language.Add(prefix + "UTILITY_WILDRUSH_DESCRIPTION", $"Samira dashes forward slashing through any enemy in her path, dealing {damageColorPrefix}({SamiraStaticValues.wildRushBaseDamage} <color=#F5F5F5>(based on level)</color> + {100f * SamiraStaticValues.wildRushDamageMult}%) damage</color>. She also gains {damageColorPrefix}{100f * SamiraStaticValues.wildRushAttackSpeedMult}% Attack Speed</color> for {SamiraStaticValues.wildRushAttackSpeedDuration} seconds. <style=cIsUtility>Getting a takedown against an enemy resets Wild Rush's cooldown.</style>");
+            Language.Add(prefix + "UTILITY_WILDRUSH_NAME", "Wild Rush");
+            Language.Add(prefix + "UTILITY_WILDRUSH_DESCRIPTION", $"Samira dashes forward slashing through any enemy in her path, dealing {damageColorPrefix}({SamiraStaticValues.wildRushBaseDamage} {levelColorPrefix}(based on level)</color> + {100f * SamiraStaticValues.wildRushDamageMult}%) damage</color>.  <style=cIsUtility>Getting a takedown against an enemy resets Wild Rush's cooldown.</style>");
+            
+            Language.Add(prefix + "UTILITY_QUICKSTEPS_NAME", "Quick Steps");
+            Language.Add(prefix + "UTILITY_QUICKSTEPS_DESCRIPTION", $"Samira dashes forward, damaging enemies while gaining {damageColorPrefix}{100f * SamiraStaticValues.wildRushAttackSpeedMult}% Attack Speed</color> for {SamiraStaticValues.wildRushAttackSpeedDuration} seconds. This ability does not reset on takedown.");
             #endregion
 
             #region Special
-            Language.Add(prefix + "SPECIAL_INFERNOTRIGGER_NAME", colorPrefix+"Inferno Trigger</color>");
-            Language.Add(prefix + "SPECIAL_INFERNOTRIGGER_DESCRIPTION", $"Samira unleashes a torrent of shots for {SamiraStaticValues.infernoTriggerDuration} seconds, dealing {damageColorPrefix}({SamiraStaticValues.infernoTriggerBaseDamage} <color=#F5F5F5>(based on level)</color> + {100f * SamiraStaticValues.infernoTriggerDamageMult}%) damage</color> per shot. The number of shots fired is scaled with Attack Speed.");
+            Language.Add(prefix + "SPECIAL_INFERNOTRIGGER_NAME", "Inferno Trigger");
+            Language.Add(prefix + "SPECIAL_INFERNOTRIGGER_DESCRIPTION", $"Samira unleashes a torrent of shots for {SamiraStaticValues.infernoTriggerDuration} seconds, dealing {damageColorPrefix}({SamiraStaticValues.infernoTriggerBaseDamage} {levelColorPrefix}(based on level)</color> + {100f * SamiraStaticValues.infernoTriggerDamageMult}%) damage</color> per shot. The number of shots fired is scaled by {damageColorPrefix}{100 * SamiraStaticValues.infernoTriggerAttackSpeedMult}% attack speed</color>.");
+            
+            Language.Add(prefix + "SPECIAL_INFINITERAIN_NAME", "Infinite Rain");
+            Language.Add(prefix + "SPECIAL_INFINITERAIN_DESCRIPTION", $"Samira unleashes a torrent of shots for {damageColorPrefix}{100 * SamiraStaticValues.infiniteRainDMGMultiplier}% damage and {100 * SamiraStaticValues.infiniteRainASMultiplier}% attack speed</color>. However, killing an enemy will increase the duration of the ability by {SamiraStaticValues.infiniteRainDurationExtend} seconds.");
             #endregion
 
             #region Achievements

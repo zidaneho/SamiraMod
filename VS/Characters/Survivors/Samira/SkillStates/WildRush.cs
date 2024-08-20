@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EntityStates;
@@ -10,7 +11,23 @@ using UnityEngine.Networking;
 
 namespace SamiraMod.Survivors.Samira.SkillStates
 {
-    public class WildRush : BaseSkillState
+    
+    public class QuickSteps : BaseWildRush
+    {
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            if (NetworkServer.active)
+            {
+                characterBody.AddTimedBuff(SamiraBuffs.wildRushAttackSpeedBuff, SamiraStaticValues.wildRushAttackSpeedDuration);
+            }
+        }
+    }
+
+    public class WildRush : BaseWildRush
+    {
+    }
+    public abstract class BaseWildRush : BaseSkillState
     {
         public static float duration = 0.3f;
         public static float delayDuration = 0.2f;
@@ -19,7 +36,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         public static string dodgeSoundString = "HenryRoll";
         public static float dodgeFOV = global::EntityStates.Commando.DodgeState.dodgeFOV;
-        public static int attackID = 3;
+        public static int attackID = SamiraStaticValues.wildRushID;
 
         private float rollSpeed;
         private Vector3 forwardDirection;
@@ -40,7 +57,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         protected float attackStartPercentTime = 0.2f;
         protected float attackEndPercentTime = 0.8f;
-        private float cancelAttackPercentTime = 0.8f;
+        private float cancelAttackPercentTime = 0.5f;
 
         protected float hitStopDuration = 0.012f;
         protected float attackRecoil = 0.75f;
@@ -102,12 +119,6 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             animator.SetBool(InDashing,true);
             Util.PlaySound("Play_SamiraSFX_E_Start", gameObject);
             if (Modules.Config.enableVoiceLines.Value) Util.PlaySound("Play_SamiraVO_E",gameObject);
-
-            if (NetworkServer.active)
-            {
-                characterBody.AddTimedBuff(SamiraBuffs.wildRushAttackSpeedBuff, SamiraStaticValues.wildRushAttackSpeedDuration);
-                characterBody.AddTimedBuff(RoR2Content.Buffs.HiddenInvincibility, 0.5f * duration);
-            }
         }
 
         public override InterruptPriority GetMinimumInterruptPriority()
@@ -115,7 +126,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             return InterruptPriority.Skill;
         }
 
-        void SetupAttack()
+        protected virtual void SetupAttack()
         {
             hitboxGroupName = "WildRushHitbox";
             damageType = DamageType.Generic;
@@ -151,7 +162,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             attack.impactSound = impactSound;
         }
 
-        private void RecalculateRollSpeed()
+        protected virtual void RecalculateRollSpeed()
         {
             rollSpeed = moveSpeedStat * Mathf.Lerp(initialSpeedCoefficient, finalSpeedCoefficient, fixedAge / duration);
         }
@@ -172,6 +183,8 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             bool fireStarted = stopwatch >= duration * attackStartPercentTime;
             bool fireEnded = stopwatch >= duration * attackEndPercentTime;
             bool cancelStarted = stopwatch >= duration * cancelAttackPercentTime;
+            
+            
 
             if (isAuthority && fixedAge >= duration + delayDuration)
             {
@@ -208,14 +221,59 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                 FireAttack();
             }
             
-            if (cancelStarted && inputBank.skill1.down)
+            if (cancelStarted)
             {
-                var flairDashState = new FlairDash();
-                flairDashState.hurtboxesToCheck = hitEnemies;
-                usedFlairDash = true;
-                outer.SetNextState(flairDashState);
+                if (inputBank.skill1.down)
+                {
+                    var flairDashState = new FlairDash();
+                    flairDashState.hurtboxesToCheck = hitEnemies;
+                    usedFlairDash = true;
+
+                    var weaponStateMachine = EntityStateMachine.FindByCustomName(base.gameObject, "Weapon");
+                    weaponStateMachine.SetNextState(flairDashState);
+                    outer.SetNextStateToMain();
+                    return;
+                }
+
+                if (CancelByAbility(skillLocator.secondary, SkillSlot.Secondary)) return;
+                if (CancelByAbility(skillLocator.special, SkillSlot.Special)) return;
+
             }
 
+        }
+
+        protected virtual bool CancelByAbility(GenericSkill skill, SkillSlot slot)
+        {
+            bool skillPressed = false;
+            switch (slot)
+            {
+                case SkillSlot.None:
+                    break;
+                case SkillSlot.Primary:
+                    skillPressed = inputBank.skill1.down;
+                    break;
+                case SkillSlot.Secondary:
+                    skillPressed = inputBank.skill2.down;
+                    break;
+                case SkillSlot.Utility:
+                    skillPressed = inputBank.skill3.down;
+                    break;
+                case SkillSlot.Special:
+                    skillPressed = inputBank.skill4.down;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(slot), slot, null);
+            }
+            if (inputBank && skillPressed)
+            {
+                if (skillLocator && skill && skill.stock > 0)
+                {
+                    // Dynamically set the next state to whatever ability is tied to the second slot
+                    return skill.ExecuteIfReady();
+                }
+            }
+
+            return false;
         }
 
         public override void OnExit()
@@ -248,7 +306,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             forwardDirection = reader.ReadVector3();
         }
         
-        private void EnterAttack()
+        protected virtual void EnterAttack()
         {
             hasFired = true;
 
@@ -258,7 +316,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             }
         }
 
-        private void FireAttack()
+        protected virtual void FireAttack()
         {
             if (isAuthority)
             {
@@ -276,7 +334,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             ApplyHitstop();
         }
 
-        protected void ApplyHitstop()
+        protected virtual void ApplyHitstop()
         {
             if (!inHitPause && hitStopDuration > 0f)
             {
@@ -288,7 +346,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         }
         
 
-        private void RemoveHitstop()
+        protected virtual void RemoveHitstop()
         {
             ConsumeHitStopCachedState(hitStopCachedState, characterMotor, animator);
             inHitPause = false;

@@ -106,6 +106,36 @@ namespace SamiraMod.Modules
         }
 
         internal static GameObject LoadEffect(this AssetBundle assetBundle, string resourceName, bool parentToTransform) => LoadEffect(assetBundle, resourceName, "", parentToTransform);
+
+        internal static GameObject LoadTracer(this AssetBundle assetBundle, string resourceName, string soundName = "",
+            bool parentToTransform = false)
+        {
+            GameObject newEffect = assetBundle.LoadAsset<GameObject>(resourceName);
+
+            if (!newEffect)
+            {
+                Log.ErrorAssetBundle(resourceName, assetBundle.name);
+                return null;
+            }
+
+            newEffect.AddComponent<DestroyOnTimer>().duration = 12;
+            newEffect.AddComponent<NetworkIdentity>();
+            newEffect.AddComponent<VFXAttributes>().vfxPriority = VFXAttributes.VFXPriority.Always;
+            //var tracer = newEffect.AddComponent<Tracer>();
+            //tracer.speed = 250f;
+            //tracer.length = 50f;
+            EffectComponent effect = newEffect.AddComponent<EffectComponent>();
+            effect.applyScale = false;
+            effect.effectIndex = EffectIndex.Invalid;
+            effect.parentToReferencedTransform = parentToTransform;
+            effect.positionAtReferencedTransform = true;
+            effect.soundName = soundName;
+            
+
+            Modules.Content.CreateAndAddEffectDef(newEffect);
+
+            return newEffect;
+        }
         internal static GameObject LoadEffect(this AssetBundle assetBundle, string resourceName, string soundName = "", bool parentToTransform = false)
         {
             GameObject newEffect = assetBundle.LoadAsset<GameObject>(resourceName);

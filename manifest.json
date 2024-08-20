@@ -1,7 +1,7 @@
 {
     "name": "SamiraMod",
     "author": "Zidane Ho",
-    "version_number": "1.0.0",
+    "version_number": "1.1.0",
     "website_url": "https://github.com/zidaneho/SamiraMod",
     "description": "You can play as Samira from League of Legends",
     "dependencies": [

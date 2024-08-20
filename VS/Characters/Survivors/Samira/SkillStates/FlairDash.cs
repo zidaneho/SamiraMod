@@ -17,11 +17,11 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         
 
         private string playbackRateParam = "FlairDash.playbackRate";
-        
-        public static int attackID = 4;
-        public static float duration = 0.7f;
-        protected float attackStartPercentTime = 0.2f;
-        protected float attackEndPercentTime = 0.8f;
+        public static int attackID = SamiraStaticValues.flairDashID;
+        public static float baseDuration = 0.5f;
+        private float duration; // remember, flair does not have a cooldown
+        protected float attackStartPercentTime = 0.0f;
+        protected float attackEndPercentTime = 1f;
         
         protected float stopwatch;
         private bool hasFired;
@@ -42,6 +42,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         public override void OnEnter()
         {
             base.OnEnter();
+            duration = baseDuration / attackSpeedStat;
             stopwatch = 0f;
             animator = GetModelAnimator();
             _comboManager = characterBody.GetComponent<SamiraComboManager>();
@@ -60,9 +61,15 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             hurtboxesToCheck.Clear();
         }
 
+        public override InterruptPriority GetMinimumInterruptPriority()
+        {
+            return InterruptPriority.Skill;
+        }
+
         public override void FixedUpdate()
         {
             base.FixedUpdate();
+            
             
             if (isAuthority && fixedAge >= duration)
             {
@@ -132,13 +139,14 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         void Fire(Vector3 direction)
         {
+            float damage = SamiraStaticValues.GetFlairDamage(damageStat, characterBody.level);
             
             var bulletAttack = new BulletAttack
                 {
                     bulletCount = 1,
                     aimVector = direction,
                     origin = characterBody.corePosition,
-                    damage = SamiraStaticValues.GetFlairDamage(damageStat, characterBody.level),
+                    damage = damage,
                     damageColorIndex = DamageColorIndex.Default,
                     damageType = DamageType.Generic,
                     falloffModel = BulletAttack.FalloffModel.None,

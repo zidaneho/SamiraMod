@@ -8,29 +8,26 @@ using UnityEngine;
 
 namespace SamiraMod.Survivors.Samira.SkillStates
 {
-    public class InfernoTrigger : BaseSkillState
+    public class InfernoTrigger : BaseInfernoTrigger
     {
-        private SamiraComboManager _comboManager;
-        private Animator animator;
-        private ChildLocator childLocator;
-        private float duration = SamiraStaticValues.infernoTriggerDuration;
-        private static float durationExtendOnKill = 0.25f;
-        private static readonly int InDashing = Animator.StringToHash("inDashing");
-        private float attackSpeedMultiplier = 0.9f;
-        private static float baseAttackInterval = 0.2f;
-        private static float lifeStealPercentage = 0.05f;
-        private int muzzleIndexer = 0;
+    }
+    public abstract class BaseInfernoTrigger : BaseSkillState
+    {
+        protected SamiraComboManager _comboManager;
+        protected Animator animator;
+        protected ChildLocator childLocator;
+        protected float duration = SamiraStaticValues.infernoTriggerDuration;
+        protected float attackSpeedMultiplier = 0.9f;
+        protected static float baseAttackInterval = 0.2f;
+        protected static float lifeStealPercentage = 0.05f;
+        protected int muzzleIndexer = 0;
         #region Attack Members
 
         public float attackRadius = 25f;
         public static float procCoefficient = 1f;
-        
-        private OverlapAttack attack;
-        private float timer = 0f;
-        private HitStopCachedState hitStopCachedState;
-        private Vector3 storedVelocity;
-        private GameObject attackIndicatorInstance;
-        private static readonly int InInfernoTrigger = Animator.StringToHash("inInfernoTrigger");
+        protected float timer = 0f;
+        protected GameObject attackIndicatorInstance;
+        protected static readonly int InInfernoTrigger = Animator.StringToHash("inInfernoTrigger");
         public static GameObject tracerEffectPrefab =
             LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/Tracers/TracerGoldGat");
         
@@ -72,9 +69,6 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         public override void FixedUpdate()
         {
             base.FixedUpdate();
-            
-            //to guarantee attack comes out if at high attack speed the stopwatch skips past the firing duration between frames
-
             if (base.isAuthority)
             {
                 float currentAttackSpeed = attackSpeedMultiplier * attackSpeedStat;
@@ -98,9 +92,8 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                     UpdateIndicator();
                 }
             }
-            
         }
-        private void FireAttack()
+        protected virtual void FireAttack()
         {
             
             List<HurtBox> HurtBoxes = new List<HurtBox>();
@@ -158,7 +151,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             
         }
 
-        bool OnBulletHit(BulletAttack bulletAttack, ref BulletAttack.BulletHit hitInfo)
+        protected virtual bool OnBulletHit(BulletAttack bulletAttack, ref BulletAttack.BulletHit hitInfo)
         {
             // Custom logic when a bullet hits something
             var result = BulletAttack.defaultHitCallback(bulletAttack, ref hitInfo);
@@ -170,16 +163,16 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                 float lifeSteal = SamiraStaticValues.GetInfernoTriggerDamage(damageStat,characterBody.level) * lifeStealPercentage;
                 healthComponent.Heal(lifeSteal, default(ProcChainMask), true);
             }
-            if (enemyHealthComponent && !enemyHealthComponent.alive)
-            {
-                duration += durationExtendOnKill;
-                Debug.Log("Inferno Trigger duration extended because enemy was killed");   
-            }
+            // if (enemyHealthComponent && !enemyHealthComponent.alive)
+            // {
+            //     duration += durationExtendOnKill;
+            //     Debug.Log("Inferno Trigger duration extended because enemy was killed");   
+            // }
             
             return result;
         }
         
-        void CreateIndicator()
+        protected void CreateIndicator()
         {
             if (EntityStates.Huntress.ArrowRain.areaIndicatorPrefab)
             {
@@ -191,7 +184,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             }
         }
 
-        void UpdateIndicator()
+        protected void UpdateIndicator()
         {
             attackIndicatorInstance.transform.position = characterBody.corePosition;
         }

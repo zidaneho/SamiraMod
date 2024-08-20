@@ -1,6 +1,7 @@
 using RoR2;
 using RoR2.Skills;
 using SamiraMod.Survivors.Samira.Components;
+using UnityEngine;
 
 namespace SamiraMod.Survivors.Samira
 {

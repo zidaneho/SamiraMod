@@ -10,7 +10,7 @@ using Path = RoR2.Path;
 
 namespace SamiraMod.Survivors.Samira.Components
 {
-    internal class SamiraComboManager : MonoBehaviour
+    public class SamiraComboManager : MonoBehaviour
     {
         public int ComboIndex { get; private set; }
 
@@ -59,7 +59,7 @@ namespace SamiraMod.Survivors.Samira.Components
             specialSkill.skillDef.icon = comboSprites[maximumCombo];
         }
 
-        //AutoAttack - 1, BladeWhirl - 2, Wild Rush - 3, Flair - 4
+        //AutoAttack - 1, BladeWhirl - 2, Wild Rush - 3, Flair - 4, FlairDash - 5
         public void AddCombo(int attackID)
         {
             if (ComboIndex >= maximumCombo)

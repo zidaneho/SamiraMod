@@ -1,9 +1,12 @@
+using EntityStates;
 using RoR2;
 using RoR2.Projectile;
+using SamiraMod.Survivors.Samira.SkillStates;
 using UnityEngine;
 
 namespace SamiraMod.Survivors.Samira.Components
 {
+    
     internal class SamiraBulletOnHit : MonoBehaviour, IProjectileImpactBehavior
     {
         public void OnProjectileImpact(ProjectileImpactInfo impactInfo)
@@ -37,34 +40,26 @@ namespace SamiraMod.Survivors.Samira.Components
                 // Check if the attackerBody is a player
                 if (attackerBody.isPlayerControlled)
                 {
-                    Debug.Log($"Player {attackerBody.GetUserName()} killed {damageReport.victim.name}");
                 
                     // Reset skill cooldowns for the player
                     ResetSkillCooldowns(attackerBody);
                 }
             }
         }
-
+        // We only want the regular Wild Rush to reset cooldown;
+        // We do not want Quick Steps to reset cooldown.
         private void ResetSkillCooldowns(CharacterBody player)
         {
-            // Get the player's skill locators
-            SkillLocator skillLocator = player.skillLocator;
-
-            if (skillLocator != null)
-            {
-                if (skillLocator.utility != null)
-                {
-                    skillLocator.utility.Reset();
-                    Debug.Log("Utility skill cooldown reset.");
-                }
-                // If you only want to reset a specific skill, adjust the logic accordingly
-                // Example: Resetting only the utility skill
-                // if (skillLocator.utility != null)
-                // {
-                //     skillLocator.utility.Reset();
-                //     Debug.Log("Utility skill cooldown reset.");
-                // }
+            var skill = GetUtilitySkill(player);
+            if (skill && skill.skillName == "SamiraWildRush")
+            { 
+                skill.Reset();
             }
+        }
+
+        GenericSkill GetUtilitySkill(CharacterBody characterBody)
+        {
+            return characterBody?.skillLocator?.utility;
         }
     }
 }
