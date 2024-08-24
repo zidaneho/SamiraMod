@@ -33,13 +33,13 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 
 ## Skills
 
-| Skill             | Image                                                                                                                              | Description                                                                                                                                                                   | Stats                                  |
-|:------------------|------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
-| Daredevil Impulse | <img src="https://github.com/user-attachments/assets/0c8abc75-e761-4ccd-88a8-6674e51d8595" alt="Daredevil Impulse" width= "1024"/> | Samira's unique attacks generate a stack of Style for 6 seconds. For each stack, Samira gains bonus movement speed. At maximum stacks, Samira can cast Inferno Trigger.       | MS: `4%`/`8%`/`12%`/`16%`/`20%`/`25%`/ |
-| Flair             | <img src="https://github.com/user-attachments/assets/c0ba30d5-5de7-4c28-ba4b-c46416b1a790" alt="Flair" width="1024"/>              | Samira fires a shot or swings her sword, dealing `130%` damage. Every 5 uses triggers a unique attack, dealing `40%` additional damage. Melee attacks deal `10%` more damage. | Proc: `1.0`                            |
-| Blade Whirl       | <img src="https://github.com/user-attachments/assets/935b00d2-909e-4e83-8dc5-f182f37b1242" alt = "Blade Whirl" width = "1024"/>    | Samira slashes around her for `0.5 seconds`, damaging enemies twice for `80%` damage, while destroying incoming projectiles.                                                  | Proc: `1.0`, CD: `10 sec`              |
-| Wild Rush         | <img src="https://github.com/user-attachments/assets/eb2beb14-2c19-4822-b09d-19aa6a4892b7" alt = "Wild Rush" width="1024"/>        | Samira dashes forward slashing through any enemy in her path, dealing `70%` damage. Getting a takedown against an enemy resets Wild Rush's cooldown.                          | CD: `6 sec`                            |
-| Inferno Trigger   | <img src="https://github.com/user-attachments/assets/59ce6cec-e999-4947-a2c4-ea3bcf8f8bf3" alt="Inferno Trigger" width="1024"/>    | Samira unleashes a torrent of shots for `3 seconds`, dealing `160%` damage. The number of shots fired is scaled with Attack Speed.                                            | CD: `7 sec`                            |
+| Skill             | Image                                                                                                                             | Description                                                                                                                                                                   | Stats                                  |
+|:------------------|-----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
+| Daredevil Impulse | <img src="https://github.com/user-attachments/assets/0c8abc75-e761-4ccd-88a8-6674e51d8595" alt="Daredevil Impulse" width= "512"/> | Samira's unique attacks generate a stack of Style for 6 seconds. For each stack, Samira gains bonus movement speed. At maximum stacks, Samira can cast Inferno Trigger.       | MS: `4%`/`8%`/`12%`/`16%`/`20%`/`25%`/ |
+| Flair             | <img src="https://github.com/user-attachments/assets/c0ba30d5-5de7-4c28-ba4b-c46416b1a790" alt="Flair" width="512"/>              | Samira fires a shot or swings her sword, dealing `130%` damage. Every 5 uses triggers a unique attack, dealing `40%` additional damage. Melee attacks deal `10%` more damage. | Proc: `1.0`                            |
+| Blade Whirl       | <img src="https://github.com/user-attachments/assets/935b00d2-909e-4e83-8dc5-f182f37b1242" alt = "Blade Whirl" width = "512"/>    | Samira slashes around her for `0.5 seconds`, damaging enemies twice for `80%` damage, while destroying incoming projectiles.                                                  | Proc: `1.0`, CD: `10 sec`              |
+| Wild Rush         | <img src="https://github.com/user-attachments/assets/eb2beb14-2c19-4822-b09d-19aa6a4892b7" alt = "Wild Rush" width="512"/>        | Samira dashes forward slashing through any enemy in her path, dealing `70%` damage. Getting a takedown against an enemy resets Wild Rush's cooldown.                          | CD: `6 sec`                            |
+| Inferno Trigger   | <img src="https://github.com/user-attachments/assets/59ce6cec-e999-4947-a2c4-ea3bcf8f8bf3" alt="Inferno Trigger" width="512"/>    | Samira unleashes a torrent of shots for `3 seconds`, dealing `160%` damage. The number of shots fired is scaled with Attack Speed.                                            | CD: `7 sec`                            |
 
 ## Custom Skills
 
@@ -50,6 +50,12 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 | Exposing Whirl  | Secondary | Samira fires bullets at nearby enemies, inflicting armor penetration.                                                                             | Proc: `1.0`, CD: `10 sec`                      |
 | Quick Steps     | Utility   | Samira dashes forward slashing through any enemy in her path. On press, Samira gains attack speed.                                                | CD: `8 seconds`<br/>Stocks:`2`<br/> AS : `30%` |
 | Infinite Rain   | Special   | Samira unleashes a torrent of shots for `3 seconds`, dealing `160%` damage. The number of shots fired is scaled with Attack Speed.                | CD: `7 sec`<br/> +Duration: `0.25 sec`         |
+
+## Skins
+| Skin  | Image                                                                                                                             | Description                                                                                                                                                                   | Requirement           |
+|:------|-----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------|
+| Dante | <img src="https://github.com/user-attachments/assets/0c8abc75-e761-4ccd-88a8-6674e51d8595" alt="Daredevil Impulse" width= "512"/> | Samira's unique attacks generate a stack of Style for 6 seconds. For each stack, Samira gains bonus movement speed. At maximum stacks, Samira can cast Inferno Trigger.       | Avaliable on startup! |
+
 
 ## Planned
 - Better Multiplayer
@@ -66,6 +72,10 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 ---
 
 # Patch Notes
+
+Patch 1.2.0
+- Added 'Dante' from the Devil May Cry Series. Models were from DMC3, while sounds were from DMC5.
+- Note: When shooting while moving, Dante and Samira's guns are not in the correct position.
 
 Patch 1.1.1
 - Credit to anartoast for feedback again!
