@@ -52,9 +52,9 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 | Infinite Rain   | Special   | Samira unleashes a torrent of shots for `3 seconds`, dealing `160%` damage. The number of shots fired is scaled with Attack Speed.                | CD: `7 sec`<br/> +Duration: `0.25 sec`         |
 
 ## Skins
-| Skin  | Image                                                                                                                             | Description                                                                                                                                                                   | Requirement           |
-|:------|-----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------|
-| Dante | <img src="https://github.com/user-attachments/assets/0c8abc75-e761-4ccd-88a8-6674e51d8595" alt="Daredevil Impulse" width= "512"/> | Samira's unique attacks generate a stack of Style for 6 seconds. For each stack, Samira gains bonus movement speed. At maximum stacks, Samira can cast Inferno Trigger.       | Avaliable on startup! |
+| Skin  | Image                                                                                                                            | Description                                                                                                                                                                   | Requirement           |
+|:------|----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------|
+| Dante | <img src="https://github.com/user-attachments/assets/a3a974a4-5668-4c1f-a223-78a65acf554f" alt="Daredevil Impulse" width = 100%> | Dante is a paranormal mercenary, private investigator and vigilante Devil Hunter dedicated to exterminating evil demons and other malevolent supernatural forces; a mission he follows in pursuit of those that killed his mother and corrupted his brother.       | Avaliable on startup! |
 
 
 ## Planned
@@ -63,6 +63,8 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 - Passive Implementation
 
 ## Special Thanks
+- Riot Games - used League of Legends assets
+- Capcom - used assets from Devil May Cry 3 and Devil May Cry 5
 - TheTimeSweeper - mod was built off of HenryTutorial
 - Lemonlust - learned more about Risk of Rain 2 Modding through SettMod and JinxMod
 - Risk of Rain 2 Modding Discord - lots of answers found here
@@ -74,7 +76,7 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 # Patch Notes
 
 Patch 1.2.0
-- Added 'Dante' from the Devil May Cry Series. Models were from DMC3, while sounds were from DMC5.
+- Added **Dante** from the Devil May Cry Series. Model + Animation were from DMC3, while sounds were from DMC5.
 - Note: When shooting while moving, Dante and Samira's guns are not in the correct position.
 
 Patch 1.1.1
