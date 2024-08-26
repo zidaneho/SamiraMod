@@ -33,8 +33,6 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         
         public static float procCoefficient = 1f;
         
-        protected string swingSoundString = "";
-        
         protected bool hasFired;
         protected float stopwatch;
         
@@ -176,7 +174,6 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         {
             if (!base.isAuthority) return;
             
-            Util.PlayAttackSpeedSound(swingSoundString, gameObject, attackSpeedStat);
             
             List<HurtBox> HurtBoxes = new List<HurtBox>();
             HurtBoxes = new SphereSearch
@@ -213,7 +210,8 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             if (hitEnemy)
             {
                 _comboManager.AddCombo(attackID);
-                Util.PlaySound("Play_samira_w_hit", gameObject);
+                Util.PlaySound("Play_SamiraSFX_W_Hit", gameObject);
+                SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_W",gameObject);
             }
         }
 

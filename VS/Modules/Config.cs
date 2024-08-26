@@ -22,11 +22,11 @@ namespace SamiraMod.Modules
         public static ConfigEntry<float> bonusHealthCoefficient;
         public static ConfigEntry<float> healthGrowth;
         public static ConfigEntry<int> jumpCount;
-
-
-
+        
         public static ConfigEntry<float> damageGrowth;
         public static ConfigEntry<float> regenGrowth;
+        
+        public static ConfigEntry<string> lastSkinName;
 
         public static void ReadConfig()
         {
@@ -52,6 +52,8 @@ namespace SamiraMod.Modules
             baseCrit = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Base Crit"), 1f, new ConfigDescription("", null, Array.Empty<object>()));
 
             jumpCount = MyConfig.Bind<int>(new ConfigDefinition("01 - Character Stats", "Jump Count"), 1, new ConfigDescription("", null, Array.Empty<object>()));
+            
+            lastSkinName = MyConfig.Bind<string>(new ConfigDefinition("00 - Other", "Last Skin Index"), "DefaultSkin", new ConfigDescription("", null, Array.Empty<object>()));
         }
 
         /// <summary>

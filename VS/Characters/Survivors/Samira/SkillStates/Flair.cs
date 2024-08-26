@@ -10,6 +10,20 @@ using UnityEngine.Networking;
 
 namespace SamiraMod.Survivors.Samira.SkillStates
 {
+    public class AutoBarrage : BaseSkillState
+    {
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            
+            
+        }
+
+        void TryPlayBarrage()
+        {
+            
+        }
+    }
     public class Flair : BaseSkillState, SteppedSkillDef.IStepSetter 
     {
         public enum AttackType
@@ -228,7 +242,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             duration = meleeBaseDuration / attackSpeedStat;
             StartAimMode(0.5f + duration, false);
             
-            float damage = SamiraStaticValues.GetFlairDamage(damageStat, characterBody.level);
+            float damage = SamiraStaticValues.GetFlairDamage(damageStat, characterBody.level) * (1 + SamiraStaticValues.flairMeleeBonusMultiplier);
             if (canUseFlair) damage +=  damage * SamiraStaticValues.flairUniqueBonusMultiplier;
 
             attack = new OverlapAttack();
@@ -278,7 +292,10 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                 {
                     AddRecoil(-1f * recoil, -2f * recoil, -0.5f * recoil, 0.5f * recoil);
                     Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
-                    if (Modules.Config.enableVoiceLines.Value) Util.PlaySound("Play_SamiraVO_BasicAttackRanged", gameObject);
+                    if (Modules.Config.enableVoiceLines.Value)
+                    {
+                        SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_BasicAttackRanged", gameObject);
+                    }
                     
                     float damage = SamiraStaticValues.GetFlairDamage(damageStat, characterBody.level);
                     if (canUseFlair) damage +=  damage * SamiraStaticValues.flairUniqueBonusMultiplier;
@@ -421,7 +438,10 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         protected virtual void OnHitEnemyAuthority()
         {
-            if (Modules.Config.enableVoiceLines.Value) Util.PlayAttackSpeedSound("Play_SamiraVO_BasicAttackMelee", gameObject,attackSpeedStat);
+            if (Modules.Config.enableVoiceLines.Value)
+            {
+                SamiraSoundManager.instance.PlayAttackSpeedSoundBySkin("PlayVO_BasicAttackMelee", gameObject,attackSpeedStat);
+            }
             Util.PlaySound("Play_SamiraSFX_SwordHit", gameObject);
             _comboManager.AddCombo(canUseFlair ? flairAttackID : autoAttackID);
 

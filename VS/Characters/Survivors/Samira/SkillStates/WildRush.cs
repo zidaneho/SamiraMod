@@ -22,6 +22,42 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                 characterBody.AddTimedBuff(SamiraBuffs.wildRushAttackSpeedBuff, SamiraStaticValues.wildRushAttackSpeedDuration);
             }
         }
+        
+        protected override void SetupAttack()
+        {
+            hitboxGroupName = "WildRushHitbox";
+            damageType = DamageType.Generic;
+            procCoefficient = 1f;
+            pushForce = 0f;
+            bonusForce = Vector3.zero;
+            
+            //0-1 multiplier of baseduration, used to time when the hitbox is out (usually based on the run time of the animation)
+            //for example, if attackStartPercentTime is 0.5, the attack will start hitting halfway through the ability. if baseduration is 3 seconds, the attack will start happening at 1.5 seconds
+            attackStartPercentTime = 0f;
+            attackEndPercentTime = 1f;
+
+          
+
+            hitStopDuration = 0.012f;
+            attackRecoil = 0.5f;
+            meleeMuzzleString = "SwingLeft";
+            //swingEffectPrefab = SamiraAssets.swordSwingEffect;
+            //hitEffectPrefab = SamiraAssets.swordHitImpactEffect;
+            
+            attack = new OverlapAttack();
+            attack.damageType = damageType;
+            attack.attacker = gameObject;
+            attack.inflictor = gameObject;
+            attack.teamIndex = GetTeam();
+            attack.damage = SamiraStaticValues.GetQuickStepsDamage(damageStat, characterBody.level);
+            attack.procCoefficient = procCoefficient;
+            attack.hitEffectPrefab = hitEffectPrefab;
+            attack.forceVector = bonusForce;
+            attack.pushAwayForce = pushForce;
+            attack.hitBoxGroup = FindHitBoxGroup(hitboxGroupName);
+            attack.isCrit = RollCrit();
+            attack.impactSound = impactSound;
+        }
     }
 
     public class WildRush : BaseWildRush
@@ -33,8 +69,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         public static float delayDuration = 0.2f;
         public static float initialSpeedCoefficient = 16f;
         public static float finalSpeedCoefficient = 2f;
-
-        public static string dodgeSoundString = "HenryRoll";
+        
         public static float dodgeFOV = global::EntityStates.Commando.DodgeState.dodgeFOV;
         public static int attackID = SamiraStaticValues.wildRushID;
 
@@ -67,7 +102,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         protected GameObject hitEffectPrefab;
         protected NetworkSoundEventIndex impactSound = NetworkSoundEventIndex.Invalid;
         
-        private OverlapAttack attack;
+        protected OverlapAttack attack;
         private float hitPauseTimer;
         protected bool inHitPause;
         private bool hasFired;
@@ -118,7 +153,13 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             
             animator.SetBool(InDashing,true);
             Util.PlaySound("Play_SamiraSFX_E_Start", gameObject);
-            if (Modules.Config.enableVoiceLines.Value) Util.PlaySound("Play_SamiraVO_E",gameObject);
+            if (Modules.Config.enableVoiceLines.Value)
+            {
+                SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_E",gameObject);
+            }
+            
+            //disables fall damage, enables it back in onexit
+            characterBody.bodyFlags = CharacterBody.BodyFlags.IgnoreFallDamage;
         }
 
         public override InterruptPriority GetMinimumInterruptPriority()
@@ -292,6 +333,9 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             {
                 hitEnemies.Clear();
             }
+            
+            //disables fall damage, enables it back in onexit
+            characterBody.bodyFlags = CharacterBody.BodyFlags.None;
         }
 
         public override void OnSerialize(NetworkWriter writer)

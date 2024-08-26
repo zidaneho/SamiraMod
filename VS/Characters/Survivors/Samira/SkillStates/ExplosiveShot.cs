@@ -118,8 +118,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
                 if (base.isAuthority)
                 {
-                    Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
-                    if (Modules.Config.enableVoiceLines.Value) Util.PlaySound("Play_SamiraVO_BasicAttackRanged", gameObject);
+                    PlayFireBulletSound();
                     
                     EffectManager.SimpleMuzzleFlash(SamiraAssets.explosiveMuzzle,
                         gameObject, "RevolverMuzzle", false);
@@ -143,6 +142,15 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             }
         }
 
+        void PlayFireBulletSound()
+        {
+            Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
+            if (Modules.Config.enableVoiceLines.Value)
+            {
+                SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_BasicAttackRanged", gameObject);
+            }
+        }
+
         private void FireBullet()
         {
             if (!hasFired)
@@ -159,8 +167,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                 if (base.isAuthority)
                 {
                     AddRecoil(-1f * recoil, -2f * recoil, -0.5f * recoil, 0.5f * recoil);
-                    Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
-                    if (Modules.Config.enableVoiceLines.Value) Util.PlaySound("Play_SamiraVO_BasicAttackRanged", gameObject);
+                    PlayFireBulletSound();
 
                     Vector3 origin = childLocator.FindChild(rangedMuzzleString).position;
                     

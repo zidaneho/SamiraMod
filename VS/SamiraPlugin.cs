@@ -36,7 +36,6 @@ namespace SamiraMod
 
         public static SamiraPlugin instance;
         
-
         void Awake()
         {
             instance = this;

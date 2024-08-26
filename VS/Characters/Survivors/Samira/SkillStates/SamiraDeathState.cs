@@ -18,7 +18,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         public override void OnEnter() 
         {
             base.OnEnter();
-            Util.PlaySound("Play_SamiraVO_Death", gameObject);
+            SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_Death", gameObject);
             animator = GetModelAnimator();
             if (animator)
             {

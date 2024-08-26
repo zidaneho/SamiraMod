@@ -20,10 +20,11 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         {
             if (!base.isAuthority) return;
             
-            Util.PlayAttackSpeedSound(swingSoundString, gameObject, attackSpeedStat);
-            
             Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
-            if (Modules.Config.enableVoiceLines.Value) Util.PlaySound("Play_SamiraVO_BasicAttackRanged", gameObject);
+            if (Modules.Config.enableVoiceLines.Value)
+            {
+                SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_BasicAttackRanged", gameObject);
+            }
             
             List<HurtBox> HurtBoxes = new List<HurtBox>();
             HurtBoxes = new SphereSearch
@@ -34,8 +35,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             }.RefreshCandidates().FilterCandidatesByHurtBoxTeam(TeamMask.GetEnemyTeams(base.teamComponent.teamIndex)).FilterCandidatesByDistinctHurtBoxEntities().GetHurtBoxes().ToList();
             
             Vector3 origin = characterBody.corePosition;
-            float damage = SamiraStaticValues.GetBladeWhirlDamage(damageStat, characterBody.level) *
-                           SamiraStaticValues.exposingWhirlDamageMult;
+            float damage = SamiraStaticValues.GetExposingWhirlDamage(damageStat, characterBody.level);
             float range = 500f;
             foreach (HurtBox hurtbox in HurtBoxes)
             {

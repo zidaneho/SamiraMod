@@ -3,6 +3,7 @@ using System.Linq;
 using EntityStates;
 using EntityStates.ArtifactShell;
 using RoR2;
+using SamiraMod.Modules;
 using SamiraMod.Survivors.Samira.Components;
 using UnityEngine;
 
@@ -48,6 +49,10 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             PlayAnimation("FullBody, Override", "InfernoTrigger");
 
             Util.PlaySound("Play_SamiraSFX_R",gameObject);
+            if (Config.enableVoiceLines.Value)
+            {
+                SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_R",gameObject);
+            }
             if (!attackIndicatorInstance) CreateIndicator();
             FireAttack();
         }

@@ -45,7 +45,7 @@ namespace SamiraMod.Survivors.Samira.Components
             characterBody = GetComponent<CharacterBody>();
             if (characterBody.isPlayerControlled && Modules.Config.enableVoiceLines.Value)
             {
-                PlaySound("Play_SamiraVO_MoveFirst");   
+                PlaySound("PlayVO_MoveFirst");   
             }
         }
         private void BossGroup_OnBossGroupDefeatedServer(BossGroup obj)
@@ -54,7 +54,7 @@ namespace SamiraMod.Survivors.Samira.Components
             
             if (Modules.Config.enableVoiceLines.Value)
             {
-                PlaySound("Play_SamiraVO_ChampionKill");
+                PlaySound("PlayVO_ChampionKill");
             }
         }
 
@@ -70,7 +70,7 @@ namespace SamiraMod.Survivors.Samira.Components
                 if (moveTimer >= moveVoiceTime)
                 {
                     moveTimer = 0f;
-                    PlaySound("Play_SamiraVO_Move");
+                    PlaySound("PlayVO_Move");
                 }
             }
             else
@@ -84,7 +84,10 @@ namespace SamiraMod.Survivors.Samira.Components
         void PlaySound(string soundString)
         {
             if (currentVoiceID != 0) AkSoundEngine.StopPlayingID(currentVoiceID);
-            if (Modules.Config.enableVoiceLines.Value) currentVoiceID = Util.PlaySound(soundString, gameObject);
+            if (Modules.Config.enableVoiceLines.Value)
+            {
+                currentVoiceID = SamiraSoundManager.instance.PlaySoundBySkin(soundString, gameObject);
+            }
         }
     }
 }

@@ -229,9 +229,11 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         private void EnterAttack()
         {
             hasFired = true;
-            
+
             if (Modules.Config.enableVoiceLines.Value)
-                Util.PlayAttackSpeedSound("Play_SamiraVO_BasicAttackMelee", gameObject, attackSpeedStat);
+            {
+                SamiraSoundManager.instance.PlayAttackSpeedSoundBySkin("PlayVO_BasicAttackMelee", gameObject, attackSpeedStat);
+            }
             
             Util.PlayAttackSpeedSound("Play_SamiraSFX_MeleeAuto", gameObject, attackSpeedStat);
             
@@ -271,6 +273,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
                 hasHopped = true;
             }
+         
 
             ApplyHitstop();
         }

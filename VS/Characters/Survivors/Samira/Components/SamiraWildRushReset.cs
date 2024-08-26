@@ -1,4 +1,6 @@
+using System;
 using EntityStates;
+using On.RoR2.Mecanim;
 using RoR2;
 using RoR2.Projectile;
 using SamiraMod.Survivors.Samira.SkillStates;
@@ -6,18 +8,6 @@ using UnityEngine;
 
 namespace SamiraMod.Survivors.Samira.Components
 {
-    
-    internal class SamiraBulletOnHit : MonoBehaviour, IProjectileImpactBehavior
-    {
-        public void OnProjectileImpact(ProjectileImpactInfo impactInfo)
-        {
-            
-            if (impactInfo.collider)
-            {
-                
-            }
-        }
-    }
     internal class SamiraWildRushReset : MonoBehaviour
     {
         void OnEnable()
@@ -51,7 +41,8 @@ namespace SamiraMod.Survivors.Samira.Components
         private void ResetSkillCooldowns(CharacterBody player)
         {
             var skill = GetUtilitySkill(player);
-            if (skill && skill.skillName == "SamiraWildRush")
+            Debug.Log(skill + skill.skillDef.skillName);
+            if (skill && skill.skillDef.skillName == "SamiraWildRush")
             { 
                 skill.Reset();
             }

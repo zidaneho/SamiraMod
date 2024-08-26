@@ -9,6 +9,7 @@ using SamiraMod.Survivors.Samira.Components;
 using SamiraMod.Survivors.Samira.SkillStates;
 using UnityEngine;
 using GlobalEventManager = On.RoR2.GlobalEventManager;
+using Loadout = On.RoR2.Loadout;
 
 namespace SamiraMod.Survivors.Samira
 {
@@ -56,45 +57,31 @@ namespace SamiraMod.Survivors.Samira
             healthGrowth = Modules.Config.healthGrowth.Value,
             damageGrowth = Modules.Config.damageGrowth.Value,
             regenGrowth = Modules.Config.regenGrowth.Value,
+            
         };
 
         public override CustomRendererInfo[] customRendererInfos => new CustomRendererInfo[]
         {
-                new CustomRendererInfo
-                {
-                    childName = "PistolBlur",
-                    material = assetBundle.LoadMaterial("mat_base_PistolBlur")
-                },
-                new CustomRendererInfo
-                {
-                    childName = "RevolverBlur",
-                    material = assetBundle.LoadMaterial("mat_base_RevolverBlur")
-                },
-                new CustomRendererInfo
-                {
-                    childName = "Sword",
-                    material = assetBundle.LoadMaterial("mat_base_Sword")
-                },
-                new CustomRendererInfo
-                {
-                    childName = "Pistol",
-                    material = assetBundle.LoadMaterial("mat_base_Pistol")
-                },
-                new CustomRendererInfo
-                {
-                    childName = "Revolver",
-                    material = assetBundle.LoadMaterial("mat_base_Revolver")
-                },
-                new CustomRendererInfo
-                {
-                    childName = "Coin",
-                    material = assetBundle.LoadMaterial("mat_base_Coin")
-                },
-                new CustomRendererInfo
-                {
-                    childName = "Body",
-                    material = assetBundle.LoadMaterial("mat_base_Body")
-                }
+            new CustomRendererInfo()
+            {
+                childName = "BodyMesh",
+                material = assetBundle.LoadMaterial("mat_base_Body")
+            },
+            new CustomRendererInfo()
+            {
+                childName = "PistolMesh",
+                material = assetBundle.LoadMaterial("mat_base_Pistol")
+            },
+            new CustomRendererInfo()
+            {
+            childName = "RevolverMesh",
+            material = assetBundle.LoadMaterial("mat_base_Revolver")
+            },
+            new CustomRendererInfo()
+            {
+                childName = "SwordMesh",
+                material = assetBundle.LoadMaterial("mat_base_Sword")
+            },
         };
 
         public override UnlockableDef characterUnlockableDef => SamiraUnlockables.characterUnlockableDef;
@@ -150,6 +137,7 @@ namespace SamiraMod.Survivors.Samira
             bodyPrefab.AddComponent<SamiraVoiceController>();
             bodyPrefab.AddComponent<SamiraBladeWhirlHandler>();
             bodyPrefab.AddComponent<SamiraBuffMeleeOnHitHandler>();
+            bodyPrefab.AddComponent<SamiraSoundManager>();
             //bodyPrefab.AddComponent<HuntressTrackerComopnent>();
             //anything else here
             
@@ -165,8 +153,10 @@ namespace SamiraMod.Survivors.Samira
             {
                 r0, r1, r2, r3, r4, r5, r6
             };
-
-            displayPrefab.AddComponent<SamiraMenu>();
+            
+            var menu = displayPrefab.AddComponent<SamiraMenu>();
+            menu.soundPrefix = Config.lastSkinName.Value;
+            Debug.Log(menu.soundPrefix);
         }
 
         public void AddHitboxes()
@@ -309,6 +299,7 @@ namespace SamiraMod.Survivors.Samira
             //step count translates to swing index, index starts at 0
             primarySkillDef3.stepCount = SamiraStaticValues.attacksPerFlair;
             primarySkillDef3.stepGraceDuration = 1f;
+            
 
             Skills.AddPrimarySkills(bodyPrefab, primarySkillDef1, primarySkillDef2, primarySkillDef3);
         }
@@ -520,15 +511,16 @@ namespace SamiraMod.Survivors.Samira
                 assetBundle.LoadAsset<Sprite>("texSamiraIcon"),
                 defaultRendererinfos,
                 prefabCharacterModel.gameObject);
-
+            defaultSkin.name = "DefaultSkin";
             //these are your Mesh Replacements. The order here is based on your CustomRendererInfos from earlier
                 //pass in meshes as they are named in your assetbundle
             //currently not needed as with only 1 skin they will simply take the default meshes
                 //uncomment this when you have another skin
-            //defaultSkin.meshReplacements = Modules.Skins.getMeshReplacements(assetBundle, defaultRendererinfos,
-            //    "meshHenrySword",
-            //    "meshHenryGun",
-            //    "meshHenry");
+            defaultSkin.meshReplacements = Modules.Skins.getMeshReplacements(assetBundle, defaultRendererinfos,
+                "baseSamira_bodyMesh",
+                "baseSamira_pistolMesh",
+                "baseSamira_revolverMesh",
+                "baseSamira_swordMesh");
 
             //add new skindef to our list of skindefs. this is what we'll be passing to the SkinController
             skins.Add(defaultSkin);
@@ -571,9 +563,23 @@ namespace SamiraMod.Survivors.Samira
             //skins.Add(masterySkin);
             
             #endregion
+            
+            #region DanteSkin
+            
+            SkinDef danteSkin = Skins.CreateSkinDef("DANTE_SKIN",assetBundle.LoadAsset<Sprite>("texDanteIcon"),defaultRendererinfos,prefabCharacterModel.gameObject);
+            danteSkin.name = "DanteSkin";
+            danteSkin.meshReplacements = Modules.Skins.getMeshReplacements(assetBundle, defaultRendererinfos, "dante_bodyMesh", "dante_pistolMesh","dante_revolverMesh","dante_swordMesh");
+            danteSkin.rendererInfos[0].defaultMaterial = assetBundle.LoadMaterial("mat_dante_body");
+            danteSkin.rendererInfos[1].defaultMaterial = assetBundle.LoadMaterial("mat_dante_gun");
+            danteSkin.rendererInfos[2].defaultMaterial = assetBundle.LoadMaterial("mat_dante_gun");
+            danteSkin.rendererInfos[3].defaultMaterial = assetBundle.LoadMaterial("mat_dante_sword");
+            skins.Add(danteSkin);
+            #endregion
 
             skinController.skins = skins.ToArray();
         }
+
+        
         #endregion skins
 
         //Character Master is what governs the AI of your character when it is not controlled by a player (artifact of vengeance, goobo)
@@ -595,8 +601,27 @@ namespace SamiraMod.Survivors.Samira
         private void AddHooks()
         {
             R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            On.RoR2.Loadout.BodyLoadoutManager.SetSkinIndex += BodyLoadoutManager_OnSetSkinIndex;
         }
         
+
+        private void BodyLoadoutManager_OnSetSkinIndex(Loadout.BodyLoadoutManager.orig_SetSkinIndex orig,
+            RoR2.Loadout.BodyLoadoutManager self, BodyIndex bodyindex, uint skinindex)
+        {
+            orig(self, bodyindex, skinindex);
+            
+            BodyIndex samiraBodyIndex = BodyCatalog.FindBodyIndex("SamiraBody");
+            if (samiraBodyIndex != bodyindex) return;
+            
+            var samiraMenu = displayPrefab.GetComponent<SamiraMenu>();
+            if (samiraMenu)
+            {
+                var newSkin = SkinCatalog.GetBodySkinDef(samiraBodyIndex, (int)skinindex).name;
+                Config.lastSkinName.Value = newSkin;
+            }
+            
+        }
+
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, R2API.RecalculateStatsAPI.StatHookEventArgs args)
         {

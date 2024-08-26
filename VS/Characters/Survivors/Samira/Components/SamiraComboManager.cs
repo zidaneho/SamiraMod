@@ -4,6 +4,7 @@ using System.IO;
 using BepInEx;
 using RoR2;
 using RoR2.Skills;
+using SamiraMod.Modules;
 using UnityEngine;
 using BodyCatalog = On.RoR2.BodyCatalog;
 using Path = RoR2.Path;
@@ -18,9 +19,10 @@ namespace SamiraMod.Survivors.Samira.Components
         public readonly int maximumCombo = 6;
 
         private int previousAttackID;
+        private uint previousSoundID;
 
         private float timer;
-        private float comboResetInterval = 7f;
+        private float comboResetInterval = SamiraStaticValues.styleDuration;
 
         private CharacterBody characterBody;
         private SkillLocator skillLocator;
@@ -51,7 +53,7 @@ namespace SamiraMod.Survivors.Samira.Components
 
         private void Start()
         {
-            ResetCombo();
+            ResetCombo(true, false);
         }
 
         private void OnDisable()
@@ -77,22 +79,36 @@ namespace SamiraMod.Survivors.Samira.Components
             SetComboIndex(ComboIndex + 1);
             AddComboBuff(ComboIndex);
             
-            string soundString = "Play_SamiraSFX_comboM"+ComboIndex;
-            Util.PlaySound(soundString, gameObject);
+            string soundString = "PlaySFX_comboM"+ComboIndex;
+            previousSoundID = SamiraSoundManager.instance.PlaySoundBySkin(soundString, gameObject);
 
             if (Modules.Config.enableVoiceLines.Value && ComboIndex >= maximumCombo)
             {
-                Util.PlaySound("Play_SamiraVO_R_ReadyBuff", gameObject);
+                SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_R_ReadyBuff", gameObject);
             }
         }
 
         private void FixedUpdate()
         {
-            timer += Time.deltaTime;
+            if (ComboIndex <= 0 || !characterBody.outOfCombat)
+            {
+                timer = 0f;
+            }
+            else
+            {
+                timer += Time.deltaTime;
+            }
+            
             if (timer >= comboResetInterval && characterBody.outOfCombat)
             {
                 ResetCombo(true);
+                if (Config.enableVoiceLines.Value)
+                {
+                    if (previousSoundID != 0 ) AkSoundEngine.StopPlayingID(previousSoundID);
+                    previousSoundID = SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_ComboReset", gameObject);
+                }
             }
+            
         }
 
         void SetComboIndex(int newIndex)
@@ -136,14 +152,8 @@ namespace SamiraMod.Survivors.Samira.Components
         }
 
 
-        public void ResetCombo(bool removeBuff = false)
+        public void ResetCombo(bool removeBuff = false, bool playSound = true)
         {
-            Debug.Log("reset combo");
-
-            if (ComboIndex > 0)
-            {
-                Util.PlaySound("Play_SamiraSFX_ComboReset", gameObject);
-            }
             SetComboIndex(0);
             timer = 0f;
             previousAttackID = 0;
@@ -154,6 +164,14 @@ namespace SamiraMod.Survivors.Samira.Components
                 currentBuff = null;
                 characterBody.RecalculateStats();
             }
+
+            if (!playSound) return;
+            
+            if (ComboIndex > 0)
+            {
+                Util.PlaySound("Play_SamiraSFX_ComboReset", gameObject);
+            }
+            
         }
     }
 }

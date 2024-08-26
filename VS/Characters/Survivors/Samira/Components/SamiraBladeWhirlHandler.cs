@@ -32,7 +32,7 @@ namespace SamiraMod.Survivors.Samira.Components
                 UpdateIndicator();
                 if (DeleteNearbyProjectiles() && Modules.Config.enableVoiceLines.Value)
                 {
-                    Util.PlaySound("Play_SamiraVO_W", gameObject);
+                    SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_W", gameObject);
                 }
             }
         }
