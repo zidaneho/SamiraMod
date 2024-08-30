@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5153ff71-aaf5-4238-905d-3475b5f61481" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Build/plugins/SamiraMod.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Build/plugins/SamiraMod.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/manifest.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +48,7 @@
       <updated>1724459022969</updated>
       <workItem from="1724459024251" duration="1999000" />
       <workItem from="1724461133906" duration="1804000" />
+      <workItem from="1724994747000" duration="2000" />
     </task>
     <servers />
   </component>

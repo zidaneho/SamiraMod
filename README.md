@@ -75,6 +75,12 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 
 # Patch Notes
 
+Patch 1.3.0
+- Patched to work for the new DLC release. Huge thanks to lemonlust for releasing the working 'KatarinaMod' (i literally just updated my nuget packages and it worked lol)
+- Added emotes to Samira.
+- New dlc update rushed the update, so there is no sounds for the emotes.
+- In addition to sounds, there is plans for samira's emotes to have special effects to her style and damage like in DMC.
+
 Patch 1.2.1
 - Again, credit to anartoast for feedback!
 - Heavily reduced frequency of voice lines from Dante and Samira (especially the basic attacks)
