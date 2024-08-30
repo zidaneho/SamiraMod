@@ -4,7 +4,7 @@ using SamiraMod.Modules.Achievements;
 namespace SamiraMod.Survivors.Samira.Achievements
 {
     //automatically creates language tokens "ACHIEVMENT_{identifier.ToUpper()}_NAME" and "ACHIEVMENT_{identifier.ToUpper()}_DESCRIPTION" 
-    [RegisterAchievement(identifier, unlockableIdentifier, null, null)]
+    //[RegisterAchievement(identifier, unlockableIdentifier, null, null)]
     public class SamiraMasteryAchievement : BaseMasteryAchievement
     {
         public const string identifier = SamiraSurvivor.SAMIRA_PREFIX + "masteryAchievement";

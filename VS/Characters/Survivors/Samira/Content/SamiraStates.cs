@@ -7,6 +7,8 @@ namespace SamiraMod.Survivors.Samira
     {
         public static void Init()
         {
+            Modules.Content.AddEntityState(typeof(SamiraMain));
+            
             Modules.Content.AddEntityState(typeof(Flair));
             
             Modules.Content.AddEntityState(typeof(ExplosiveShot));

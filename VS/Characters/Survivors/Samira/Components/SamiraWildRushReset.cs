@@ -2,7 +2,6 @@ using System;
 using EntityStates;
 using On.RoR2.Mecanim;
 using RoR2;
-using RoR2.Projectile;
 using SamiraMod.Survivors.Samira.SkillStates;
 using UnityEngine;
 

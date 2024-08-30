@@ -27,6 +27,11 @@ namespace SamiraMod.Modules
         public static ConfigEntry<float> regenGrowth;
         
         public static ConfigEntry<string> lastSkinName;
+        
+        public static ConfigEntry<KeyCode> tauntKeybind;
+        public static ConfigEntry<KeyCode> jokeKeybind;
+        public static ConfigEntry<KeyCode> laughKeybind;
+        public static ConfigEntry<KeyCode> danceKeybind;
 
         public static void ReadConfig()
         {
@@ -35,8 +40,8 @@ namespace SamiraMod.Modules
             enableVoiceLines = MyConfig.Bind<bool>(
                 new ConfigDefinition("00 - Other", "Voice Lines"), true,
                 new ConfigDescription("Enable Voice Lines", null, Array.Empty<object>()));
-            baseHealth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Base Health"), 140f, new ConfigDescription("", null, Array.Empty<object>()));
-            healthGrowth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Health Growth"), 40f, new ConfigDescription("", null, Array.Empty<object>()));
+            baseHealth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Base Health"), 110f, new ConfigDescription("", null, Array.Empty<object>()));
+            healthGrowth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Health Growth"), 30f, new ConfigDescription("", null, Array.Empty<object>()));
 
             baseRegen = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Base Health Regen"), 1f, new ConfigDescription("", null, Array.Empty<object>()));
             regenGrowth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Health Regen Growth"), 0.2f, new ConfigDescription("", null, Array.Empty<object>()));
@@ -54,6 +59,11 @@ namespace SamiraMod.Modules
             jumpCount = MyConfig.Bind<int>(new ConfigDefinition("01 - Character Stats", "Jump Count"), 1, new ConfigDescription("", null, Array.Empty<object>()));
             
             lastSkinName = MyConfig.Bind<string>(new ConfigDefinition("00 - Other", "Last Skin Index"), "DefaultSkin", new ConfigDescription("", null, Array.Empty<object>()));
+            
+            tauntKeybind = SamiraPlugin.instance.Config.Bind<KeyCode>(new ConfigDefinition("02 - Emotes", "Taunt"), KeyCode.Alpha2, new ConfigDescription("Keybind used to perform the Taunt emote", null, Array.Empty<object>()));
+            jokeKeybind = SamiraPlugin.instance.Config.Bind<KeyCode>(new ConfigDefinition("02 - Emotes", "Joke"), KeyCode.Alpha1, new ConfigDescription("Keybind used to perform the Joke emote", null, Array.Empty<object>()));
+            laughKeybind = SamiraPlugin.instance.Config.Bind<KeyCode>(new ConfigDefinition("02 - Emotes", "Laugh"), KeyCode.Alpha4, new ConfigDescription("Keybind used to perform the Laugh emote", null, Array.Empty<object>()));
+            danceKeybind = SamiraPlugin.instance.Config.Bind<KeyCode>(new ConfigDefinition("02 - Emotes", "Dance"), KeyCode.Alpha3, new ConfigDescription("Keybind used to perform the Dance emote", null, Array.Empty<object>()));
         }
 
         /// <summary>

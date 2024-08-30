@@ -310,7 +310,7 @@ namespace SamiraMod.Modules
 
             characterModel.autoPopulateLightInfos = true;
             characterModel.invisibilityCount = 0;
-            characterModel.temporaryOverlays = new List<TemporaryOverlay>();
+            //characterModel.temporaryOverlays = new List<TemporaryOverlay>();
 
             if (!preattached)
             {

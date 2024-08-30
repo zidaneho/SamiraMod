@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <Configurations>Release;Debug</Configurations>
         <RootNamespace>HenryMod</RootNamespace>
     </PropertyGroup>
@@ -28,21 +28,22 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="BepInEx.Analyzers" Version="1.0.*">
+        <PackageReference Include="RoR2BepInExPack" Version="*" />
+        <PackageReference Include="BepInEx.Analyzers" Version="1.0.8">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="BepInEx.Core" Version="5.4.*"/>
-        <PackageReference Include="RiskOfRain2.GameLibs" Version="1.2.4-r.0"/>
-        <PackageReference Include="UnityEngine.Modules" Version="2019.4.26"/>
-        <PackageReference Include="MMHOOK.RoR2" Version="2022.9.20">
+        <PackageReference Include="RiskOfRain2.GameLibs" Version="*-*"/>
+        <PackageReference Include="UnityEngine.Modules" Version="2021.3.33"/>
+        <PackageReference Include="MMHOOK.RoR2" Version="2024.8.28">
             <NoWarn>NU1701</NoWarn>
         </PackageReference>
-        <PackageReference Include="R2API.Core" Version="5.*"/>
-        <PackageReference Include="R2API.Prefab" Version="1.*"/>
-        <PackageReference Include="R2API.RecalculateStats" Version="1.*"/>
-        <PackageReference Include="R2API.Language" Version="1.*"/>
-        <PackageReference Include="R2API.Sound" Version="1.*"/>
+        <PackageReference Include="R2API.Core" Version="*"/>
+        <PackageReference Include="R2API.Prefab" Version="*"/>
+        <PackageReference Include="R2API.RecalculateStats" Version="*"/>
+        <PackageReference Include="R2API.Language" Version="*"/>
+        <PackageReference Include="R2API.Sound" Version="*"/>
     </ItemGroup>
     
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">

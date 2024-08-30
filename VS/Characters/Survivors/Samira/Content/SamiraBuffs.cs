@@ -22,6 +22,9 @@ namespace SamiraMod.Survivors.Samira
 
         public static BuffDef bladeWhirlArmorShredDebuff;
 
+        public static BuffDef coinOnHitBuff;
+        public static BuffDef danceBuff;
+
         public static void Init(AssetBundle assetBundle)
         {
             armorBuff = Modules.Content.CreateAndAddBuff("HenryArmorBuff",
@@ -41,6 +44,11 @@ namespace SamiraMod.Survivors.Samira
             meleeOnHitBuff = Content.CreateAndAddBuff("SamiraMeleeOnHitBuff", assetBundle.LoadAsset<Sprite>("texSamiraQ"),Color.white,true,false);
             
             bladeWhirlArmorShredDebuff = Content.CreateAndAddBuff("SamiraBladeWhirlDefenseShredDebuff", assetBundle.LoadAsset<Sprite>("texSamiraW"),Color.white,false,true);
+            
+            coinOnHitBuff = Content.CreateAndAddBuff("Sponsor", assetBundle.LoadAsset<Sprite>("texCoinBuff"),Color.white,false,true);
+            danceBuff = Content.CreateAndAddBuff("Refreshed", assetBundle.LoadAsset<Sprite>("texDanceBuff"),
+                Color.white, true, true);
+
         }
 
         static BuffDef CreateComboBuff(string name, Sprite sprite)

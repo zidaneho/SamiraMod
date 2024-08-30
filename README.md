@@ -31,7 +31,8 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 - Speed: 7 m/s
 - Armor: 20
 
-## Skills
+## Features
+### Skills
 
 | Skill             | Image                                                                                                                             | Description                                                                                                                                                                   | Stats                                  |
 |:------------------|-----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
@@ -41,7 +42,7 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 | Wild Rush         | <img src="https://github.com/user-attachments/assets/eb2beb14-2c19-4822-b09d-19aa6a4892b7" alt = "Wild Rush" width="512"/>        | Samira dashes forward slashing through any enemy in her path, dealing `25%` damage. Getting a takedown against an enemy resets Wild Rush's cooldown.                          | CD: `6 sec`                            |
 | Inferno Trigger   | <img src="https://github.com/user-attachments/assets/59ce6cec-e999-4947-a2c4-ea3bcf8f8bf3" alt="Inferno Trigger" width="512"/>    | Samira unleashes a torrent of shots for `3 seconds`, dealing `130%` damage. The number of shots fired is scaled with Attack Speed.                                            | CD: `7 sec`                            |
 
-## Custom Skills
+### Custom Skills
 
 | Skill           | Slot      | Description                                                                                                                                                                       | Stats                                          |
 |:----------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
@@ -51,7 +52,14 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 | Quick Steps     | Utility   | Samira dashes forward slashing through any enemy in her path. On press, Samira gains attack speed.                                                                                | CD: `8 seconds`<br/>Stocks:`2`<br/> AS : `30%` |
 | Infinite Rain   | Special   | Samira unleashes a torrent of shots for `3 seconds`, dealing `100%` damage; the total shots is scaled by 70% attack speed. Killing an enemy will increase the ability's duration. | CD: `7 sec`<br/> +Duration: `0.25 sec`         |
 
-## Skins
+### Emotes
+| Emote | Keybind | Action                                                                                                                                           | Buff                                                                                |
+|:------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| Joke  | 1       | Samira empties her magazine.                                                                                                                     | No bonus!                                                                           |
+| Taunt | 2       | Samira tosses a coin at her enemies, dealing 1 damage. Hitting enemies woll allow Samira to gain the `Sponsor` Buff. This buff is not stackable. | `6%` DMG & MS per Style Point<br/>Duration: `10 sec`                                |
+| Dance | 3       | Samira dances around her sword. For every 5 seconds, Samira will gain a health and armor buff for 30 seconds. This buff is stackable             | Bonus Health : `3%`<br/> Bonus Armor: `2`<br/> Duration: `30 sec`<br/>Max Stacks: `5` |
+| Laugh | 4       | Samira laughs at her enemies.                                                                                                                    | No bonus!                                                                           |
+### Skins
 | Skin  | Image                                                                                                                            | Description                                                                                                                                                                   | Requirement           |
 |:------|----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------|
 | Dante | <img src="https://github.com/user-attachments/assets/a3a974a4-5668-4c1f-a223-78a65acf554f" alt="Daredevil Impulse" width = 100%> | Dante is a paranormal mercenary, private investigator and vigilante Devil Hunter dedicated to exterminating evil demons and other malevolent supernatural forces; a mission he follows in pursuit of those that killed his mother and corrupted his brother.       | Avaliable on startup! |
@@ -75,13 +83,33 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 
 # Patch Notes
 
-Patch 1.3.0
+## Patch 1.3.1
+- Fixed bug that allowed Samira to use Flair or Blade Whirl during Inferno Trigger (You can stil use dash m1)
+
+- Fixed bug where Samira's sword-related sounds would not play unless they hit the enemy during Flair
+
+- Added a specific sound effect for Samira's sword cleave attack
+
+- Moved the sounds from the sword's basic attacks earlier so the hit sounds are more noticable
+
+- Buffed Samira's life steal during Inferno Trigger to be 10% (was 5%)
+
+- Nerfed health from 140 to 110, nerfed health growth in config to 30 from 40 (wont be changed unless done manually or deleting mod's config)
+
+- Added sounds to emotes for both Samira and Dante
+
+- Added special effects to Dance and Taunt abilities
+
+- Dance: For every 5 seconds that Samira dances, Samira will gain a health and armor boost for 30 seconds. The maximum stacks is 5.
+- Taunt: Samira flips a coin to her enemies, dealing 1 damage. When she hits her enemy, she will gain the Sponsor buff, gaining damage and movement speed scaling with her style points for 10 seconds.
+
+## Patch 1.3.0
 - Patched to work for the new DLC release. Huge thanks to lemonlust for releasing the working 'KatarinaMod' (i literally just updated my nuget packages and it worked lol)
 - Added emotes to Samira.
 - New dlc update rushed the update, so there is no sounds for the emotes.
 - In addition to sounds, there is plans for samira's emotes to have special effects to her style and damage like in DMC.
 
-Patch 1.2.1
+## Patch 1.2.1
 - Again, credit to anartoast for feedback!
 - Heavily reduced frequency of voice lines from Dante and Samira (especially the basic attacks)
 - Dash abilities' i-frames were removed. (Finally found a way to prevent fall damage)
@@ -90,16 +118,16 @@ Patch 1.2.1
 - Damage growth per level is now accurate, but removed from ui for simplicity
 - Exposing whirl and quick steps' damage are modified to become independent from the other abilities.
 
-Patch 1.2.0
+## Patch 1.2.0
 - Added **Dante** from the Devil May Cry Series. Model + Animation were from DMC3, while sounds were from DMC5.
 - Note: When shooting while moving, Dante and Samira's guns are not in the correct position.
 
-Patch 1.1.1
+## Patch 1.1.1
 - Credit to anartoast for feedback again!
 - **Wild Rush/Quick Steps**: Added back the invincibility because players take damage if colliding with the environment
 - **Wild Rush**: Fixed a bug where cooldown was not being reset when enemies were killed.
 
-Patch 1.1.0
+## Patch 1.1.0
 - Credits to Dangobalang0 and anartoast for feedback to the mod! Again, any feedback is always appreciated.
 
 ### Nerfs
@@ -131,5 +159,5 @@ Patch 1.1.0
 ### Special:
 - **Infinite Rain**: Samira unleashes a volley of bullets at nearby enemies. When enemies are killed, the duration of the ability is extended.
 
-Patch 1.0.0
+## Patch 1.0.0
 - Initial Release
