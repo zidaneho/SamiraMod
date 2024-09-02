@@ -2,10 +2,11 @@ using EntityStates.GoldGat;
 using RoR2;
 using RoR2.Projectile;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace SamiraMod.Survivors.Samira.Components
 {
-    internal class ProjectileDamageTracker : MonoBehaviour
+    internal class ProjectileDamageTracker : NetworkBehaviour
     {
         private SamiraComboManager _comboManager;
         private void Awake()
@@ -33,10 +34,28 @@ namespace SamiraMod.Survivors.Samira.Components
                 
                 Util.PlaySound("Play_SamiraSFX_CoinHit",self.body.gameObject);
                 _comboManager.AddCombo(SamiraStaticValues.coinID);
-                damageInfo.attacker.GetComponent<CharacterBody>().AddTimedBuff(SamiraBuffs.coinOnHitBuff, 10f);
+                if (NetworkServer.active)
+                {
+                    ApplyBuff(damageInfo.attacker.GetComponent<NetworkIdentity>().netId);
+                    damageInfo.attacker.GetComponent<CharacterBody>().AddTimedBuff(SamiraBuffs.coinOnHitBuff, 10f);
+                }
                 EffectManager.SimpleEffect(GoldGatFire.impactEffectPrefab, damageInfo.position, Quaternion.identity, false);
 
                 // Additional logic can be added here
+            }
+        }
+
+        [Command]
+        void ApplyBuff(NetworkInstanceId attackerNetId)
+        {
+            GameObject attacker = NetworkServer.FindLocalObject(attackerNetId);
+            if (attacker)
+            {
+                CharacterBody attackerBody = attacker.GetComponent<CharacterBody>();
+                if (attackerBody)
+                {
+                    attackerBody.AddTimedBuff(SamiraBuffs.coinOnHitBuff, 10f);
+                }
             }
         }
     }

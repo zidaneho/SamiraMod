@@ -153,6 +153,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                     }
                     return executed;
                 }
+                
             }
 
             return false;
@@ -172,9 +173,6 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         public virtual void FireAttack()
         {
-            if (!base.isAuthority) return;
-            
-            
             List<HurtBox> HurtBoxes = new List<HurtBox>();
             HurtBoxes = new SphereSearch
             {
@@ -187,23 +185,27 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             bool hitEnemy = false;
             foreach (HurtBox hurtbox in HurtBoxes)
             {
-                Vector3 force = hurtbox.transform.position - transform.position;
-                force.Normalize();
-                force *= 3f;
-                
-                DamageInfo damageInfo = new DamageInfo();
-                damageInfo.damage = SamiraStaticValues.GetBladeWhirlDamage(damageStat, characterBody.level);
-                damageInfo.attacker = base.gameObject;
-                damageInfo.inflictor = base.gameObject;
-                damageInfo.force = force;
-                damageInfo.crit = base.RollCrit();
-                damageInfo.procCoefficient = procCoefficient;
-                damageInfo.position = hurtbox.gameObject.transform.position;
-                damageInfo.damageType = DamageType.Generic;
 
-                hurtbox.healthComponent.TakeDamage(damageInfo);
-                GlobalEventManager.instance.OnHitEnemy(damageInfo, hurtbox.healthComponent.gameObject);
-                GlobalEventManager.instance.OnHitAll(damageInfo, hurtbox.healthComponent.gameObject);
+                if (NetworkServer.active)
+                {
+                    Vector3 force = hurtbox.transform.position - transform.position;
+                    force.Normalize();
+                    force *= 3f;
+                    
+                    DamageInfo damageInfo = new DamageInfo();
+                    damageInfo.damage = SamiraStaticValues.GetBladeWhirlDamage(damageStat, characterBody.level);
+                    damageInfo.attacker = base.gameObject;
+                    damageInfo.inflictor = base.gameObject;
+                    damageInfo.force = force;
+                    damageInfo.crit = base.RollCrit();
+                    damageInfo.procCoefficient = procCoefficient;
+                    damageInfo.position = hurtbox.gameObject.transform.position;
+                    damageInfo.damageType = DamageType.Generic;
+
+                    hurtbox.healthComponent.TakeDamage(damageInfo);
+                    GlobalEventManager.instance.OnHitEnemy(damageInfo, hurtbox.healthComponent.gameObject);
+                    GlobalEventManager.instance.OnHitAll(damageInfo, hurtbox.healthComponent.gameObject);   
+                }
                 hitEnemy = true;
             }
 

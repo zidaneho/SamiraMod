@@ -6,6 +6,7 @@ using RoR2;
 using SamiraMod.Modules;
 using SamiraMod.Survivors.Samira.Components;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace SamiraMod.Survivors.Samira.SkillStates
 {
@@ -164,15 +165,15 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             {
                 Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
                 float lifeSteal = SamiraStaticValues.GetInfernoTriggerDamage(damageStat,characterBody.level) * lifeStealPercentage;
-                healthComponent.Heal(lifeSteal, default(ProcChainMask), true);
+                RpcOnHeal(lifeSteal);
             }
-            // if (enemyHealthComponent && !enemyHealthComponent.alive)
-            // {
-            //     duration += durationExtendOnKill;
-            //     Debug.Log("Inferno Trigger duration extended because enemy was killed");   
-            // }
             
             return result;
+        }
+        [ClientRpc]
+        private void RpcOnHeal(float value)
+        {
+            healthComponent.Heal(value, new ProcChainMask());
         }
         
         protected void CreateIndicator()
