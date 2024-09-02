@@ -173,6 +173,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         public virtual void FireAttack()
         {
+            //
             List<HurtBox> HurtBoxes = new List<HurtBox>();
             HurtBoxes = new SphereSearch
             {
