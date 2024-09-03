@@ -1,10 +1,15 @@
 using System;
+using System.Collections;
+using HG;
+using On.RoR2.SurvivorMannequins;
 using On.RoR2.UI;
+using R2API.Networking;
 using RoR2;
 using RoR2.Skills;
 using SamiraMod.Survivors.Samira;
 using SamiraMod.Survivors.Samira.Components;
 using UnityEngine;
+using UnityEngine.Networking;
 using CharacterBody = RoR2.CharacterBody;
 using ModelSkinController = RoR2.ModelSkinController;
 using SkinCatalog = RoR2.SkinCatalog;
@@ -14,30 +19,43 @@ namespace SamiraMod.Modules.Characters
 {
     public class SamiraMenu : MonoBehaviour
     {
-        private uint playID;
-        private uint playID2;
+        private static uint playID;
         public string soundPrefix = "DefaultSkin";
+
+        private static bool finishedGracePeriod;
+
         
+        
+
+        void OnEnable()
+        {
+            //StartCoroutine(PlayEffect());
+            Invoke(nameof(GracePeriod), 0.5f);
+        }
+        void OnDisable() {
+            finishedGracePeriod = false;
+        }
 
         private void OnDestroy()
         {
-            if (this.playID != 0) AkSoundEngine.StopPlayingID(this.playID);
-            if (this.playID2 != 0) AkSoundEngine.StopPlayingID(this.playID2);
+            if (playID != 0) AkSoundEngine.StopPlayingID(playID);
         }
 
-        private void OnEnable()
+        public void SetAndPlaySoundPrefix(string prefix)
         {
-            this.Invoke("PlayEffect", 0.05f);
-        }
+            if (finishedGracePeriod && prefix == soundPrefix) return;
+            if (playID != 0) AkSoundEngine.StopPlayingID(playID);
+            this.soundPrefix = prefix;
+          
+            playID = Util.PlaySound(soundPrefix +"_PlayVO_Menu", base.gameObject);
         
+            
+        }
 
-        private void PlayEffect()
+        void GracePeriod()
         {
-            if (Modules.Config.enableVoiceLines.Value)
-            {
-                this.playID = Util.PlaySound(Config.lastSkinName.Value +"_PlayVO_Menu", base.gameObject);
-            }
-            //this.playID2 = Util.PlaySound("SettMenuSFX", base.gameObject);
+           
+            finishedGracePeriod = true;
         }
         
     }

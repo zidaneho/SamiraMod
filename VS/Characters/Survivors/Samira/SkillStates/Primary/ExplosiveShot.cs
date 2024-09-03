@@ -52,6 +52,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         
     
         protected Animator animator;
+        protected SamiraSoundManager soundManager;
 
         private bool canUseFlair => swingIndex >= attacksPerFlair - 1;
   
@@ -67,11 +68,11 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             crit = RollCrit();
             this.childLocator = GetModelChildLocator();
             muzzleEffectPrefab = SamiraAssets.bulletMuzzleEffect;
+            soundManager = characterBody.GetComponent<SamiraSoundManager>();
 
             
             SetupRangedAttack();
             
-            Debug.Log(swingIndex);
             
         }
 
@@ -114,27 +115,30 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             {
                 hasFired = true;
                 
-                float damage = SamiraStaticValues.GetFlairDamage(damageStat, characterBody.level) * SamiraStaticValues.explosiveShotBonusMultiplier;
+                
 
                 if (base.isAuthority)
                 {
                     PlayFireBulletSound();
-                    
+
                     EffectManager.SimpleMuzzleFlash(SamiraAssets.explosiveMuzzle,
-                        gameObject, "RevolverMuzzle", false);
-                    
+                        gameObject, "RevolverMuzzle", true);
+
                     Vector3 origin = childLocator.FindChild("RevolverMuzzle").position;
-                    ProjectileManager.instance.FireProjectile(SamiraAssets.explosiveProjectile, // The projectile prefab
-                        origin, // Origin of the projectile
-                        Util.QuaternionSafeLookRotation(GetAimRay().direction), // Direction the projectile will travel
-                        base.gameObject, // The owner of the projectile
-                        damage, // Damage of the projectile
-                        force, // Force applied to the projectile
-                        crit, // Whether the projectile is a critical hit
-                        DamageColorIndex.Default, // The color of the damage numbers
-                        null, // No special target filter
-                        -1f // No speed override, use the prefab's speed
-                    ); 
+                    FireProjectileInfo fireProjectileInfo = default(FireProjectileInfo);
+                    fireProjectileInfo.position = origin;
+                    fireProjectileInfo.rotation = Util.QuaternionSafeLookRotation(GetAimRay().direction);
+                    fireProjectileInfo.crit = crit;
+                    fireProjectileInfo.damage = SamiraStaticValues.GetFlairDamage(damageStat, characterBody.level) * SamiraStaticValues.explosiveShotBonusMultiplier;
+                    fireProjectileInfo.damageColorIndex = DamageColorIndex.Default;
+                    fireProjectileInfo.owner = base.gameObject;
+                    fireProjectileInfo.force = force;
+                    fireProjectileInfo.useFuseOverride = false;
+                    fireProjectileInfo.useSpeedOverride = false;
+                    fireProjectileInfo.target = null;
+                    fireProjectileInfo.projectilePrefab = SamiraAssets.explosiveProjectile;
+                    ProjectileManager.instance.FireProjectile(fireProjectileInfo);
+
                 }
                 
                 
@@ -147,7 +151,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
             if (Modules.Config.enableVoiceLines.Value)
             {
-                SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_BasicAttackRanged", gameObject);
+                soundManager.PlaySoundBySkin("PlayVO_BasicAttackRanged", gameObject);
             }
         }
 

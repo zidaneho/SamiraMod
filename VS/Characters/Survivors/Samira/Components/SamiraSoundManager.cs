@@ -1,22 +1,19 @@
+using R2API.Networking.Interfaces;
 using RoR2;
 using RoR2.WwiseUtils;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.Serialization;
 
 namespace SamiraMod.Survivors.Samira.Components
 {
-    internal class SamiraSoundManager : MonoBehaviour
+    public class SamiraSoundManager : MonoBehaviour
     {
         private ModelSkinController modelSkinController;
-
-        public static SamiraSoundManager instance;
-
 
 
         private void Awake()
         {
-            if (instance == null) instance = this;
-            
             modelSkinController = GetComponentInChildren<ModelSkinController>();
         }
 
@@ -45,7 +42,6 @@ namespace SamiraMod.Survivors.Samira.Components
             string prefix = modelSkinController.skins[modelSkinController.currentSkinIndex].name + "_";
             return prefix + soundName;
         }
-        
 
         
     }

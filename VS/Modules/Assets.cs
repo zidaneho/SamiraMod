@@ -169,7 +169,7 @@ namespace SamiraMod.Modules
                 Log.Error($"Failed to load ghost prefab {ghostName}");
             }
             if (!ghostPrefab.GetComponent<NetworkIdentity>()) ghostPrefab.AddComponent<NetworkIdentity>();
-            if (!ghostPrefab.GetComponent<ProjectileGhostController>()) ghostPrefab.AddComponent<ProjectileGhostController>();
+            if (!ghostPrefab.GetComponent<ProjectileGhostController>()) { ghostPrefab.AddComponent<ProjectileGhostController>();}
 
             Modules.Assets.ConvertAllRenderersToHopooShader(ghostPrefab);
 

@@ -8,6 +8,7 @@ using SamiraMod.Modules;
 using UnityEngine.Networking;
 using Object = UnityEngine.Object;
 using R2API;
+using R2API.Networking;
 using SamiraMod.Survivors.Samira.Components;
 
 namespace SamiraMod.Survivors.Samira
@@ -88,6 +89,8 @@ namespace SamiraMod.Survivors.Samira
             projectileDamage.force = 100f;
 
 
+            Modules.Content.AddProjectilePrefab(explosiveProjectile);
+            
         }
 
         static void CreateShells()
@@ -95,6 +98,7 @@ namespace SamiraMod.Survivors.Samira
             shellParticlePrefab = _assetBundle.LoadAsset<GameObject>("samiraTaunt_ShellsParticleSystem");
             
             shellParticlePrefab.AddComponent<NetworkIdentity>();
+            
         }
 
         static void CreateCoinProjectile()
@@ -128,6 +132,8 @@ namespace SamiraMod.Survivors.Samira
             var torqueOnStart = coinProjectile.GetComponent<ApplyTorqueOnStart>();
             torqueOnStart.randomize = false;
             torqueOnStart.localTorque = new Vector3(100000f, 0f, 0f);
+
+            Modules.Content.AddProjectilePrefab(coinProjectile);
         }
         
 

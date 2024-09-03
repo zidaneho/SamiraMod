@@ -8,6 +8,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
     public class SamiraDeathState : GenericCharacterDeath
     {
         private Animator animator;
+        protected SamiraSoundManager soundManager;
         
         private float velocityMagnitude = 10f;
         public override InterruptPriority GetMinimumInterruptPriority()
@@ -18,7 +19,8 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         public override void OnEnter() 
         {
             base.OnEnter();
-            SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_Death", gameObject);
+            soundManager = characterBody.GetComponent<SamiraSoundManager>();
+            soundManager.PlaySoundBySkin("PlayVO_Death", gameObject);
             animator = GetModelAnimator();
             if (animator)
             {

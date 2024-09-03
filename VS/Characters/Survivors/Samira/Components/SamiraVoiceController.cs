@@ -17,12 +17,15 @@ namespace SamiraMod.Survivors.Samira.Components
         private RoR2.CharacterDirection characterDirection;
 
         private uint currentVoiceID;
+        
+        private SamiraSoundManager _soundManager;
 
         private void Awake()
         {
             characterBody = GetComponent<CharacterBody>();
             characterMotor = GetComponent<RoR2.CharacterMotor>();
             characterDirection = GetComponent<RoR2.CharacterDirection>();
+            _soundManager = GetComponent<SamiraSoundManager>();
 
             On.EntityStates.SurvivorPod.ReleaseFinished.OnEnter += ReleaseFinishedOnOnEnter;
             BossGroup.onBossGroupDefeatedServer += BossGroup_OnBossGroupDefeatedServer;
@@ -86,7 +89,7 @@ namespace SamiraMod.Survivors.Samira.Components
             if (currentVoiceID != 0) AkSoundEngine.StopPlayingID(currentVoiceID);
             if (Modules.Config.enableVoiceLines.Value)
             {
-                currentVoiceID = SamiraSoundManager.instance.PlaySoundBySkin(soundString, gameObject);
+                currentVoiceID = _soundManager.PlaySoundBySkin(soundString, gameObject);
             }
         }
     }

@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
 {
-    public class SamiraBaseEmote : BaseSkillState
+    public class SamiraBaseEmote : BaseState
     {
         public string animString;
         public float duration; // if the duration is infinite, set it below zero
@@ -14,10 +14,14 @@ namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
         public string playbackRateString = "Emote.playbackRate";
 
         public float cancelTimeByMoveVector = 0.5f;
+        
+        protected SamiraSoundManager soundManager;
 
         public override void OnEnter()
         {
             base.OnEnter();
+            
+            soundManager = characterBody.GetComponent<SamiraSoundManager>();
 
             var animator = GetModelAnimator();
             animator.SetFloat(playbackRateString, playbackRate);
@@ -67,7 +71,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
                    (inputBank.moveVector != Vector3.zero && fixedAge >= cancelTimeByMoveVector) ||
                    (duration >= 0 && fixedAge >= duration);
         }
-        bool TryPlayEmote(KeyCode keybind, BaseSkillState state)
+        bool TryPlayEmote(KeyCode keybind, BaseState state)
         {
             if (Input.GetKeyDown(keybind))
             {

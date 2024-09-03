@@ -29,6 +29,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         private Animator animator;
         private static readonly int InDashing = Animator.StringToHash("inDashing");
         private SamiraComboManager _comboManager;
+        protected SamiraSoundManager soundManager;
         
         #region Attack Members
       
@@ -76,6 +77,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             animator = GetModelAnimator();
             _comboManager = characterBody.GetComponent<SamiraComboManager>();
             muzzleEffectPrefab = SamiraAssets.bulletMuzzleEffect;
+            soundManager = characterBody.GetComponent<SamiraSoundManager>();
 
             if (isAuthority && inputBank && characterDirection)
             {
@@ -106,7 +108,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             Util.PlaySound("Play_SamiraSFX_E_Start", gameObject);
             if (Modules.Config.enableVoiceLines.Value)
             {
-                SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_E",gameObject);
+                soundManager.PlaySoundBySkin("PlayVO_E",gameObject);
             }
             
             //disables fall damage, enables it back in onexit
@@ -184,7 +186,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                 return;
             }
             
-            hitPauseTimer -= Time.fixedDeltaTime;
+            hitPauseTimer -= Time.deltaTime;
 
             if (hitPauseTimer <= 0f && inHitPause)
             {
@@ -193,7 +195,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
             if (!inHitPause)
             {
-                stopwatch += Time.fixedDeltaTime;
+                stopwatch += Time.deltaTime;
             }
             else
             {

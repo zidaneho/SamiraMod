@@ -83,6 +83,19 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 
 # Patch Notes
 
+## Patch 1.4.0
+- Credit to PaNFiLoVeTs for the feedback. This update is only for Multiplayer.
+- Inferno Trigger now grants lifesteal to clients
+- Blade Whirl now does damage to enemies for clients
+- Samira's coin projectile from her taunt emote now works for clients.
+- Samira's buff granted from her coin on-hit now works for clients. Note: The sound is not played for clients.
+- Samira's buff granted from her dance emote now works for clients.
+- Samira's explosive projectile from her ability Explosive Shot now works for clients.
+- Menu voice lines for Samira and Dante are much more consistent
+- Menu voice lines now play when you swap skins
+- In multiplayer, menu voice lines are accurate to the player's skin
+- In multiplayer, voice lines are now accurate to the player's skin.
+
 ## Patch 1.3.1
 - Fixed bug that allowed Samira to use Flair or Blade Whirl during Inferno Trigger (You can stil use dash m1)
 

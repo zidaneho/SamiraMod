@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using EntityStates;
 using EntityStates.ArtifactShell;
+using R2API.Networking.Interfaces;
 using RoR2;
 using SamiraMod.Modules;
 using SamiraMod.Survivors.Samira.Components;
+using SamiraMod.Survivors.Samira.Networking;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -23,6 +25,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         protected static float baseAttackInterval = 0.2f;
         protected static float lifeStealPercentage = 0.10f;
         protected int muzzleIndexer = 0;
+        protected SamiraSoundManager soundManager;
         #region Attack Members
 
         public float attackRadius = 25f;
@@ -39,6 +42,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         public override void OnEnter()
         {
             base.OnEnter();
+            soundManager = characterBody.GetComponent<SamiraSoundManager>();
             animator = GetModelAnimator();
             _comboManager = characterBody.GetComponent<SamiraComboManager>();
             duration = SamiraStaticValues.infernoTriggerDuration;
@@ -52,7 +56,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             Util.PlaySound("Play_SamiraSFX_R",gameObject);
             if (Config.enableVoiceLines.Value)
             {
-                SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_R",gameObject);
+                soundManager.PlaySoundBySkin("PlayVO_R",gameObject);
             }
             if (!attackIndicatorInstance) CreateIndicator();
             FireAttack();
@@ -75,48 +79,58 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         public override void FixedUpdate()
         {
             base.FixedUpdate();
+            
             if (base.isAuthority)
             {
                 float currentAttackSpeed = attackSpeedMultiplier * attackSpeedStat;
                 float currentInterval = baseAttackInterval / currentAttackSpeed;
-                timer += Time.fixedDeltaTime;
+                timer += Time.deltaTime;
+
+
                 if (timer >= currentInterval)
                 {
                     FireAttack();
                     timer = 0f;
                 }
-
-                if (fixedAge >= duration && isAuthority)
-                {
-                    outer.SetNextStateToMain();
-                }
-                else
-                {
-                    if (attackIndicatorInstance == null) CreateIndicator();
-                    UpdateIndicator();
-                }
             }
+            
+            
+
+            if (fixedAge >= duration)
+            {
+                outer.SetNextStateToMain();
+            }
+            else
+            {
+                if (attackIndicatorInstance == null) CreateIndicator();
+                UpdateIndicator();
+            }
+            
         }
         protected virtual void FireAttack()
         {
-            
+
             List<HurtBox> HurtBoxes = new List<HurtBox>();
-            HurtBoxes = new SphereSearch
+            var sphereSearch = new SphereSearch
             {
                 radius = attackRadius,
                 mask = LayerIndex.entityPrecise.mask,
                 origin = this.attackIndicatorInstance.transform.position
-            }.RefreshCandidates().FilterCandidatesByHurtBoxTeam(TeamMask.GetEnemyTeams(base.teamComponent.teamIndex)).FilterCandidatesByDistinctHurtBoxEntities().GetHurtBoxes().ToList();
+            };
+            sphereSearch.RefreshCandidates();
+            sphereSearch.FilterCandidatesByHurtBoxTeam(TeamMask.GetEnemyTeams(base.teamComponent.teamIndex));
+            sphereSearch.FilterCandidatesByDistinctHurtBoxEntities();
+            HurtBoxes = sphereSearch.GetHurtBoxes().ToList();
 
-            
-            
+
+
             float range = 250f;
             foreach (HurtBox hurtbox in HurtBoxes)
             {
                 bool usePistol = muzzleIndexer % 2 == 0;
                 muzzleIndexer += 1;
                 string muzzleName = usePistol ? "PistolMuzzle" : "RevolverMuzzle";
-                EffectManager.SimpleMuzzleFlash(SamiraAssets.bulletMuzzleEffect,gameObject,muzzleName,false);
+                EffectManager.SimpleMuzzleFlash(SamiraAssets.bulletMuzzleEffect,gameObject,muzzleName,true);
                 
                 var bulletAttack = new BulletAttack
                 {
@@ -157,23 +171,25 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         protected virtual bool OnBulletHit(BulletAttack bulletAttack, ref BulletAttack.BulletHit hitInfo)
         {
-            // Custom logic when a bullet hits something
             var result = BulletAttack.defaultHitCallback(bulletAttack, ref hitInfo);
             
             HealthComponent enemyHealthComponent = hitInfo.hitHurtBox ? hitInfo.hitHurtBox.healthComponent : null;
-            if (enemyHealthComponent && enemyHealthComponent.alive && hitInfo.hitHurtBox.teamIndex != base.teamComponent.teamIndex)
+            if (hitInfo.hitHurtBox != null && hitInfo.hitHurtBox.teamIndex != base.teamComponent.teamIndex)
             {
                 Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
+            }
+            if (enemyHealthComponent && enemyHealthComponent.alive && hitInfo.hitHurtBox.teamIndex != base.teamComponent.teamIndex)
+            {
                 float lifeSteal = SamiraStaticValues.GetInfernoTriggerDamage(damageStat,characterBody.level) * lifeStealPercentage;
-                RpcOnHeal(lifeSteal);
+
+                var bodyID = characterBody.GetComponent<NetworkIdentity>();
+                if (bodyID)
+                {
+                    new SyncInfernoTrigger(lifeSteal, bodyID.netId).Send(R2API.Networking.NetworkDestination.Server);
+                }
             }
             
             return result;
-        }
-        [ClientRpc]
-        private void RpcOnHeal(float value)
-        {
-            healthComponent.Heal(value, new ProcChainMask());
         }
         
         protected void CreateIndicator()

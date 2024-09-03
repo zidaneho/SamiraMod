@@ -27,6 +27,7 @@ namespace SamiraMod.Survivors.Samira.Components
         private CharacterBody characterBody;
         private SkillLocator skillLocator;
         private GenericSkill specialSkill;
+        protected SamiraSoundManager soundManager;
 
         public List<Sprite> comboSprites;
 
@@ -36,6 +37,7 @@ namespace SamiraMod.Survivors.Samira.Components
         private void Awake()
         {
             characterBody = GetComponent<CharacterBody>();
+            soundManager = GetComponent<SamiraSoundManager>();
             if (characterBody != null)
             {
                 skillLocator = characterBody.skillLocator;
@@ -80,11 +82,11 @@ namespace SamiraMod.Survivors.Samira.Components
             AddComboBuff(ComboIndex);
             
             string soundString = "PlaySFX_comboM"+ComboIndex;
-            previousSoundID = SamiraSoundManager.instance.PlaySoundBySkin(soundString, gameObject);
+            previousSoundID = soundManager.PlaySoundBySkin(soundString, gameObject);
 
             if (Modules.Config.enableVoiceLines.Value && ComboIndex >= maximumCombo)
             {
-                SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_R_ReadyBuff", gameObject);
+                soundManager.PlaySoundBySkin("PlayVO_R_ReadyBuff", gameObject);
             }
         }
 
@@ -105,7 +107,7 @@ namespace SamiraMod.Survivors.Samira.Components
                 if (Config.enableVoiceLines.Value)
                 {
                     if (previousSoundID != 0 ) AkSoundEngine.StopPlayingID(previousSoundID);
-                    previousSoundID = SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_ComboReset", gameObject);
+                    previousSoundID = soundManager.PlaySoundBySkin("PlayVO_ComboReset", gameObject);
                 }
             }
             

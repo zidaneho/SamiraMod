@@ -3,6 +3,9 @@ using RoR2;
 using RoR2.Skills;
 using System;
 using System.Collections.Generic;
+using System.Net.Mail;
+using HG;
+using On.RoR2.SurvivorMannequins;
 using SamiraMod.Modules;
 using SamiraMod.Modules.Characters;
 using SamiraMod.Survivors.Samira.Components;
@@ -11,6 +14,8 @@ using UnityEngine;
 using GlobalEventManager = On.RoR2.GlobalEventManager;
 using Loadout = On.RoR2.Loadout;
 using SamiraMain = SamiraMod.Survivors.Samira.SkillStates.SamiraMain;
+using R2API.Networking;
+using SamiraMod.Survivors.Samira.Networking;
 
 namespace SamiraMod.Survivors.Samira
 {
@@ -157,9 +162,7 @@ namespace SamiraMod.Survivors.Samira
                 r0, r1, r2, r3, r4, r5, r6
             };
             
-            var menu = displayPrefab.AddComponent<SamiraMenu>();
-            menu.soundPrefix = Config.lastSkinName.Value;
-            Debug.Log(menu.soundPrefix);
+            displayPrefab.AddComponent<SamiraMenu>();
         }
 
         public void AddHitboxes()
@@ -604,26 +607,30 @@ namespace SamiraMod.Survivors.Samira
         private void AddHooks()
         {
             R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            On.RoR2.Loadout.BodyLoadoutManager.SetSkinIndex += BodyLoadoutManager_OnSetSkinIndex;
+            On.RoR2.SurvivorMannequins.SurvivorMannequinSlotController.ApplyLoadoutToMannequinInstance += SurvivorMannequinSlotController_OnApplyLoadoutToMannequinInstance;
         }
-        
-
-        private void BodyLoadoutManager_OnSetSkinIndex(Loadout.BodyLoadoutManager.orig_SetSkinIndex orig,
-            RoR2.Loadout.BodyLoadoutManager self, BodyIndex bodyindex, uint skinindex)
+        private void SurvivorMannequinSlotController_OnApplyLoadoutToMannequinInstance(SurvivorMannequinSlotController.orig_ApplyLoadoutToMannequinInstance orig, RoR2.SurvivorMannequins.SurvivorMannequinSlotController self)
         {
-            orig(self, bodyindex, skinindex);
             
-            BodyIndex samiraBodyIndex = BodyCatalog.FindBodyIndex("SamiraBody");
-            if (samiraBodyIndex != bodyindex) return;
-            
-            var samiraMenu = displayPrefab.GetComponent<SamiraMenu>();
-            if (samiraMenu)
+            orig(self);
+
+            if (self.currentLoadout != null && self.currentLoadout.bodyLoadoutManager != null)
             {
-                var newSkin = SkinCatalog.GetBodySkinDef(samiraBodyIndex, (int)skinindex).name;
-                Config.lastSkinName.Value = newSkin;
+                BodyIndex bodyIndexFromSurvivorIndex = SurvivorCatalog.GetBodyIndexFromSurvivorIndex(self.currentSurvivorDef.survivorIndex);
+                int skinIndex = (int)self.currentLoadout.bodyLoadoutManager.GetSkinIndex(bodyIndexFromSurvivorIndex);
+                Debug.Log("Applying Mannequin Instance");
+                SkinDef safe = ArrayUtils.GetSafe(BodyCatalog.GetBodySkins(bodyIndexFromSurvivorIndex), skinIndex);
+                if (!safe) return;
+                if (self.currentSurvivorDef.bodyPrefab.gameObject != bodyPrefab.gameObject) return;
+               
+                var menu = self.currentSurvivorDef.displayPrefab.GetComponent<SamiraMenu>();
+                menu.SetAndPlaySoundPrefix(safe.name);
             }
             
+           
         }
+        
+        
 
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, R2API.RecalculateStatsAPI.StatHookEventArgs args)

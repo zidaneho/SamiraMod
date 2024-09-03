@@ -33,6 +33,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         private bool crit;
         private SamiraComboManager _comboManager;
         private ChildLocator childLocator;
+        protected SamiraSoundManager soundManager;
 
         #region Ranged Members
 
@@ -91,6 +92,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         public override void OnEnter()
         {
             base.OnEnter();
+            soundManager = characterBody.GetComponent<SamiraSoundManager>();
             animator = GetModelAnimator();
             _comboManager = characterBody.GetComponent<SamiraComboManager>();
             crit = RollCrit();
@@ -135,7 +137,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
             if (attackType == AttackType.Melee)
             {
-                hitPauseTimer -= Time.fixedDeltaTime;
+                hitPauseTimer -= Time.deltaTime;
 
                 if (hitPauseTimer <= 0f && inHitPause)
                 {
@@ -144,7 +146,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
                 if (!inHitPause)
                 {
-                    stopwatch += Time.fixedDeltaTime;
+                    stopwatch += Time.deltaTime;
                 }
                 else
                 {
@@ -280,7 +282,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                     Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
                     if (Modules.Config.enableVoiceLines.Value)
                     {
-                        SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_BasicAttackRanged", gameObject);
+                        soundManager.PlaySoundBySkin("PlayVO_BasicAttackRanged", gameObject);
                     }
                     
                     float damage = SamiraStaticValues.GetFlairDamage(damageStat, characterBody.level);
@@ -330,7 +332,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             var result = BulletAttack.defaultHitCallback(bulletAttack, ref hitInfo);
             
             HealthComponent healthComponent = hitInfo.hitHurtBox ? hitInfo.hitHurtBox.healthComponent : null;
-            if (healthComponent && healthComponent.alive && hitInfo.hitHurtBox.teamIndex != base.teamComponent.teamIndex)
+            if (healthComponent&& hitInfo.hitHurtBox.teamIndex != base.teamComponent.teamIndex)
             {
                 _comboManager.AddCombo(canUseFlair ? flairAttackID : autoAttackID);
                 Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
@@ -407,7 +409,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             
             if (Modules.Config.enableVoiceLines.Value)
             {
-                SamiraSoundManager.instance.PlayAttackSpeedSoundBySkin("PlayVO_BasicAttackMelee", gameObject,attackSpeedStat);
+                soundManager.PlayAttackSpeedSoundBySkin("PlayVO_BasicAttackMelee", gameObject,attackSpeedStat);
             }
             
 

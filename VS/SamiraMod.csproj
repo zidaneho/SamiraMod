@@ -28,6 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="R2API.Networking" Version="1.0.2" />
         <PackageReference Include="RoR2BepInExPack" Version="*" />
         <PackageReference Include="BepInEx.Analyzers" Version="1.0.8">
             <PrivateAssets>all</PrivateAssets>

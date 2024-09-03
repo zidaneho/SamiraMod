@@ -25,7 +25,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
             muzzleTransform = childLocator.FindChild("TauntMuzzle");
 
             startSoundID = RoR2.Util.PlaySound("Play_SamiraSFX_JokeA", gameObject);
-            voID = SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_Joke", gameObject);
+            voID = soundManager.PlaySoundBySkin("PlayVO_Joke", gameObject);
 
 
         }

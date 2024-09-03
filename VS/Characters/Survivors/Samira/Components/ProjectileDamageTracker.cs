@@ -1,19 +1,23 @@
 using EntityStates.GoldGat;
+using R2API.Networking.Interfaces;
 using RoR2;
 using RoR2.Projectile;
+using SamiraMod.Survivors.Samira.Networking;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace SamiraMod.Survivors.Samira.Components
 {
-    internal class ProjectileDamageTracker : NetworkBehaviour
+    internal class ProjectileDamageTracker : MonoBehaviour
     {
         private SamiraComboManager _comboManager;
+        private CharacterBody _characterBody;
         private void Awake()
         {
             // Hook into the TakeDamage method
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             _comboManager = GetComponent<SamiraComboManager>();
+            _characterBody = GetComponent<CharacterBody>();
         }
 
         private void OnDestroy()
@@ -27,6 +31,8 @@ namespace SamiraMod.Survivors.Samira.Components
             // Call the original method to ensure the damage is applied
             orig(self, damageInfo);
 
+            if (!_characterBody.hasAuthority) return;
+
             // Check if the damage was caused by a projectile
             if (damageInfo.inflictor && damageInfo.inflictor.GetComponent<ProjectileController>() && damageInfo.inflictor.GetComponent<CoinComponent>())
             {
@@ -34,28 +40,18 @@ namespace SamiraMod.Survivors.Samira.Components
                 
                 Util.PlaySound("Play_SamiraSFX_CoinHit",self.body.gameObject);
                 _comboManager.AddCombo(SamiraStaticValues.coinID);
-                if (NetworkServer.active)
+
+              
+
+                var networkBody = damageInfo.attacker.GetComponent<NetworkIdentity>();
+                if (networkBody != null)
                 {
-                    ApplyBuff(damageInfo.attacker.GetComponent<NetworkIdentity>().netId);
-                    damageInfo.attacker.GetComponent<CharacterBody>().AddTimedBuff(SamiraBuffs.coinOnHitBuff, 10f);
+                    new SyncTimedBuff(SamiraBuffs.coinOnHitBuff.buffIndex, 10f, 1, networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
                 }
+
                 EffectManager.SimpleEffect(GoldGatFire.impactEffectPrefab, damageInfo.position, Quaternion.identity, false);
 
                 // Additional logic can be added here
-            }
-        }
-
-        [Command]
-        void ApplyBuff(NetworkInstanceId attackerNetId)
-        {
-            GameObject attacker = NetworkServer.FindLocalObject(attackerNetId);
-            if (attacker)
-            {
-                CharacterBody attackerBody = attacker.GetComponent<CharacterBody>();
-                if (attackerBody)
-                {
-                    attackerBody.AddTimedBuff(SamiraBuffs.coinOnHitBuff, 10f);
-                }
             }
         }
     }

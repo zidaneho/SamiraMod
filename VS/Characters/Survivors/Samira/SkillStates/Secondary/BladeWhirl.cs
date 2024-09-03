@@ -24,6 +24,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         public static float dodgeFOV = global::EntityStates.Commando.DodgeState.dodgeFOV;
         
         protected Animator animator;
+        protected SamiraSoundManager soundManager;
         protected float jumpSpeed;
         protected SamiraComboManager _comboManager;
         private SamiraBladeWhirlHandler _bladeWhirlHandler;
@@ -42,6 +43,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         public override void OnEnter()
         {
             base.OnEnter();
+            soundManager = characterBody.GetComponent<SamiraSoundManager>();
             animator = GetModelAnimator();
             _comboManager = characterBody.GetComponent<SamiraComboManager>();
             _bladeWhirlHandler = characterBody.GetComponent<SamiraBladeWhirlHandler>();
@@ -61,7 +63,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             PlayAnimation("FullBody, Override", "BladeWhirl", "BladeWhirl.playbackRate", duration);
             Util.PlaySound("Play_SamiraSFX_W", gameObject);
             
-            _bladeWhirlHandler.SpawnInstance(characterBody, this);
+            _bladeWhirlHandler.SpawnInstance(this);
             
         }
 
@@ -93,7 +95,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             }
 
             
-            stopwatch += Time.fixedDeltaTime;
+            stopwatch += Time.deltaTime;
             
 
             if (stopwatch >= duration && isAuthority)
@@ -214,7 +216,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             {
                 _comboManager.AddCombo(attackID);
                 Util.PlaySound("Play_SamiraSFX_W_Hit", gameObject);
-                SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_W",gameObject);
+                soundManager.PlaySoundBySkin("PlayVO_W",gameObject);
             }
         }
 

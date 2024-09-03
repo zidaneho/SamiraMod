@@ -23,7 +23,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
             if (Modules.Config.enableVoiceLines.Value)
             {
-                SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_BasicAttackRanged", gameObject);
+                soundManager.PlaySoundBySkin("PlayVO_BasicAttackRanged", gameObject);
             }
             
             List<HurtBox> HurtBoxes = new List<HurtBox>();

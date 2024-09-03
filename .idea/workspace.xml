@@ -5,8 +5,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5153ff71-aaf5-4238-905d-3475b5f61481" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Build/plugins/SamiraMod.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Build/plugins/SamiraMod.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SamiraModv1.3.2.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/Components/ProjectileDamageTracker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/Components/ProjectileDamageTracker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/Components/SamiraBladeWhirlHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/Components/SamiraBladeWhirlHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/Components/SamiraComboManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/Components/SamiraComboManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/Components/SamiraSoundManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/Components/SamiraSoundManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/Components/SamiraVoiceController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/Components/SamiraVoiceController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/Content/SamiraAssets.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/Content/SamiraAssets.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/Content/SamiraMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/Content/SamiraMenu.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SamiraSurvivor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SamiraSurvivor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Emotes/SamiraBaseEmote.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Emotes/SamiraBaseEmote.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Emotes/SamiraDance.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Emotes/SamiraDance.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Emotes/SamiraJoke.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Emotes/SamiraJoke.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Emotes/SamiraLaugh.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Emotes/SamiraLaugh.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Emotes/SamiraTaunt.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Emotes/SamiraTaunt.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Primary/ExplosiveShot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Primary/ExplosiveShot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Primary/Flair.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Primary/Flair.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Primary/SlashingManiac.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Primary/SlashingManiac.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/SamiraDeathState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/SamiraDeathState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/SamiraMain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/SamiraMain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Secondary/BladeWhirl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Secondary/BladeWhirl.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Secondary/ExposingWhirl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Secondary/ExposingWhirl.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Special/InfernoTrigger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Special/InfernoTrigger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Utility/FlairDash.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Utility/FlairDash.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Utility/WildRush.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SkillStates/Utility/WildRush.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Modules/Assets.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Modules/Assets.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Modules/BaseContent/BaseStates/BaseMeleeAttack.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Modules/BaseContent/BaseStates/BaseMeleeAttack.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Modules/Config.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Modules/Config.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Modules/Prefabs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Modules/Prefabs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/SamiraMod.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/VS/SamiraMod.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/SamiraPlugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/SamiraPlugin.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/SamiraMod.dll" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/SamiraMod.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +69,6 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Mono Remote.Mono" />
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -49,6 +80,7 @@
       <workItem from="1724459024251" duration="1999000" />
       <workItem from="1724461133906" duration="1804000" />
       <workItem from="1724994747000" duration="2000" />
+      <workItem from="1725401039351" duration="487000" />
     </task>
     <servers />
   </component>

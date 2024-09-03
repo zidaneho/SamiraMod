@@ -27,6 +27,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         private SamiraComboManager _comboManager;
         private ChildLocator childLocator;
         private SamiraBuffMeleeOnHitHandler buffHandler;
+        protected SamiraSoundManager soundManager;
 
         private float fireTime;
         private GameObject muzzleEffectPrefab;
@@ -71,6 +72,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         public override void OnEnter()
         {
             base.OnEnter();
+            soundManager = characterBody.GetComponent<SamiraSoundManager>();
             animator = GetModelAnimator();
             _comboManager = characterBody.GetComponent<SamiraComboManager>();
             buffHandler = characterBody.GetComponent<SamiraBuffMeleeOnHitHandler>();
@@ -84,7 +86,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         {
             base.FixedUpdate();
 
-            hitPauseTimer -= Time.fixedDeltaTime;
+            hitPauseTimer -= Time.deltaTime;
 
             if (hitPauseTimer <= 0f && inHitPause)
             {
@@ -93,7 +95,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
             if (!inHitPause)
             {
-                stopwatch += Time.fixedDeltaTime;
+                stopwatch += Time.deltaTime;
             }
             else
             {
@@ -232,7 +234,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
             if (Modules.Config.enableVoiceLines.Value)
             {
-                SamiraSoundManager.instance.PlayAttackSpeedSoundBySkin("PlayVO_BasicAttackMelee", gameObject, attackSpeedStat);
+                soundManager.PlayAttackSpeedSoundBySkin("PlayVO_BasicAttackMelee", gameObject, attackSpeedStat);
             }
             
             

@@ -13,7 +13,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
             base.OnEnter();
 
             sfxID = RoR2.Util.PlaySound("Play_SamiraSFX_Laugh", gameObject);
-            voID = SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_Laugh", gameObject);
+            voID = soundManager.PlaySoundBySkin("PlayVO_Laugh", gameObject);
         }
 
         public override void OnExit()

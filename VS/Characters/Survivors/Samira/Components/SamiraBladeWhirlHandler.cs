@@ -16,6 +16,8 @@ namespace SamiraMod.Survivors.Samira.Components
         private GameObject _bladeWhirlInstance;
         private CharacterBody _characterBody;
         private BladeWhirl _bladeWhirlState;
+        protected SamiraSoundManager soundManager;
+        
 
         private float duration = SamiraStaticValues.bladeWhirlDuration;
         private float radius = SamiraStaticValues.bladeWhirlRadius;
@@ -23,7 +25,13 @@ namespace SamiraMod.Survivors.Samira.Components
 
         private float damageStat;
         private bool canUpdate;
-        
+
+        private void Awake()
+        {
+            soundManager = GetComponent<SamiraSoundManager>();
+            _characterBody = GetComponent<CharacterBody>();
+        }
+
 
         private void Update()
         {
@@ -32,15 +40,14 @@ namespace SamiraMod.Survivors.Samira.Components
                 UpdateIndicator();
                 if (DeleteNearbyProjectiles() && Modules.Config.enableVoiceLines.Value)
                 {
-                    SamiraSoundManager.instance.PlaySoundBySkin("PlayVO_W", gameObject);
+                    soundManager.PlaySoundBySkin("PlayVO_W", gameObject);
                 }
             }
         }
 
-        public void SpawnInstance(CharacterBody characterBody, BladeWhirl bladeWhirl)
+        public void SpawnInstance(BladeWhirl bladeWhirl)
         {
-            _bladeWhirlInstance = CreateIndicator(characterBody.corePosition, radius);
-            _characterBody = characterBody;
+            _bladeWhirlInstance = CreateIndicator(_characterBody.corePosition, radius);
             _bladeWhirlState = bladeWhirl;
 
             StartCoroutine(UpdateInstanceTimer());

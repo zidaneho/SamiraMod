@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using R2API.Networking.Interfaces;
 using RoR2;
+using SamiraMod.Survivors.Samira.Networking;
 using UnityEngine;
 using UnityEngine.Networking;
 using Util = IL.RoR2.Util;
@@ -51,15 +53,22 @@ namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
 
         public override void FixedUpdate()
         {
-            stopwatch += Time.fixedDeltaTime;
+            base.FixedUpdate();
+            stopwatch += Time.deltaTime;
 
             if (stopwatch >= durationBetweenBuffs)
             {
                 stopwatch = 0f;
-                RoR2.Util.PlaySound("Play_SamiraSFX_CoinHit", gameObject);
-                if (NetworkServer.active) characterBody.AddTimedBuff(SamiraBuffs.danceBuff, buffDuration, buffMaxStacks);
+                RoR2.Util.PlaySound("Play_SamiraSFX_CoinHit", gameObject);        
+
+                var networkBody = characterBody.GetComponent<NetworkIdentity>();
+                if (networkBody != null)
+                {
+                    new SyncTimedBuff(SamiraBuffs.danceBuff.buffIndex, buffDuration, 5, networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
+                }
+
+               
             }
-            base.FixedUpdate();
         }
         
 

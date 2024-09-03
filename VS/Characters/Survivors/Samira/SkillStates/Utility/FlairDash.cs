@@ -77,7 +77,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                 return;
             }
 
-            stopwatch += Time.fixedDeltaTime;
+            stopwatch += Time.deltaTime;
             
             bool fireStarted = stopwatch >= duration * attackStartPercentTime;
             bool fireEnded = stopwatch >= duration * attackEndPercentTime;

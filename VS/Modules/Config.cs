@@ -26,7 +26,6 @@ namespace SamiraMod.Modules
         public static ConfigEntry<float> damageGrowth;
         public static ConfigEntry<float> regenGrowth;
         
-        public static ConfigEntry<string> lastSkinName;
         
         public static ConfigEntry<KeyCode> tauntKeybind;
         public static ConfigEntry<KeyCode> jokeKeybind;
@@ -58,7 +57,6 @@ namespace SamiraMod.Modules
 
             jumpCount = MyConfig.Bind<int>(new ConfigDefinition("01 - Character Stats", "Jump Count"), 1, new ConfigDescription("", null, Array.Empty<object>()));
             
-            lastSkinName = MyConfig.Bind<string>(new ConfigDefinition("00 - Other", "Last Skin Index"), "DefaultSkin", new ConfigDescription("", null, Array.Empty<object>()));
             
             tauntKeybind = SamiraPlugin.instance.Config.Bind<KeyCode>(new ConfigDefinition("02 - Emotes", "Taunt"), KeyCode.Alpha2, new ConfigDescription("Keybind used to perform the Taunt emote", null, Array.Empty<object>()));
             jokeKeybind = SamiraPlugin.instance.Config.Bind<KeyCode>(new ConfigDefinition("02 - Emotes", "Joke"), KeyCode.Alpha1, new ConfigDescription("Keybind used to perform the Joke emote", null, Array.Empty<object>()));

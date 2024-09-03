@@ -24,7 +24,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             }
         }
 
-        bool TryPlayEmote(KeyCode keybind, BaseSkillState state)
+        bool TryPlayEmote(KeyCode keybind, BaseState state)
         {
             if (Input.GetKeyDown(keybind))
             {

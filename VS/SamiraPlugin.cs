@@ -4,8 +4,10 @@ using RoR2;
 using System.Collections.Generic;
 using System.Security;
 using System.Security.Permissions;
+using R2API.Networking;
 using R2API.Utils;
 using SamiraMod.Survivors.Samira;
+using SamiraMod.Survivors.Samira.Networking;
 
 [module: UnverifiableCode]
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
@@ -20,6 +22,7 @@ namespace SamiraMod
     [BepInDependency("com.bepis.r2api.sound", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("com.bepis.r2api.networking", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("com.bepis.r2api.recalculatestats", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency(NetworkingAPI.PluginGUID)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     [BepInPlugin(MODUID, MODNAME, MODVERSION)]
     public class SamiraPlugin : BaseUnityPlugin
@@ -29,7 +32,7 @@ namespace SamiraMod
         //   this shouldn't even have to be said
         public const string MODUID = "com.zidane.SamiraMod";
         public const string MODNAME = "SamiraMod";
-        public const string MODVERSION = "1.3.0";
+        public const string MODVERSION = "1.4.0";
 
         // a prefix for name tokens to prevent conflicts- please capitalize all name tokens for convention
         public const string DEVELOPER_PREFIX = "ZIDANE";
@@ -55,6 +58,8 @@ namespace SamiraMod
 
                 // make a content pack and add it. this has to be last
                 new Modules.ContentPacks().Initialize();
+                
+                CreateNetworking();
             }
             catch (Exception e)
             {
@@ -63,6 +68,12 @@ namespace SamiraMod
 
             
             
+        }
+        
+        private void CreateNetworking()
+        {
+            NetworkingAPI.RegisterMessageType<SyncInfernoTrigger>();
+            NetworkingAPI.RegisterMessageType<SyncTimedBuff>();
         }
     }
 }
