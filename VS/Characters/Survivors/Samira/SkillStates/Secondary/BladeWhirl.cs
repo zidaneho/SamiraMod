@@ -61,7 +61,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             }
 
             PlayAnimation("FullBody, Override", "BladeWhirl", "BladeWhirl.playbackRate", duration);
-            Util.PlaySound("Play_SamiraSFX_W", gameObject);
+            if (base.isAuthority) Util.PlaySound("Play_SamiraSFX_W", gameObject);
             
             _bladeWhirlHandler.SpawnInstance(this);
             
@@ -215,7 +215,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             if (hitEnemy)
             {
                 _comboManager.AddCombo(attackID);
-                Util.PlaySound("Play_SamiraSFX_W_Hit", gameObject);
+                if (base.isAuthority) Util.PlaySound("Play_SamiraSFX_W_Hit", gameObject);
                 soundManager.PlaySoundBySkin("PlayVO_W",gameObject);
             }
         }

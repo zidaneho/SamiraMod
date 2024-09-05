@@ -12,8 +12,11 @@ namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
             duration = 3.91f; //24 fps, anim is 91 frames
             base.OnEnter();
 
-            sfxID = RoR2.Util.PlaySound("Play_SamiraSFX_Laugh", gameObject);
-            voID = soundManager.PlaySoundBySkin("PlayVO_Laugh", gameObject);
+            if (base.isAuthority)
+            {
+                sfxID = RoR2.Util.PlaySound("Play_SamiraSFX_Laugh", gameObject);
+                voID = soundManager.PlaySoundBySkin("PlayVO_Laugh", gameObject);   
+            }
         }
 
         public override void OnExit()

@@ -28,8 +28,11 @@ namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
             
             base.OnEnter();
 
-            voID = soundManager.PlaySoundBySkin("PlayVO_Taunt", gameObject);
-            sfxID = RoR2.Util.PlaySound("Play_SamiraSFX_Taunt",gameObject);
+            if (isAuthority)
+            {
+                voID = soundManager.PlaySoundBySkin("PlayVO_Taunt", gameObject);
+                sfxID = RoR2.Util.PlaySound("Play_SamiraSFX_Taunt",gameObject);   
+            }
         }
         public override void OnExit()
         {
@@ -56,15 +59,10 @@ namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
 
         void FireCoin()
         {
-            Util.PlaySound("Play_SamiraSFX_Coinflip",gameObject);
             DisableCoinVisual();
-
-          
-            
-            
             if (base.isAuthority)
             {
-                Debug.Log(SamiraAssets.coinProjectile);
+                Util.PlaySound("Play_SamiraSFX_Coinflip",gameObject);
                 Transform muzzle = childLocator.FindChild("CoinMuzzle");
                 FireProjectileInfo fireProjectileInfo = default(FireProjectileInfo);
                 fireProjectileInfo.position = muzzle.position;

@@ -46,9 +46,9 @@ namespace SamiraMod.Survivors.Samira.SkillStates
    
 
         public int swingIndex;
-        
-        
-        protected string playbackRateParam = "Slash.playbackRate";
+
+
+        protected string playbackRateParam;
         
     
         protected Animator animator;
@@ -148,10 +148,13 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         void PlayFireBulletSound()
         {
-            Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
-            if (Modules.Config.enableVoiceLines.Value)
+            if (base.isAuthority)
             {
-                soundManager.PlaySoundBySkin("PlayVO_BasicAttackRanged", gameObject);
+                Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
+                if (Modules.Config.enableVoiceLines.Value)
+                {
+                    soundManager.PlaySoundBySkin("PlayVO_BasicAttackRanged", gameObject);
+                }   
             }
         }
 
@@ -222,7 +225,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             if (healthComponent && healthComponent.alive && hitInfo.hitHurtBox.teamIndex != base.teamComponent.teamIndex)
             {
                 _comboManager.AddCombo(autoAttackID);
-                Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
+                if (base.isAuthority) Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
             }
             return result;
         }

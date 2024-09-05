@@ -70,7 +70,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         protected float attackRecoil = 0.75f;
         protected float hitHopVelocity = 4f;
         protected string meleeMuzzleString = "SwingCenter";
-        protected string playbackRateParam = "Slash.playbackRate";
+        protected string playbackRateParam;
         protected GameObject swingEffectPrefab;
         protected GameObject hitEffectPrefab;
         protected NetworkSoundEventIndex impactSound = NetworkSoundEventIndex.Invalid;
@@ -257,8 +257,11 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             }
 
             PlayAttackAnimation();
-            if (!canUseFlair) Util.PlayAttackSpeedSound("Play_SamiraSFX_MeleeAuto", gameObject, attackSpeedStat);
-            else  Util.PlayAttackSpeedSound("Play_SamiraSFX_Cleave", gameObject, attackSpeedStat);
+            if (base.isAuthority)
+            {
+                if (!canUseFlair) Util.PlayAttackSpeedSound("Play_SamiraSFX_MeleeAuto", gameObject, attackSpeedStat);
+                else  Util.PlayAttackSpeedSound("Play_SamiraSFX_Cleave", gameObject, attackSpeedStat);   
+            }
         }
 
 
@@ -279,7 +282,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                 if (base.isAuthority)
                 {
                     AddRecoil(-1f * recoil, -2f * recoil, -0.5f * recoil, 0.5f * recoil);
-                    Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
+                    if (base.isAuthority) Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
                     if (Modules.Config.enableVoiceLines.Value)
                     {
                         soundManager.PlaySoundBySkin("PlayVO_BasicAttackRanged", gameObject);
@@ -335,7 +338,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             if (healthComponent&& hitInfo.hitHurtBox.teamIndex != base.teamComponent.teamIndex)
             {
                 _comboManager.AddCombo(canUseFlair ? flairAttackID : autoAttackID);
-                Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
+                if (base.isAuthority) Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
             }
             return result;
         }
@@ -369,8 +372,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                 animString = "FlairMelee";
                 attack.hitBoxGroup = FindHitBoxGroup("FlairMeleeHitbox");
             }
-
-            playbackRateParam = "Slash.playbackRate";
+            
             PlayAnimation("FullBody, Override", animString);
         }
 
@@ -432,7 +434,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         protected virtual void OnHitEnemyAuthority()
         {
-            Util.PlaySound("Play_SamiraSFX_SwordHit", gameObject);
+            if (base.isAuthority) Util.PlaySound("Play_SamiraSFX_SwordHit", gameObject);
             _comboManager.AddCombo(canUseFlair ? flairAttackID : autoAttackID);
 
             if (!hasHopped)

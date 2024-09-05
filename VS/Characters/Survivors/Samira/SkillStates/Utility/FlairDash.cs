@@ -99,7 +99,8 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         private void EnterAttack()
         {
             hasFired = true;
-            Util.PlaySound("Play_SamiraSFX_EQ", gameObject);
+
+            if (base.isAuthority) Util.PlaySound("Play_SamiraSFX_EQ", gameObject);
         }
 
         private void FireAttack()
@@ -183,7 +184,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             if (healthComponent && healthComponent.alive && hitInfo.hitHurtBox.teamIndex != base.teamComponent.teamIndex)
             {
                 _comboManager.AddCombo(attackID);
-                Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
+                if (base.isAuthority) Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
             }
             return result;
         }

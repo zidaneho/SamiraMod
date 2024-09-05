@@ -46,7 +46,7 @@ namespace SamiraMod.Modules.Characters
             if (finishedGracePeriod && prefix == soundPrefix) return;
             if (playID != 0) AkSoundEngine.StopPlayingID(playID);
             this.soundPrefix = prefix;
-          
+            
             playID = Util.PlaySound(soundPrefix +"_PlayVO_Menu", base.gameObject);
         
             

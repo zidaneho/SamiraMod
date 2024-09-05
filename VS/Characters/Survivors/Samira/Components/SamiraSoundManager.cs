@@ -10,10 +10,12 @@ namespace SamiraMod.Survivors.Samira.Components
     public class SamiraSoundManager : MonoBehaviour
     {
         private ModelSkinController modelSkinController;
+        private CharacterBody characterBody;
 
 
         private void Awake()
         {
+            characterBody = GetComponent<CharacterBody>();
             modelSkinController = GetComponentInChildren<ModelSkinController>();
         }
 
@@ -23,6 +25,8 @@ namespace SamiraMod.Survivors.Samira.Components
             {
                 return 0;
             }
+
+            if (!characterBody.hasAuthority) return 0;
             
             return Util.PlaySound(GetSoundName(soundName), source);
         }
@@ -33,6 +37,7 @@ namespace SamiraMod.Survivors.Samira.Components
             {
                 return 0;
             }
+            if (!characterBody.hasAuthority) return 0;
             return Util.PlayAttackSpeedSound(GetSoundName(soundName), source,attackSpeedStat);
         }
 

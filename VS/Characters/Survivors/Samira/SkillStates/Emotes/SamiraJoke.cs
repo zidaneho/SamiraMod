@@ -24,8 +24,12 @@ namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
             var childLocator = GetModelChildLocator();
             muzzleTransform = childLocator.FindChild("TauntMuzzle");
 
-            startSoundID = RoR2.Util.PlaySound("Play_SamiraSFX_JokeA", gameObject);
-            voID = soundManager.PlaySoundBySkin("PlayVO_Joke", gameObject);
+            if (base.isAuthority)
+            {
+                startSoundID = RoR2.Util.PlaySound("Play_SamiraSFX_JokeA", gameObject);
+                voID = soundManager.PlaySoundBySkin("PlayVO_Joke", gameObject);
+            }
+            
 
 
         }
@@ -36,7 +40,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
             if (shellInstance == null && fixedAge >= spawnShellDuration)
             {
                 shellInstance = UnityEngine.Object.Instantiate(SamiraAssets.shellParticlePrefab, muzzleTransform);
-                loopSoundID = RoR2.Util.PlaySound("Play_SamiraSFX_JokeB",gameObject);
+                if (base.isAuthority) loopSoundID = RoR2.Util.PlaySound("Play_SamiraSFX_JokeB",gameObject);
             }
         }
 

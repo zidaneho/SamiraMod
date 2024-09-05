@@ -53,7 +53,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             animator.SetBool(InInfernoTrigger, true);
             PlayAnimation("FullBody, Override", "InfernoTrigger");
 
-            Util.PlaySound("Play_SamiraSFX_R",gameObject);
+            if (base.isAuthority) Util.PlaySound("Play_SamiraSFX_R",gameObject);
             if (Config.enableVoiceLines.Value)
             {
                 soundManager.PlaySoundBySkin("PlayVO_R",gameObject);
@@ -176,7 +176,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             HealthComponent enemyHealthComponent = hitInfo.hitHurtBox ? hitInfo.hitHurtBox.healthComponent : null;
             if (hitInfo.hitHurtBox != null && hitInfo.hitHurtBox.teamIndex != base.teamComponent.teamIndex)
             {
-                Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
+                if (base.isAuthority) Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
             }
             if (enemyHealthComponent && enemyHealthComponent.alive && hitInfo.hitHurtBox.teamIndex != base.teamComponent.teamIndex)
             {

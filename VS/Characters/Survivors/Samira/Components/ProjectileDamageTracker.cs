@@ -38,7 +38,7 @@ namespace SamiraMod.Survivors.Samira.Components
             {
                 // The enemy was hit by a projectile
                 
-                Util.PlaySound("Play_SamiraSFX_CoinHit",self.body.gameObject);
+                if (self.body.hasAuthority) Util.PlaySound("Play_SamiraSFX_CoinHit",self.body.gameObject);
                 _comboManager.AddCombo(SamiraStaticValues.coinID);
 
               

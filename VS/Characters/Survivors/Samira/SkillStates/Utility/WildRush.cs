@@ -49,7 +49,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         protected float hitStopDuration = 0.012f;
         protected float attackRecoil = 0.75f;
         protected string meleeMuzzleString = "SwingCenter";
-        protected string playbackRateParam = "Slash.playbackRate";
+        protected string playbackRateParam;
         protected GameObject muzzleEffectPrefab;
         protected GameObject hitEffectPrefab;
         protected NetworkSoundEventIndex impactSound = NetworkSoundEventIndex.Invalid;
@@ -94,6 +94,8 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             
             SetupAttack();
 
+            playbackRateParam = "WildRush.playbackRate";
+
             bool inInfernoTrigger = animator.GetBool(InInfernoTrigger);
             if (inInfernoTrigger)
             {
@@ -101,11 +103,11 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             }
             else
             {
-                PlayAnimation("FullBody, Override", "WildRush", "WildRush.playbackRate", duration);
+                PlayAnimation("FullBody, Override", "WildRush", playbackRateParam, duration);
             }
             
             animator.SetBool(InDashing,true);
-            Util.PlaySound("Play_SamiraSFX_E_Start", gameObject);
+            if (base.isAuthority) Util.PlaySound("Play_SamiraSFX_E_Start", gameObject);
             if (Modules.Config.enableVoiceLines.Value)
             {
                 soundManager.PlaySoundBySkin("PlayVO_E",gameObject);
@@ -200,7 +202,6 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             else
             {
                 if (characterMotor) characterMotor.velocity = Vector3.zero;
-                if (animator) animator.SetFloat(playbackRateParam, 0f);
             }
             
 
@@ -326,7 +327,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         protected virtual void OnHitEnemyAuthority()
         {
-            Util.PlaySound("Play_SamiraSFX_E_Hit", gameObject);
+            if (base.isAuthority) Util.PlaySound("Play_SamiraSFX_E_Hit", gameObject);
             _comboManager.AddCombo(attackID);
             ApplyHitstop();
         }

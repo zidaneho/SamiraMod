@@ -35,7 +35,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
             base.OnEnter();
 
             startedPlayingLoop = false;
-            startSoundID = RoR2.Util.PlaySound(startSoundString, gameObject);
+            if (base.isAuthority) startSoundID = RoR2.Util.PlaySound(startSoundString, gameObject);
             
             stopwatch = 0f;
         }
@@ -47,7 +47,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
             if (!startedPlayingLoop && fixedAge >= startLoopDuration)
             {
                 startedPlayingLoop=true;
-                loopSoundID = RoR2.Util.PlaySound(loopSoundString, gameObject);
+                if (base.isAuthority) loopSoundID = RoR2.Util.PlaySound(loopSoundString, gameObject);
             }
         }
 
@@ -59,7 +59,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
             if (stopwatch >= durationBetweenBuffs)
             {
                 stopwatch = 0f;
-                RoR2.Util.PlaySound("Play_SamiraSFX_CoinHit", gameObject);        
+                if (base.isAuthority) RoR2.Util.PlaySound("Play_SamiraSFX_CoinHit", gameObject);        
 
                 var networkBody = characterBody.GetComponent<NetworkIdentity>();
                 if (networkBody != null)

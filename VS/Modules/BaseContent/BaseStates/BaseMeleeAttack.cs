@@ -34,7 +34,7 @@ namespace SamiraMod.Modules.BaseStates
         protected string swingSoundString = "";
         protected string hitSoundString = "";
         protected string muzzleString = "SwingCenter";
-        protected string playbackRateParam = "Slash.playbackRate";
+        protected string playbackRateParam;
         protected GameObject swingEffectPrefab;
         protected GameObject hitEffectPrefab;
         protected NetworkSoundEventIndex impactSound = NetworkSoundEventIndex.Invalid;
@@ -95,7 +95,7 @@ namespace SamiraMod.Modules.BaseStates
 
         protected virtual void OnHitEnemyAuthority()
         {
-            Util.PlaySound(hitSoundString, gameObject);
+            if (base.isAuthority) Util.PlaySound(hitSoundString, gameObject);
 
             if (!hasHopped)
             {
@@ -135,7 +135,7 @@ namespace SamiraMod.Modules.BaseStates
         private void EnterAttack()
         {
             hasFired = true;
-            Util.PlayAttackSpeedSound(swingSoundString, gameObject, attackSpeedStat);
+            if (base.isAuthority) Util.PlayAttackSpeedSound(swingSoundString, gameObject, attackSpeedStat);
 
             PlaySwingEffect();
 

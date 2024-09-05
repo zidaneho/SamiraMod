@@ -171,7 +171,7 @@ namespace SamiraMod.Survivors.Samira.Components
             
             if (ComboIndex > 0)
             {
-                Util.PlaySound("Play_SamiraSFX_ComboReset", gameObject);
+                if (characterBody.hasAuthority) Util.PlaySound("Play_SamiraSFX_ComboReset", gameObject);
             }
             
         }

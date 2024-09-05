@@ -40,7 +40,7 @@ namespace SamiraMod.Survivors.Samira.Components
         private void ResetSkillCooldowns(CharacterBody player)
         {
             var skill = GetUtilitySkill(player);
-            Debug.Log(skill + skill.skillDef.skillName);
+            Debug.Log("Reset Skill:" + skill.skillDef.skillName);
             if (skill && skill.skillDef.skillName == "SamiraWildRush")
             { 
                 skill.Reset();

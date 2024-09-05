@@ -20,7 +20,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         {
             if (!base.isAuthority) return;
             
-            Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
+            if (base.isAuthority) Util.PlayAttackSpeedSound("Play_SamiraSFX_Shoot", gameObject,attackSpeedStat);
             if (Modules.Config.enableVoiceLines.Value)
             {
                 soundManager.PlaySoundBySkin("PlayVO_BasicAttackRanged", gameObject);
@@ -90,7 +90,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             if (hitEnemy)
             {
                 healthComponent.body.AddTimedBuff(SamiraBuffs.bladeWhirlArmorShredDebuff, SamiraStaticValues.exposeDebuffDuration, 1);
-                Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
+                if (base.isAuthority) Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
             }
             return result;
         }

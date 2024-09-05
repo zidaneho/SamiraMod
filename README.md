@@ -83,6 +83,15 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 
 # Patch Notes
 
+## Patch 1.4.2
+- Credit to plaseastol for feedback.
+- Fixed a bug that would set the animation speed of slashing attacks to be 0.
+- Completely removed the playbackRate parameter of slashing attacks in the Animator.
+
+## Patch 1.4.1
+- Credit to Harridas for giving feedback.
+- Sounds are now client-side, as before, players could hear sounds from across the map by other players.
+
 ## Patch 1.4.0
 - Credit to PaNFiLoVeTs for the feedback. This update is only for Multiplayer.
 - Inferno Trigger now grants lifesteal to clients
