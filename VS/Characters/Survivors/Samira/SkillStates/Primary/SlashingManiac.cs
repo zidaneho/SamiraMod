@@ -136,8 +136,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         void SetupMeleeAttack()
         {
             hitboxGroupName = "AAHitbox";
-
-            damageType = DamageType.Generic;
+            
             procCoefficient = 1f;
             pushForce = 300f;
             bonusForce = Vector3.zero;

@@ -29,6 +29,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
         #region Ranged Members
 
+        public static DamageType damageType = DamageType.Generic;
         public static float rangedBaseDuration = 0.85f;
         //delay on firing is usually ass-feeling. only set this if you know what you're doing
         public float firePercentTime = 0.025f;
@@ -187,7 +188,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                         origin = origin,
                         damage = damage,
                         damageColorIndex = DamageColorIndex.Default,
-                        damageType = DamageType.Generic,
+                        damageType = damageType,
                         falloffModel = BulletAttack.FalloffModel.None,
                         maxDistance = range,
                         force = force,

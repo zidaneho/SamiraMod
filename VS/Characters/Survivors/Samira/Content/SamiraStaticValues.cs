@@ -9,6 +9,9 @@ namespace SamiraMod.Survivors.Samira
         #region Passive
 
         public const float styleDuration = 4f;
+        public const int barrageFireCount = 7;
+        public const float delayBetweenShots = 0.1f;
+        public const float barrageCooldownPerTarget = 1f;
         #endregion
         #region Primary
         public const float flairDamageMult = 1.3f;
@@ -48,13 +51,13 @@ namespace SamiraMod.Survivors.Samira
         public const float infiniteRainASMultiplier = 0.7f;
         #endregion
         
-
-        public const int flairID = 4;
+        public const int autoAttackID = 1;
         public const int bladeWhirlID = 2;
         public const int wildRushID = 3;
-        public const int autoAttackID = 1;
+        public const int flairID = 4;
         public const int flairDashID = 5;
         public const int coinID = 6;
+        public const int passiveID = 7;
 
         public static float GetFlairDamage(float damageStat, float currentLevel)
         {

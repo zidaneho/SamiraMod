@@ -28,6 +28,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         protected SamiraSoundManager soundManager;
         #region Attack Members
 
+        public DamageType damageType = DamageType.Generic;
         public float attackRadius = 25f;
         public static float procCoefficient = 1f;
         protected float timer = 0f;
@@ -139,7 +140,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates
                     origin = childLocator.FindChild(muzzleName).position,
                     damage = SamiraStaticValues.GetInfernoTriggerDamage(damageStat,characterBody.level),
                     damageColorIndex = DamageColorIndex.Default,
-                    damageType = DamageType.Generic,
+                    damageType = damageType,
                     falloffModel = BulletAttack.FalloffModel.None,
                     maxDistance = range,
                     force = 0f,

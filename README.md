@@ -68,7 +68,6 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 ## Planned
 - Better Multiplayer
 - Skins
-- Passive Implementation
 
 ## Special Thanks
 - Riot Games - used League of Legends assets
@@ -82,6 +81,10 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 ---
 
 # Patch Notes
+
+## Patch 1.5.0
+- Completed Samira's passive ability, allowing Samira to launch swift and numerous bullets at stunned, frozen, or shocked enemies, granting Samira more style points.
+- Fixed a bug where Samira's coin would not play a sound on hit.
 
 ## Patch 1.4.2
 - Credit to plaseastol for feedback.
