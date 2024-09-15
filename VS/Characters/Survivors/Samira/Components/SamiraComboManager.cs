@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using BepInEx;
+using R2API.Networking.Interfaces;
 using RoR2;
 using RoR2.Skills;
 using SamiraMod.Modules;
+using SamiraMod.Survivors.Samira.Networking;
 using UnityEngine;
+using UnityEngine.Networking;
 using BodyCatalog = On.RoR2.BodyCatalog;
 using Path = RoR2.Path;
 
@@ -149,7 +152,15 @@ namespace SamiraMod.Survivors.Samira.Components
                     currentBuff = SamiraBuffs.comboBuff6;
                     break;
             }
-            if (currentBuff != null) characterBody.AddBuff(currentBuff);
+            if (currentBuff != null)
+            {
+                var networkBody = characterBody.GetComponent<NetworkIdentity>();
+                if (networkBody != null)
+                {
+                    new SyncBuff(currentBuff.buffIndex, networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
+                }
+
+            }
             characterBody.RecalculateStats();
         }
 
@@ -162,7 +173,12 @@ namespace SamiraMod.Survivors.Samira.Components
 
             if (removeBuff)
             {
-                characterBody.RemoveBuff(currentBuff);
+                var networkBody = characterBody.GetComponent<NetworkIdentity>();
+                if (networkBody != null)
+                {
+                    new SyncRemoveBuff(currentBuff.buffIndex, networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
+                }
+               
                 currentBuff = null;
                 characterBody.RecalculateStats();
             }

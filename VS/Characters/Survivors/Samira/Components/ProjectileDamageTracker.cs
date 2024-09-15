@@ -68,11 +68,13 @@ namespace SamiraMod.Survivors.Samira.Components
             #endregion
             
             #region Passive Barrage
-            Debug.Log(damageInfo.damageType);
+            
 
             var setStateOnHurt = self.body.GetComponent<SetStateOnHurt>();
             bool inStunState = setStateOnHurt != null && (setStateOnHurt.targetStateMachine.state is StunState || setStateOnHurt.targetStateMachine.state is ShockState || setStateOnHurt.targetStateMachine.state is FrozenState);
-            if (inStunState && !targetedBodies.Contains(self.body) )
+            
+            Debug.Log(inStunState + " " + _characterBody.hasAuthority + " " + !targetedBodies.Contains(self.body));
+            if (_characterBody.hasAuthority && inStunState && !targetedBodies.Contains(self.body) )
             {
                 targetedBodies.Add(self.body);
                 Debug.Log("entered stun passive");

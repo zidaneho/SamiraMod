@@ -74,6 +74,8 @@ namespace SamiraMod
         {
             NetworkingAPI.RegisterMessageType<SyncInfernoTrigger>();
             NetworkingAPI.RegisterMessageType<SyncTimedBuff>();
+            NetworkingAPI.RegisterMessageType<SyncBuff>();
+            NetworkingAPI.RegisterMessageType<SyncRemoveBuff>();
         }
     }
 }

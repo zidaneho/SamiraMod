@@ -572,7 +572,7 @@ namespace SamiraMod.Survivors.Samira
             
             #region DanteSkin
             
-            SkinDef danteSkin = Skins.CreateSkinDef("DANTE_SKIN",assetBundle.LoadAsset<Sprite>("texDanteIcon"),defaultRendererinfos,prefabCharacterModel.gameObject);
+            SkinDef danteSkin = Skins.CreateSkinDef(SAMIRA_PREFIX +"DANTE_SKIN",assetBundle.LoadAsset<Sprite>("texDanteIcon"),defaultRendererinfos,prefabCharacterModel.gameObject);
             danteSkin.name = "DanteSkin";
             danteSkin.meshReplacements = Modules.Skins.getMeshReplacements(assetBundle, defaultRendererinfos, "dante_bodyMesh", "dante_pistolMesh","dante_revolverMesh","dante_swordMesh");
             danteSkin.rendererInfos[0].defaultMaterial = assetBundle.LoadMaterial("mat_dante_body");
