@@ -95,6 +95,7 @@ namespace SamiraMod.Survivors.Samira.Components
 
         private void FixedUpdate()
         {
+            if (!characterBody.hasAuthority) return;
             if (ComboIndex <= 0 || !characterBody.outOfCombat)
             {
                 timer = 0f;
@@ -128,7 +129,7 @@ namespace SamiraMod.Survivors.Samira.Components
         {
             if (currentBuff != null)
             {
-                characterBody.RemoveBuff(currentBuff);
+                
                 currentBuff = null;
             }
             switch (index)
@@ -154,11 +155,7 @@ namespace SamiraMod.Survivors.Samira.Components
             }
             if (currentBuff != null)
             {
-                var networkBody = characterBody.GetComponent<NetworkIdentity>();
-                if (networkBody != null)
-                {
-                    new SyncBuff(currentBuff.buffIndex, networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
-                }
+                ClientAddBuff(currentBuff.buffIndex);
 
             }
             characterBody.RecalculateStats();
@@ -173,11 +170,7 @@ namespace SamiraMod.Survivors.Samira.Components
 
             if (removeBuff)
             {
-                var networkBody = characterBody.GetComponent<NetworkIdentity>();
-                if (networkBody != null)
-                {
-                    new SyncRemoveBuff(currentBuff.buffIndex, networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
-                }
+                ClientRemoveBuff(currentBuff.buffIndex);
                
                 currentBuff = null;
                 characterBody.RecalculateStats();
@@ -190,6 +183,24 @@ namespace SamiraMod.Survivors.Samira.Components
                 if (characterBody.hasAuthority) Util.PlaySound("Play_SamiraSFX_ComboReset", gameObject);
             }
             
+        }
+
+        void ClientRemoveBuff(BuffIndex buffIndex)
+        {
+            var networkBody = characterBody.GetComponent<NetworkIdentity>();
+            if (networkBody != null)
+            {
+                new SyncRemoveBuff(buffIndex, networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
+            }
+        }
+
+        void ClientAddBuff(BuffIndex buffIndex)
+        {
+            var networkBody = characterBody.GetComponent<NetworkIdentity>();
+            if (networkBody != null)
+            {
+                new SyncBuff(currentBuff.buffIndex, networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
+            }
         }
     }
 }

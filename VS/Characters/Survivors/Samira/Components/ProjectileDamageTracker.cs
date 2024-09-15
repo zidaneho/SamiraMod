@@ -39,6 +39,7 @@ namespace SamiraMod.Survivors.Samira.Components
             // Call the original method to ensure the damage is applied
             orig(self, damageInfo);
 
+            Debug.Log(_characterBody.hasAuthority + " " + damageInfo.attacker + " " + (damageInfo.attacker.gameObject == _characterBody.gameObject));
             if (!_characterBody.hasAuthority || damageInfo.attacker == null || damageInfo.attacker.gameObject != _characterBody.gameObject) return;
             
             var receiverTeamComponent = self.body.teamComponent;
