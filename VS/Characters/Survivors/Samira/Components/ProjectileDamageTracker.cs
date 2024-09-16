@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using EntityStates;
 using EntityStates.GoldGat;
+using R2API.Networking;
 using R2API.Networking.Interfaces;
 using RoR2;
 using RoR2.Projectile;
@@ -12,6 +13,7 @@ using UnityEngine.Networking;
 
 namespace SamiraMod.Survivors.Samira.Components
 {
+    //should be handled only be server, not client, because take damage hook is only seen on server
     internal class ProjectileDamageTracker : MonoBehaviour
     {
         private SamiraComboManager _comboManager;
@@ -19,54 +21,40 @@ namespace SamiraMod.Survivors.Samira.Components
         private ChildLocator childLocator;
 
         private HashSet<CharacterBody> targetedBodies = new HashSet<CharacterBody>();
-        private void Awake()
+
+        void Awake()
         {
-            // Hook into the TakeDamage method
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             _comboManager = GetComponent<SamiraComboManager>();
             _characterBody = GetComponent<CharacterBody>();
             childLocator = _characterBody.modelLocator.modelTransform.GetComponent<ChildLocator>();
         }
+        private void OnEnable()
+        {
+            // Hook into the TakeDamage method
+            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+           
+        }
 
-        private void OnDestroy()
+
+
+        private void OnDisable()
         {
             // Unhook to avoid memory leaks
             On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
         }
 
+   
+
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             // Call the original method to ensure the damage is applied
             orig(self, damageInfo);
-
-            Debug.Log(_characterBody.hasAuthority + " " + damageInfo.attacker + " " + (damageInfo.attacker.gameObject == _characterBody.gameObject));
-            if (!_characterBody.hasAuthority || damageInfo.attacker == null || damageInfo.attacker.gameObject != _characterBody.gameObject) return;
+            
+            if (!NetworkServer.active || damageInfo.attacker == null || damageInfo.attacker.gameObject != _characterBody.gameObject) return;
             
             var receiverTeamComponent = self.body.teamComponent;
-            
             if (receiverTeamComponent == null) return;
             if (_characterBody.teamComponent.teamIndex == receiverTeamComponent.teamIndex) return;
-            #region Coin
-            // Check if the damage was caused by a projectile
-            
-            if (damageInfo.inflictor && damageInfo.inflictor.GetComponent<ProjectileController>() && damageInfo.inflictor.GetComponent<CoinComponent>())
-            {
-                // The enemy was hit by a projectile
-                Debug.Log("entered coin");
-                if (_characterBody.hasAuthority) Util.PlaySound("Play_SamiraSFX_CoinHit",self.body.gameObject);
-                _comboManager.AddCombo(SamiraStaticValues.coinID);
-
-                var networkBody = _characterBody.networkIdentity;
-                if (networkBody != null)
-                {
-                    new SyncTimedBuff(SamiraBuffs.coinOnHitBuff.buffIndex, 10f, 1, networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
-                }
-
-                EffectManager.SimpleEffect(GoldGatFire.impactEffectPrefab, damageInfo.position, Quaternion.identity, false);
-    
-                // Additional logic can be added here
-            }
-            #endregion
             
             #region Passive Barrage
             
@@ -74,12 +62,10 @@ namespace SamiraMod.Survivors.Samira.Components
             var setStateOnHurt = self.body.GetComponent<SetStateOnHurt>();
             bool inStunState = setStateOnHurt != null && (setStateOnHurt.targetStateMachine.state is StunState || setStateOnHurt.targetStateMachine.state is ShockState || setStateOnHurt.targetStateMachine.state is FrozenState);
             
-            Debug.Log(inStunState + " " + _characterBody.hasAuthority + " " + !targetedBodies.Contains(self.body));
-            if (_characterBody.hasAuthority && inStunState && !targetedBodies.Contains(self.body) )
+            if (inStunState && !targetedBodies.Contains(self.body) )
             {
                 targetedBodies.Add(self.body);
-                Debug.Log("entered stun passive");
-                Util.PlaySound("Play_SamiraSFX_Stun",gameObject);
+                SendSoundToClient(_characterBody, "Play_SamiraSFX_Stun");
                 StartCoroutine(PlayFireBarrage(self.body));
             }
             #endregion
@@ -97,7 +83,7 @@ namespace SamiraMod.Survivors.Samira.Components
                     bulletCount = 1,
                     aimVector = (cachedPosition - origin).normalized,
                     origin = origin,
-                    damage = SamiraStaticValues.GetFlairDamage(_characterBody.damage, _characterBody.level) ,
+                    damage = SamiraStaticValues.GetBarrageDamage(_characterBody.damage, _characterBody.level) ,
                     damageColorIndex = DamageColorIndex.Default,
                     damageType = DamageType.Generic,
                     falloffModel = BulletAttack.FalloffModel.None,
@@ -140,9 +126,18 @@ namespace SamiraMod.Survivors.Samira.Components
             if (healthComponent&& hitInfo.hitHurtBox.teamIndex != _characterBody.teamComponent.teamIndex)
             {
                 _comboManager.AddCombo(SamiraStaticValues.passiveID);
-                if (_characterBody.hasAuthority) Util.PlaySound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject);
+                SendSoundToClient(_characterBody,"Play_SamiraSFX_BulletHit");
             }
             return result;
+        }
+
+        void SendSoundToClient(CharacterBody characterBody, string soundString)
+        {
+            var netBody = characterBody.GetComponent<NetworkIdentity>();
+            if (netBody != null)
+            {
+                new SyncSound(soundString, netBody.netId).Send(NetworkDestination.Clients);
+            }
         }
     }
 }

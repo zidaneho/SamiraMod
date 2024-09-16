@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using EntityStates;
 using On.EntityStates.Huntress;
+using R2API.Networking.Interfaces;
 using Rewired.ComponentControls;
 using RoR2;
 using RoR2.Audio;
 using RoR2.Projectile;
 using SamiraMod.Survivors.Samira.Components;
+using SamiraMod.Survivors.Samira.Networking;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -214,8 +216,11 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 
             if (hitEnemy)
             {
-                _comboManager.AddCombo(attackID);
-                if (base.isAuthority) Util.PlaySound("Play_SamiraSFX_W_Hit", gameObject);
+                if (base.isAuthority)
+                {
+                    _comboManager.AddCombo(attackID);
+                    Util.PlaySound("Play_SamiraSFX_W_Hit", gameObject);
+                }
                 soundManager.PlaySoundBySkin("PlayVO_W",gameObject);
             }
         }

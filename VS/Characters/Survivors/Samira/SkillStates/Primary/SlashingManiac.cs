@@ -1,9 +1,11 @@
 using System;
 using EntityStates;
+using R2API.Networking.Interfaces;
 using RoR2;
 using RoR2.Audio;
 using RoR2.Skills;
 using SamiraMod.Survivors.Samira.Components;
+using SamiraMod.Survivors.Samira.Networking;
 using UnityEngine;
 using UnityEngine.Networking;
 

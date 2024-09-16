@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using System.Net.NetworkInformation;
+using RoR2;
 using R2API.Networking.Interfaces;
 using UnityEngine.Networking;
 

@@ -25,20 +25,12 @@ namespace SamiraMod.Survivors.Samira.Components
             if (isFadingOut && timer >= fadeOutDuration)
             {
                 timer = 0f;
-                var networkBody = _characterBody.GetComponent<NetworkIdentity>();
-                if (networkBody != null)
-                {
-                    new SyncRemoveBuff(SamiraBuffs.meleeOnHitBuff.buffIndex, networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
-                }
+                _characterBody.RemoveBuff(SamiraBuffs.meleeOnHitBuff);
             }
             else if (timer >= buffDuration)
             {
                 timer = 0f;
-                var networkBody = _characterBody.GetComponent<NetworkIdentity>();
-                if (networkBody != null)
-                {
-                    new SyncRemoveBuff(SamiraBuffs.meleeOnHitBuff.buffIndex, networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
-                }
+                _characterBody.RemoveBuff(SamiraBuffs.meleeOnHitBuff);
                 isFadingOut = true;
             }
         }
@@ -46,12 +38,7 @@ namespace SamiraMod.Survivors.Samira.Components
         public void ApplyBuff(CharacterBody characterBody)
         {
             _characterBody = characterBody;
-            var networkBody = _characterBody.GetComponent<NetworkIdentity>();
-            if (networkBody != null)
-            {
-                new SyncBuff(SamiraBuffs.meleeOnHitBuff.buffIndex, networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
-            }
-          
+            _characterBody.AddBuff(SamiraBuffs.meleeOnHitBuff);
             timer = 0f;
             canPlay = true;
             isFadingOut = false;

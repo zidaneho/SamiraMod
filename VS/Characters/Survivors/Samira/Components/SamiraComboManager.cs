@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using BepInEx;
+using R2API.Networking;
 using R2API.Networking.Interfaces;
 using RoR2;
 using RoR2.Skills;
@@ -16,7 +17,8 @@ namespace SamiraMod.Survivors.Samira.Components
 {
     public class SamiraComboManager : MonoBehaviour
     {
-        public int ComboIndex { get; private set; }
+        public int ComboIndex;
+        public BuffDef currentBuff;
 
         public readonly int minimumCombo = 0;
         public readonly int maximumCombo = 6;
@@ -34,7 +36,8 @@ namespace SamiraMod.Survivors.Samira.Components
 
         public List<Sprite> comboSprites;
 
-        private BuffDef currentBuff;
+        private HashSet<BuffIndex> buffIndexes;
+        
         
 
         private void Awake()
@@ -53,6 +56,14 @@ namespace SamiraMod.Survivors.Samira.Components
                     Debug.Log("Skill Locator not found.");
                 }
             }
+            
+            buffIndexes = new HashSet<BuffIndex>();
+            buffIndexes.Add(SamiraBuffs.comboBuff1.buffIndex);
+            buffIndexes.Add(SamiraBuffs.comboBuff2.buffIndex);
+            buffIndexes.Add(SamiraBuffs.comboBuff3.buffIndex);
+            buffIndexes.Add(SamiraBuffs.comboBuff4.buffIndex);
+            buffIndexes.Add(SamiraBuffs.comboBuff5.buffIndex);
+            buffIndexes.Add(SamiraBuffs.comboBuff6.buffIndex);
         }
         
 
@@ -66,9 +77,28 @@ namespace SamiraMod.Survivors.Samira.Components
             specialSkill.skillDef.icon = comboSprites[maximumCombo];
         }
 
+        private void FixedUpdate()
+        {
+            if (!characterBody.hasAuthority) return;
+            
+            if (ComboIndex <= 0 || !characterBody.outOfCombat)
+                timer = 0f;
+            else
+                timer += Time.deltaTime;
+
+            if (timer >= comboResetInterval && characterBody.outOfCombat)
+            {
+                ResetCombo(true);
+                if (Config.enableVoiceLines.Value)
+                {
+                    if (previousSoundID != 0) AkSoundEngine.StopPlayingID(previousSoundID);
+                    previousSoundID = soundManager.PlaySoundBySkin("PlayVO_ComboReset", gameObject);
+                }
+            }
+        }
         //AutoAttack - 1, BladeWhirl - 2, Wild Rush - 3, Flair - 4, FlairDash - 5
         public void AddCombo(int attackID)
-        {
+        {  
             if (ComboIndex >= maximumCombo)
             {
                 return;
@@ -78,13 +108,23 @@ namespace SamiraMod.Survivors.Samira.Components
                 timer = 0f;
                 return;
             }
-
+            
             timer = 0f;
             previousAttackID = attackID;
             SetComboIndex(ComboIndex + 1);
             AddComboBuff(ComboIndex);
             
-            string soundString = "PlaySFX_comboM"+ComboIndex;
+            // if (!NetworkServer.active)
+            // {
+            //     var netBody = characterBody.GetComponent<NetworkIdentity>();
+            //     if (netBody != null)
+            //     {
+            //         new SyncComboManager(ComboIndex, currentBuff.buffIndex, netBody.netId).Send(NetworkDestination.Server);
+            //     }   
+            // }
+            
+
+            string soundString = "PlaySFX_comboM" + ComboIndex;
             previousSoundID = soundManager.PlaySoundBySkin(soundString, gameObject);
 
             if (Modules.Config.enableVoiceLines.Value && ComboIndex >= maximumCombo)
@@ -92,46 +132,20 @@ namespace SamiraMod.Survivors.Samira.Components
                 soundManager.PlaySoundBySkin("PlayVO_R_ReadyBuff", gameObject);
             }
         }
+        
 
-        private void FixedUpdate()
-        {
-            if (!characterBody.hasAuthority) return;
-            if (ComboIndex <= 0 || !characterBody.outOfCombat)
-            {
-                timer = 0f;
-            }
-            else
-            {
-                timer += Time.deltaTime;
-            }
-            
-            if (timer >= comboResetInterval && characterBody.outOfCombat)
-            {
-                ResetCombo(true);
-                if (Config.enableVoiceLines.Value)
-                {
-                    if (previousSoundID != 0 ) AkSoundEngine.StopPlayingID(previousSoundID);
-                    previousSoundID = soundManager.PlaySoundBySkin("PlayVO_ComboReset", gameObject);
-                }
-            }
-            
-        }
+       
 
         void SetComboIndex(int newIndex)
         {
             newIndex = Mathf.Clamp(newIndex, 0, maximumCombo);
             ComboIndex = newIndex;
-            specialSkill.skillDef.icon = comboSprites[ComboIndex];
-            
+            if (characterBody.hasAuthority) specialSkill.skillDef.icon = comboSprites[ComboIndex];
         }
 
         void AddComboBuff(int index)
         {
-            if (currentBuff != null)
-            {
-                
-                currentBuff = null;
-            }
+            ResetCurrentBuff();
             switch (index)
             {
                 case 1:
@@ -155,52 +169,74 @@ namespace SamiraMod.Survivors.Samira.Components
             }
             if (currentBuff != null)
             {
-                ClientAddBuff(currentBuff.buffIndex);
-
+                var netBody = characterBody.GetComponent<NetworkIdentity>();
+                if (netBody != null)
+                {
+                    new SyncAddBuff(currentBuff.buffIndex, netBody.netId).Send(NetworkDestination.Server);
+                }
             }
             characterBody.RecalculateStats();
+        }
+
+        public void ResetCurrentBuff()
+        {
+            if (currentBuff != null)
+            {
+                var netBody = characterBody.GetComponent<NetworkIdentity>();
+                if (netBody != null)
+                {
+                    new SyncRemoveBuff(currentBuff.buffIndex, netBody.netId).Send(NetworkDestination.Server);
+                    
+                    //Checking for any other loose buffs
+                    List<BuffIndex> buffIndexesToRemove = new List<BuffIndex>();
+                    foreach (var buff in characterBody.buffs)
+                    {
+                        if (buffIndexes.Contains((BuffIndex)buff))
+                        {
+                            buffIndexesToRemove.Add((BuffIndex)buff);
+                        }
+                    }
+
+                    if (buffIndexesToRemove.Count > 0)
+                    {
+                        foreach (var index in buffIndexesToRemove)
+                        {
+                            new SyncRemoveBuff(index, netBody.netId).Send(NetworkDestination.Server);
+                        }
+                    }
+                    
+                }
+                currentBuff = null;
+            }
+            
         }
 
 
         public void ResetCombo(bool removeBuff = false, bool playSound = true)
         {
+            if (characterBody.hasAuthority && playSound) Util.PlaySound("Play_SamiraSFX_ComboReset", gameObject);
             SetComboIndex(0);
             timer = 0f;
             previousAttackID = 0;
 
             if (removeBuff)
             {
-                ClientRemoveBuff(currentBuff.buffIndex);
+                ResetCurrentBuff();
                
                 currentBuff = null;
                 characterBody.RecalculateStats();
             }
-
-            if (!playSound) return;
             
-            if (ComboIndex > 0)
-            {
-                if (characterBody.hasAuthority) Util.PlaySound("Play_SamiraSFX_ComboReset", gameObject);
-            }
-            
+            // if (!NetworkServer.active)
+            // {
+            //     var netBody = characterBody.GetComponent<NetworkIdentity>();
+            //     if (netBody != null)
+            //     {
+            //         var buffIndex = currentBuff != null ? currentBuff.buffIndex : BuffIndex.None;
+            //         new SyncComboManager(ComboIndex, buffIndex, netBody.netId).Send(NetworkDestination.Server);
+            //     }   
+            // }
         }
-
-        void ClientRemoveBuff(BuffIndex buffIndex)
-        {
-            var networkBody = characterBody.GetComponent<NetworkIdentity>();
-            if (networkBody != null)
-            {
-                new SyncRemoveBuff(buffIndex, networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
-            }
-        }
-
-        void ClientAddBuff(BuffIndex buffIndex)
-        {
-            var networkBody = characterBody.GetComponent<NetworkIdentity>();
-            if (networkBody != null)
-            {
-                new SyncBuff(currentBuff.buffIndex, networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
-            }
-        }
+        
     }
 }

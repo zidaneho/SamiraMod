@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using EntityStates;
+using R2API.Networking.Interfaces;
 using RoR2;
 using SamiraMod.Survivors.Samira.Components;
+using SamiraMod.Survivors.Samira.Networking;
 using UnityEngine;
 using UnityEngine.Networking;
 

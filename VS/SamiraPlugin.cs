@@ -32,7 +32,7 @@ namespace SamiraMod
         //   this shouldn't even have to be said
         public const string MODUID = "com.zidane.SamiraMod";
         public const string MODNAME = "SamiraMod";
-        public const string MODVERSION = "1.4.2";
+        public const string MODVERSION = "1.5.0";
 
         // a prefix for name tokens to prevent conflicts- please capitalize all name tokens for convention
         public const string DEVELOPER_PREFIX = "ZIDANE";
@@ -74,7 +74,9 @@ namespace SamiraMod
         {
             NetworkingAPI.RegisterMessageType<SyncInfernoTrigger>();
             NetworkingAPI.RegisterMessageType<SyncTimedBuff>();
-            NetworkingAPI.RegisterMessageType<SyncBuff>();
+            NetworkingAPI.RegisterMessageType<SyncComboManager>();
+            NetworkingAPI.RegisterMessageType<SyncSound>();
+            NetworkingAPI.RegisterMessageType<SyncAddBuff>();
             NetworkingAPI.RegisterMessageType<SyncRemoveBuff>();
         }
     }

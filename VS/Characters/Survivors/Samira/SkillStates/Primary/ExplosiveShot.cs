@@ -1,11 +1,14 @@
 using System;
 using EntityStates;
 using EntityStates.Commando.CommandoWeapon;
+using R2API.Networking.Interfaces;
+using RewiredConsts;
 using RoR2;
 using RoR2.Audio;
 using RoR2.Projectile;
 using RoR2.Skills;
 using SamiraMod.Survivors.Samira.Components;
+using SamiraMod.Survivors.Samira.Networking;
 using UnityEngine;
 using UnityEngine.Networking;
 

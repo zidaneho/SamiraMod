@@ -1,5 +1,5 @@
-﻿using RoR2;
 using R2API.Networking.Interfaces;
+using RoR2;
 using UnityEngine.Networking;
 
 namespace SamiraMod.Survivors.Samira.Networking
@@ -8,12 +8,12 @@ namespace SamiraMod.Survivors.Samira.Networking
     {
         private int buffIndex;
         private NetworkInstanceId bodyId;
-
-        public SyncRemoveBuff() { }
-
+        public SyncRemoveBuff() 
+        {
+        }
         public SyncRemoveBuff(BuffIndex buffIndex, NetworkInstanceId bodyId)
         {
-            this.buffIndex = (int)buffIndex;
+            this.buffIndex = (int) buffIndex;
             this.bodyId = bodyId;
         }
         public void Serialize(NetworkWriter writer)
@@ -36,7 +36,7 @@ namespace SamiraMod.Survivors.Samira.Networking
                 var body = playerGameObject.GetComponent<RoR2.CharacterBody>();
                 if (body)
                 {
-                    var buffDef = BuffCatalog.GetBuffDef((BuffIndex)buffIndex);
+                    var buffDef = BuffCatalog.GetBuffDef((BuffIndex) buffIndex);
                     body.RemoveBuff(buffDef);
                 }
             }

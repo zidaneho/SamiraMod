@@ -618,7 +618,6 @@ namespace SamiraMod.Survivors.Samira
             {
                 BodyIndex bodyIndexFromSurvivorIndex = SurvivorCatalog.GetBodyIndexFromSurvivorIndex(self.currentSurvivorDef.survivorIndex);
                 int skinIndex = (int)self.currentLoadout.bodyLoadoutManager.GetSkinIndex(bodyIndexFromSurvivorIndex);
-                Debug.Log("Applying Mannequin Instance");
                 SkinDef safe = ArrayUtils.GetSafe(BodyCatalog.GetBodySkins(bodyIndexFromSurvivorIndex), skinIndex);
                 if (!safe) return;
                 if (self.currentSurvivorDef.bodyPrefab.gameObject != bodyPrefab.gameObject) return;
