@@ -82,6 +82,11 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 
 # Patch Notes
 
+## Patch 1.5.1
+- Thanks to anartoast for feedback!
+- Added additional null checks to prevent an error occurring; specifically when selecting a new skin, or entering character selection.
+- Please post an issue on the github if you are still getting this error. (This error is not gameplay breaking).
+
 ## Patch 1.5.0
 - Completed Samira's passive ability, allowing Samira to launch swift and numerous bullets at stunned enemies, granting Samira more style points (Have included but have not tested shocked and frozen enemies)
 - Fixed a bug where Samira's coin would not play a sound on hit.

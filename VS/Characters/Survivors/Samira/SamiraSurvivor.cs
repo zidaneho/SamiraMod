@@ -614,9 +614,10 @@ namespace SamiraMod.Survivors.Samira
             
             orig(self);
 
-            if (self.currentLoadout != null && self.currentLoadout.bodyLoadoutManager != null)
+            if (self.currentLoadout != null && self.currentLoadout.bodyLoadoutManager != null && self.currentSurvivorDef != null)
             {
                 BodyIndex bodyIndexFromSurvivorIndex = SurvivorCatalog.GetBodyIndexFromSurvivorIndex(self.currentSurvivorDef.survivorIndex);
+                if (bodyIndexFromSurvivorIndex == BodyIndex.None) return;
                 int skinIndex = (int)self.currentLoadout.bodyLoadoutManager.GetSkinIndex(bodyIndexFromSurvivorIndex);
                 SkinDef safe = ArrayUtils.GetSafe(BodyCatalog.GetBodySkins(bodyIndexFromSurvivorIndex), skinIndex);
                 if (!safe) return;

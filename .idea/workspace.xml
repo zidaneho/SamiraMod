@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5153ff71-aaf5-4238-905d-3475b5f61481" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SamiraModv1.5.0.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SamiraSurvivor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/Characters/Survivors/Samira/SamiraSurvivor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VS/SamiraPlugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/VS/SamiraPlugin.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/SamiraMod.dll" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/SamiraMod.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +53,7 @@
       <workItem from="1724461133906" duration="1804000" />
       <workItem from="1724994747000" duration="2000" />
       <workItem from="1725401039351" duration="2337000" />
+      <workItem from="1730564553542" duration="3000" />
     </task>
     <servers />
   </component>
@@ -56,7 +62,6 @@
   </component>
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
-    <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
 </project>
