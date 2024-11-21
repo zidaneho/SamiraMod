@@ -81,7 +81,10 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 ---
 
 # Patch Notes
-
+## Patch 1.5.3
+- Thanks to anartoast for feedback!
+- Added Risk of Options support! (Please let me know in the github if you wanna see any more settings)
+- Currently, there is support to change base stats, and volumes for sfx and voice lines.
 ## Patch 1.5.1
 - Thanks to anartoast for feedback!
 - Added additional null checks to prevent an error occurring; specifically when selecting a new skin, or entering character selection.

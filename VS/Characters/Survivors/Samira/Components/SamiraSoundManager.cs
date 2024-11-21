@@ -39,7 +39,6 @@ namespace SamiraMod.Survivors.Samira.Components
             }
 
             if (!characterBody.hasAuthority) return 0;
-            Debug.Log("playing sound: " + soundName + " voice : " + Config.voiceEffectVolume.Value + " sfx : " + Config.soundEffectVolume.Value);
             return Util.PlaySound(GetSoundName(soundName), source);
         }
 
