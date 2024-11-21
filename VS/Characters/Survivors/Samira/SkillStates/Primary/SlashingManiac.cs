@@ -31,9 +31,6 @@ namespace SamiraMod.Survivors.Samira.SkillStates
         private SamiraBuffMeleeOnHitHandler buffHandler;
         protected SamiraSoundManager soundManager;
 
-        private float fireTime;
-        private GameObject muzzleEffectPrefab;
-
         #region Melee Members
 
         public int swingIndex;

@@ -22,8 +22,7 @@ namespace SamiraMod.Survivors.Samira.Components
         private float duration = SamiraStaticValues.bladeWhirlDuration;
         private float radius = SamiraStaticValues.bladeWhirlRadius;
         private int destroyLimit = 50;
-
-        private float damageStat;
+        
         private bool canUpdate;
 
         private void Awake()

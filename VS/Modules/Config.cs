@@ -2,6 +2,9 @@
 using System.Runtime.CompilerServices;
 using BepInEx.Configuration;
 using UnityEngine;
+using RiskOfOptions;
+using RiskOfOptions.OptionConfigs;
+using RiskOfOptions.Options;
 
 namespace SamiraMod.Modules
 {
@@ -11,6 +14,8 @@ namespace SamiraMod.Modules
         
         public static ConfigEntry<bool> enableCharacter;
         public static ConfigEntry<bool> enableVoiceLines;
+        public static ConfigEntry<float> soundEffectVolume;
+        public static ConfigEntry<float> voiceEffectVolume;
         
         public static ConfigEntry<float> armorGrowth;
         public static ConfigEntry<float> baseArmor;
@@ -32,36 +37,142 @@ namespace SamiraMod.Modules
         public static ConfigEntry<KeyCode> laughKeybind;
         public static ConfigEntry<KeyCode> danceKeybind;
 
+        
+
         public static void ReadConfig()
         {
-            enableCharacter = MyConfig.Bind<bool>(new ConfigDefinition("00 - Other", "Enable Character"), true,
-                new ConfigDescription("Enable Character", null, Array.Empty<object>()));
+            // General Settings
+            enableCharacter = MyConfig.Bind<bool>(
+                new ConfigDefinition("00 - Other", "Enable Character"),
+                true,
+                new ConfigDescription("Enable Character", null, Array.Empty<object>())
+            );
+            TryRegisterOption(enableCharacter, 0, 1, false);
+
             enableVoiceLines = MyConfig.Bind<bool>(
-                new ConfigDefinition("00 - Other", "Voice Lines"), true,
-                new ConfigDescription("Enable Voice Lines", null, Array.Empty<object>()));
-            baseHealth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Base Health"), 110f, new ConfigDescription("", null, Array.Empty<object>()));
-            healthGrowth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Health Growth"), 30f, new ConfigDescription("", null, Array.Empty<object>()));
+                new ConfigDefinition("00 - Other", "Voice Lines"),
+                true,
+                new ConfigDescription("Enable Voice Lines", null, Array.Empty<object>())
+            );
+            TryRegisterOption(enableVoiceLines, 0, 1, false);
 
-            baseRegen = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Base Health Regen"), 1f, new ConfigDescription("", null, Array.Empty<object>()));
-            regenGrowth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Health Regen Growth"), 0.2f, new ConfigDescription("", null, Array.Empty<object>()));
+            // Character Stats
+            baseHealth = MyConfig.Bind<float>(
+                new ConfigDefinition("01 - Character Stats", "Base Health"),
+                110f,
+                new ConfigDescription("", null, Array.Empty<object>())
+            );
+            TryRegisterOption(baseHealth, 0f, 500f, false); // Slider for health: range 0 to 500
 
-            baseArmor = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Base Armor"), 20f, new ConfigDescription("", null, Array.Empty<object>()));
-            armorGrowth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Armor Growth"), 0f, new ConfigDescription("", null, Array.Empty<object>()));
+            healthGrowth = MyConfig.Bind<float>(
+                new ConfigDefinition("01 - Character Stats", "Health Growth"),
+                30f,
+                new ConfigDescription("", null, Array.Empty<object>())
+            );
+            TryRegisterOption(healthGrowth, 0f, 100f, false); // Slider for health growth
 
-            baseDamage = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Base Damage"), 12f, new ConfigDescription("", null, Array.Empty<object>()));
-            damageGrowth = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Damage Growth"), 2.4f, new ConfigDescription("", null, Array.Empty<object>()));
+            baseRegen = MyConfig.Bind<float>(
+                new ConfigDefinition("01 - Character Stats", "Base Health Regen"),
+                1f,
+                new ConfigDescription("", null, Array.Empty<object>())
+            );
+            TryRegisterOption(baseRegen, 0f, 10f, false);
 
-            baseMovementSpeed = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Base Movement Speed"), 7f, new ConfigDescription("", null, Array.Empty<object>()));
+            regenGrowth = MyConfig.Bind<float>(
+                new ConfigDefinition("01 - Character Stats", "Health Regen Growth"),
+                0.2f,
+                new ConfigDescription("", null, Array.Empty<object>())
+            );
+            TryRegisterOption(regenGrowth, 0f, 5f, false);
 
-            baseCrit = MyConfig.Bind<float>(new ConfigDefinition("01 - Character Stats", "Base Crit"), 1f, new ConfigDescription("", null, Array.Empty<object>()));
+            baseArmor = MyConfig.Bind<float>(
+                new ConfigDefinition("01 - Character Stats", "Base Armor"),
+                20f,
+                new ConfigDescription("", null, Array.Empty<object>())
+            );
+            TryRegisterOption(baseArmor, 0f, 100f, false);
 
-            jumpCount = MyConfig.Bind<int>(new ConfigDefinition("01 - Character Stats", "Jump Count"), 1, new ConfigDescription("", null, Array.Empty<object>()));
+            armorGrowth = MyConfig.Bind<float>(
+                new ConfigDefinition("01 - Character Stats", "Armor Growth"),
+                0f,
+                new ConfigDescription("", null, Array.Empty<object>())
+            );
+            TryRegisterOption(armorGrowth, 0f, 10f, false);
+
+            baseDamage = MyConfig.Bind<float>(
+                new ConfigDefinition("01 - Character Stats", "Base Damage"),
+                12f,
+                new ConfigDescription("", null, Array.Empty<object>())
+            );
+            TryRegisterOption(baseDamage, 0f, 50f, false);
+
+            damageGrowth = MyConfig.Bind<float>(
+                new ConfigDefinition("01 - Character Stats", "Damage Growth"),
+                2.4f,
+                new ConfigDescription("", null, Array.Empty<object>())
+            );
+            TryRegisterOption(damageGrowth, 0f, 10f, false);
+
+            baseMovementSpeed = MyConfig.Bind<float>(
+                new ConfigDefinition("01 - Character Stats", "Base Movement Speed"),
+                7f,
+                new ConfigDescription("", null, Array.Empty<object>())
+            );
+            TryRegisterOption(baseMovementSpeed, 0f, 20f, false);
+
+            baseCrit = MyConfig.Bind<float>(
+                new ConfigDefinition("01 - Character Stats", "Base Crit"),
+                1f,
+                new ConfigDescription("", null, Array.Empty<object>())
+            );
+            TryRegisterOption(baseCrit, 0f, 100f, false);
+
+            jumpCount = MyConfig.Bind<int>(
+                new ConfigDefinition("01 - Character Stats", "Jump Count"),
+                1,
+                new ConfigDescription("", null, Array.Empty<object>())
+            );
+            TryRegisterOption(jumpCount, 1, 5, false);
+
+            // Emote Keybinds
+            tauntKeybind = SamiraPlugin.instance.Config.Bind<KeyCode>(
+                new ConfigDefinition("02 - Emotes", "Taunt"),
+                KeyCode.Alpha2,
+                new ConfigDescription("Keybind used to perform the Taunt emote", null, Array.Empty<object>())
+            );
+            TryRegisterOption(tauntKeybind, 0, 0, false); // No min/max for keybinds
+
+            jokeKeybind = SamiraPlugin.instance.Config.Bind<KeyCode>(
+                new ConfigDefinition("02 - Emotes", "Joke"),
+                KeyCode.Alpha1,
+                new ConfigDescription("Keybind used to perform the Joke emote", null, Array.Empty<object>())
+            );
+            TryRegisterOption(jokeKeybind, 0, 0, false);
+
+            laughKeybind = SamiraPlugin.instance.Config.Bind<KeyCode>(
+                new ConfigDefinition("02 - Emotes", "Laugh"),
+                KeyCode.Alpha4,
+                new ConfigDescription("Keybind used to perform the Laugh emote", null, Array.Empty<object>())
+            );
+            TryRegisterOption(laughKeybind, 0, 0, false);
+
+            danceKeybind = SamiraPlugin.instance.Config.Bind<KeyCode>(
+                new ConfigDefinition("02 - Emotes", "Dance"),
+                KeyCode.Alpha3,
+                new ConfigDescription("Keybind used to perform the Dance emote", null, Array.Empty<object>())
+            );
+            TryRegisterOption(danceKeybind, 0, 0, false);
             
             
-            tauntKeybind = SamiraPlugin.instance.Config.Bind<KeyCode>(new ConfigDefinition("02 - Emotes", "Taunt"), KeyCode.Alpha2, new ConfigDescription("Keybind used to perform the Taunt emote", null, Array.Empty<object>()));
-            jokeKeybind = SamiraPlugin.instance.Config.Bind<KeyCode>(new ConfigDefinition("02 - Emotes", "Joke"), KeyCode.Alpha1, new ConfigDescription("Keybind used to perform the Joke emote", null, Array.Empty<object>()));
-            laughKeybind = SamiraPlugin.instance.Config.Bind<KeyCode>(new ConfigDefinition("02 - Emotes", "Laugh"), KeyCode.Alpha4, new ConfigDescription("Keybind used to perform the Laugh emote", null, Array.Empty<object>()));
-            danceKeybind = SamiraPlugin.instance.Config.Bind<KeyCode>(new ConfigDefinition("02 - Emotes", "Dance"), KeyCode.Alpha3, new ConfigDescription("Keybind used to perform the Dance emote", null, Array.Empty<object>()));
+            //Risk of Options
+            soundEffectVolume = MyConfig.Bind<float>(new ConfigDefinition("02 - Volume", "Sound Effect Volume"), 50f,
+                new ConfigDescription("", null, Array.Empty<object>()));
+            voiceEffectVolume = MyConfig.Bind<float>(new ConfigDefinition("02 - Volume", "Voice Effect Volume"), 50f,
+                new ConfigDescription("", null, Array.Empty<object>()));
+            TryRegisterOption(soundEffectVolume,0,100,false, "{0:F0}");
+            TryRegisterOption(voiceEffectVolume,0,100,false,"{0:F0}");
+            
+
         }
 
         /// <summary>
@@ -114,24 +225,35 @@ namespace SamiraMod.Modules
 
         //add risk of options dll to your project libs and uncomment this for a soft dependency
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        private static void TryRegisterOption<T>(ConfigEntry<T> entry, float min, float max, bool restartRequired)
+        private static void TryRegisterOption<T>(ConfigEntry<T> entry, float min, float max, bool restartRequired, String formatString = "{0:0.00}")
         {
-            //if (entry is ConfigEntry<float>)
-            //{
-            //    ModSettingsManager.AddOption(new SliderOption(entry as ConfigEntry<float>, new SliderConfig() { min = min, max = max, formatString = "{0:0.00}", restartRequired = restartRequired }));
-            //}
-            //if (entry is ConfigEntry<int>)
-            //{
-            //    ModSettingsManager.AddOption(new IntSliderOption(entry as ConfigEntry<int>, new IntSliderConfig() { min = (int)min, max = (int)max, restartRequired = restartRequired }));
-            //}
-            //if (entry is ConfigEntry<bool>)
-            //{
-            //    ModSettingsManager.AddOption(new CheckBoxOption(entry as ConfigEntry<bool>, restartRequired));
-            //}
-            //if (entry is BepInEx.Configuration.ConfigEntry<KeyboardShortcut>)
-            //{
-            //    ModSettingsManager.AddOption(new KeyBindOption(entry as ConfigEntry<KeyboardShortcut>, restartRequired));
-            //}
+            if (entry is ConfigEntry<float> floatEntry)
+            {
+                ModSettingsManager.AddOption(new SliderOption(floatEntry, new SliderConfig
+                {
+                    min = min,
+                    max = max,
+                    FormatString = formatString,
+                    restartRequired = restartRequired
+                }));
+            }
+            else if (entry is ConfigEntry<int> intEntry)
+            {
+                ModSettingsManager.AddOption(new IntSliderOption(intEntry, new IntSliderConfig
+                {
+                    min = (int)min,
+                    max = (int)max,
+                    restartRequired = restartRequired
+                }));
+            }
+            else if (entry is ConfigEntry<bool> boolEntry)
+            {
+                ModSettingsManager.AddOption(new CheckBoxOption(boolEntry, restartRequired));
+            }
+            else if (entry is ConfigEntry<KeyboardShortcut> keybindEntry)
+            {
+                ModSettingsManager.AddOption(new KeyBindOption(keybindEntry, restartRequired));
+            }
         }
 
         //Taken from https://github.com/ToastedOven/CustomEmotesAPI/blob/main/CustomEmotesAPI/CustomEmotesAPI/CustomEmotesAPI.cs
@@ -146,6 +268,9 @@ namespace SamiraMod.Modules
             }
             return Input.GetKeyDown(entry.MainKey);
         }
+        
+
+        
         
     }
 }

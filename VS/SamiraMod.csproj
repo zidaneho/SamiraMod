@@ -35,7 +35,6 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="BepInEx.Core" Version="5.4.*"/>
-        <PackageReference Include="RiskOfRain2.GameLibs" Version="*-*"/>
         <PackageReference Include="UnityEngine.Modules" Version="2021.3.33"/>
         <PackageReference Include="MMHOOK.RoR2" Version="2024.8.28">
             <NoWarn>NU1701</NoWarn>
@@ -45,6 +44,12 @@
         <PackageReference Include="R2API.RecalculateStats" Version="*"/>
         <PackageReference Include="R2API.Language" Version="*"/>
         <PackageReference Include="R2API.Sound" Version="*"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="RiskOfOptions">
+        <HintPath>..\..\..\Modding\ROR2\RiskOfOptions\plugins\RiskOfOptions\RiskOfOptions.dll</HintPath>
+      </Reference>
     </ItemGroup>
     
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -47,6 +47,8 @@ namespace SamiraMod.Modules.Characters
             if (playID != 0) AkSoundEngine.StopPlayingID(playID);
             this.soundPrefix = prefix;
             
+            AkSoundEngine.SetRTPCValue("Samira_Voice_Volume",Config.voiceEffectVolume.Value);
+            AkSoundEngine.SetRTPCValue("Samira_SFX_Volume",Config.soundEffectVolume.Value);
             playID = Util.PlaySound(soundPrefix +"_PlayVO_Menu", base.gameObject);
         
             

@@ -15,6 +15,7 @@ using GlobalEventManager = On.RoR2.GlobalEventManager;
 using Loadout = On.RoR2.Loadout;
 using SamiraMain = SamiraMod.Survivors.Samira.SkillStates.SamiraMain;
 using R2API.Networking;
+using RiskOfOptions;
 using SamiraMod.Survivors.Samira.Networking;
 
 namespace SamiraMod.Survivors.Samira
@@ -44,6 +45,7 @@ namespace SamiraMod.Survivors.Samira
             bodyName = bodyName,
             bodyNameToken = SAMIRA_PREFIX + "NAME",
             subtitleNameToken = SAMIRA_PREFIX + "SUBTITLE",
+            
 
             characterPortrait = assetBundle.LoadAsset<Texture>("texSamiraIcon"),
             bodyColor = new Color(0.7607843f,0.2313726f,0.1333333f),
@@ -116,6 +118,8 @@ namespace SamiraMod.Survivors.Samira
             //need the character unlockable before you initialize the survivordef
             SamiraUnlockables.Init();
             SamiraConfig.Init();
+            
+            
 
             base.InitializeCharacter();
             
@@ -133,6 +137,7 @@ namespace SamiraMod.Survivors.Samira
             AdditionalBodySetup();
 
             AddHooks();
+            SetupRiskOfOptions();
         }
 
         private void AdditionalBodySetup()
@@ -608,7 +613,18 @@ namespace SamiraMod.Survivors.Samira
         {
             R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.SurvivorMannequins.SurvivorMannequinSlotController.ApplyLoadoutToMannequinInstance += SurvivorMannequinSlotController_OnApplyLoadoutToMannequinInstance;
+            
         }
+
+        private void SetupRiskOfOptions()
+        {
+            Sprite icon = assetBundle.LoadAsset<Sprite>("texSamiraIcon");
+
+            ModSettingsManager.SetModIcon(icon);
+        }
+
+       
+
         private void SurvivorMannequinSlotController_OnApplyLoadoutToMannequinInstance(SurvivorMannequinSlotController.orig_ApplyLoadoutToMannequinInstance orig, RoR2.SurvivorMannequins.SurvivorMannequinSlotController self)
         {
             

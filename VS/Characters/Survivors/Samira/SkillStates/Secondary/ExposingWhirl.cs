@@ -14,7 +14,6 @@ namespace SamiraMod.Survivors.Samira.SkillStates
 {
     public class ExposingWhirl : BladeWhirl
     {
-        private SamiraBladeWhirlHandler _bladeWhirlHandler;
         private bool hitFirstEnemy = false;
 
         private float force = 40f;
