@@ -35,8 +35,9 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="BepInEx.Core" Version="5.4.*"/>
+        <PackageReference Include="Rune580.Mods.RiskOfRain2.RiskOfOptions" Version="2.8.2" />
         <PackageReference Include="UnityEngine.Modules" Version="2021.3.33"/>
-        <PackageReference Include="MMHOOK.RoR2" Version="2024.8.28">
+        <PackageReference Include="MMHOOK.RoR2" Version="2024.12.10">
             <NoWarn>NU1701</NoWarn>
         </PackageReference>
         <PackageReference Include="R2API.Core" Version="*"/>
