@@ -36,7 +36,7 @@
         </PackageReference>
         <PackageReference Include="BepInEx.Core" Version="5.4.*"/>
         <PackageReference Include="UnityEngine.Modules" Version="2021.3.33"/>
-        <PackageReference Include="MMHOOK.RoR2" Version="2024.8.28">
+        <PackageReference Include="MMHOOK.RoR2" Version="2025.3.4">
             <NoWarn>NU1701</NoWarn>
         </PackageReference>
         <PackageReference Include="R2API.Core" Version="*"/>

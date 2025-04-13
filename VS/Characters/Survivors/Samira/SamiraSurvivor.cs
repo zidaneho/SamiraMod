@@ -689,8 +689,9 @@ namespace SamiraMod.Survivors.Samira
 
             if (sender.HasBuff(SamiraBuffs.meleeOnHitBuff))
             {
-                args.moveSpeedMultAdd += SamiraStaticValues.slashBonusMS;
-                args.attackSpeedMultAdd += SamiraStaticValues.slashBonusAS;
+                int stacks = sender.GetBuffCount(SamiraBuffs.meleeOnHitBuff);
+                args.moveSpeedMultAdd += SamiraStaticValues.slashBonusMS * stacks;
+                args.attackSpeedMultAdd += SamiraStaticValues.slashBonusAS * stacks;
             }
 
             if (sender.HasBuff(SamiraBuffs.bladeWhirlArmorShredDebuff))
@@ -708,8 +709,9 @@ namespace SamiraMod.Survivors.Samira
 
             if (sender.HasBuff(SamiraBuffs.danceBuff))
             {
-                args.healthMultAdd +=  0.03f;
-                args.armorAdd += 0.02f;
+                int stacks = sender.GetBuffCount(SamiraBuffs.danceBuff);
+                args.healthMultAdd +=  0.03f * stacks;
+                args.armorAdd += 0.02f * stacks;
             }
             
         }

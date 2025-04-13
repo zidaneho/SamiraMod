@@ -81,6 +81,13 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 ---
 
 # Patch Notes
+## Patch 1.5.7
+- Thanks to Dangobalang0 for the feedback!
+- Required RiskOfOptions as a dependency.
+## Patch 1.5.6
+- Thanks to xCqrbon for the feedback!
+- Fixed a bug where Samira's 'Slashing Maniac' buff would apply once, despite what is shown on the health bar.
+- The buff stacks for Samira's dance ability should also now be accurate to the stats.
 ## Patch 1.5.3
 - Thanks to anartoast for feedback!
 - Added Risk of Options support! (Please let me know in the github if you wanna see any more settings)

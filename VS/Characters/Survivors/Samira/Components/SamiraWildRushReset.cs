@@ -4,6 +4,7 @@ using On.RoR2.Mecanim;
 using RoR2;
 using SamiraMod.Survivors.Samira.SkillStates;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace SamiraMod.Survivors.Samira.Components
 {
@@ -22,6 +23,11 @@ namespace SamiraMod.Survivors.Samira.Components
         private void OnCharacterDeath(DamageReport damageReport)
         {
             // Check if the killer is a player
+
+            if (!NetworkServer.active)
+            {
+                return;
+            }
             if (damageReport.attacker != null && damageReport.attacker.GetComponent<CharacterBody>() != null)
             {
                 CharacterBody attackerBody = damageReport.attacker.GetComponent<CharacterBody>();
@@ -43,7 +49,11 @@ namespace SamiraMod.Survivors.Samira.Components
             Debug.Log("Reset Skill:" + skill.skillDef.skillName);
             if (skill && skill.skillDef.skillName == "SamiraWildRush")
             { 
-                skill.Reset();
+                //skill.Reset() is not networked?
+                //skill.Reset();
+                skill.rechargeStopwatch = 0f;
+                skill.stock = skill.maxStock;
+                skill.RunRecharge(float.MaxValue);
             }
         }
 
