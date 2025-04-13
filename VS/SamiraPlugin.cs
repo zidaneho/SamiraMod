@@ -78,6 +78,7 @@ namespace SamiraMod
             NetworkingAPI.RegisterMessageType<SyncSound>();
             NetworkingAPI.RegisterMessageType<SyncAddBuff>();
             NetworkingAPI.RegisterMessageType<SyncRemoveBuff>();
+            NetworkingAPI.RegisterMessageType<SyncWildRushReset>();
         }
     }
 }

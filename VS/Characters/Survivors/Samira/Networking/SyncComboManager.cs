@@ -4,6 +4,8 @@ using RoR2;
 using SamiraMod.Survivors.Samira.Components;
 using UnityEngine.Networking;
 using BuffCatalog = RoR2.BuffCatalog;
+using CharacterBody = On.RoR2.CharacterBody;
+using GenericSkill = RoR2.GenericSkill;
 
 namespace SamiraMod.Survivors.Samira.Networking
 {
@@ -49,5 +51,6 @@ namespace SamiraMod.Survivors.Samira.Networking
                 }
             }
         }
+        
     }
 }

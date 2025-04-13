@@ -187,7 +187,11 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             {
                 _comboManager.AddCombo(attackID);
                 if (base.isAuthority) Util.PlayAttackSpeedSound("Play_SamiraSFX_BulletHit", hitInfo.hitHurtBox.gameObject,attackSpeedStat);
+                
             }
+   
+
+            
             return result;
         }
     }

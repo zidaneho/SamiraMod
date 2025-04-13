@@ -1,7 +1,9 @@
 using System;
 using EntityStates;
 using On.RoR2.Mecanim;
+using R2API.Networking.Interfaces;
 using RoR2;
+using SamiraMod.Survivors.Samira.Networking;
 using SamiraMod.Survivors.Samira.SkillStates;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -23,43 +25,18 @@ namespace SamiraMod.Survivors.Samira.Components
         private void OnCharacterDeath(DamageReport damageReport)
         {
             // Check if the killer is a player
-
-            if (!NetworkServer.active)
-            {
-                return;
-            }
+            
             if (damageReport.attacker != null && damageReport.attacker.GetComponent<CharacterBody>() != null)
             {
                 CharacterBody attackerBody = damageReport.attacker.GetComponent<CharacterBody>();
-
-                // Check if the attackerBody is a player
-                if (attackerBody.isPlayerControlled)
-                {
                 
-                    // Reset skill cooldowns for the player
-                    ResetSkillCooldowns(attackerBody);
+                var networkBody = attackerBody.GetComponent<NetworkIdentity>();
+                if (networkBody != null)
+                {
+                    new SyncWildRushReset(networkBody.netId).Send(R2API.Networking.NetworkDestination.Server);
                 }
             }
         }
-        // We only want the regular Wild Rush to reset cooldown;
-        // We do not want Quick Steps to reset cooldown.
-        private void ResetSkillCooldowns(CharacterBody player)
-        {
-            var skill = GetUtilitySkill(player);
-            Debug.Log("Reset Skill:" + skill.skillDef.skillName);
-            if (skill && skill.skillDef.skillName == "SamiraWildRush")
-            { 
-                //skill.Reset() is not networked?
-                //skill.Reset();
-                skill.rechargeStopwatch = 0f;
-                skill.stock = skill.maxStock;
-                skill.RunRecharge(float.MaxValue);
-            }
-        }
-
-        GenericSkill GetUtilitySkill(CharacterBody characterBody)
-        {
-            return characterBody?.skillLocator?.utility;
-        }
+        
     }
 }
