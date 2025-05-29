@@ -144,12 +144,12 @@ namespace SamiraMod.Survivors.Samira
         {
             AddHitboxes();
             var comboManager = bodyPrefab.AddComponent<SamiraComboManager>();
-            bodyPrefab.AddComponent<SamiraWildRushReset>();
             bodyPrefab.AddComponent<SamiraVoiceController>();
             bodyPrefab.AddComponent<SamiraBladeWhirlHandler>();
             bodyPrefab.AddComponent<SamiraBuffMeleeOnHitHandler>();
             bodyPrefab.AddComponent<SamiraSoundManager>();
             bodyPrefab.AddComponent<ProjectileDamageTracker>();
+            bodyPrefab.AddComponent<SamiraWildRushReset>();
            
             //bodyPrefab.AddComponent<HuntressTrackerComopnent>();
             //anything else here

@@ -309,7 +309,7 @@ namespace SamiraMod.Modules
             characterModel.body = bodyPrefab.GetComponent<CharacterBody>();
 
             characterModel.autoPopulateLightInfos = true;
-            characterModel.invisibilityCount = 0;
+            //characterModel.invisibilityCount = 0;
             characterModel.temporaryOverlays = new List<TemporaryOverlayInstance>();
 
             if (!preattached)

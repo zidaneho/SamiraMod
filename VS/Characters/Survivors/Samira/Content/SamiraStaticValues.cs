@@ -28,20 +28,20 @@ namespace SamiraMod.Survivors.Samira
         public const float slashBonusAS = 0.01f;
         #endregion
         #region Secondary
-        public const float bladeWhirlDamageMult = 0.3f;
-        public const float bladeWhirlDamageGrowthPerLevel = .2f;
-        public const float exposingWhirlDamageMult = .1f;
-        public const float exposeDebuffArmorPen = 12f;
-        public const float exposeDebuffDuration = 5f;
+        public const float bladeWhirlDamageMult = 1f;
+        public const float bladeWhirlDamageGrowthPerLevel = 2.5f;
+        public const float exposingWhirlDamageMult = 1f;
+        public const float exposeDebuffArmorPen = 20f;
+        public const float exposeDebuffDuration = 8f;
         public const float bladeWhirlDuration = 0.4f;
         public const float bladeWhirlRadius = 15f;
         #endregion
         #region Utility
-        public const float wildRushDamageMult = .25f;
-        public const float wildRushDamageGrowthPerLevel = 1;
+        public const float wildRushDamageMult = 1f;
+        public const float wildRushDamageGrowthPerLevel = 2.5f;
         public const float wildRushAttackSpeedMult = 0.3f;
         public const float wildRushAttackSpeedDuration = 6f;
-        public const float quickStepsDamageMult = .10f;
+        public const float quickStepsDamageMult = 1f;
         #endregion
         #region Special
         public const float infernoTriggerDamageMult = 1.3f;
