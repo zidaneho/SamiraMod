@@ -90,6 +90,9 @@ namespace SamiraMod.Survivors.Samira
             
             Language.Add(prefix + "SPECIAL_INFINITERAIN_NAME", "Infinite Rain");
             Language.Add(prefix + "SPECIAL_INFINITERAIN_DESCRIPTION", $"Samira unleashes a torrent of shots for {damageColorPrefix}{100 * SamiraStaticValues.infiniteRainDMGMultiplier}% damage and {100 * SamiraStaticValues.infiniteRainASMultiplier}% attack speed</color>. However, killing an enemy will increase the duration of the ability by {SamiraStaticValues.infiniteRainDurationExtend} seconds.");
+            
+            Language.Add(prefix + "SPECIAL_FLYING_KITE_NAME", "Flying Kite");
+            Language.Add(prefix + "SPECIAL_FLYING_KITE_DESCRIPTION", $"Samira blinks and attacks nearby targets for {damageColorPrefix}{100 * SamiraStaticValues.flyingKiteDMGMultiplier}% damage and {100 * SamiraStaticValues.flyingKiteASMultiplier}% attack speed</color>.");
             #endregion
 
             #region Achievements

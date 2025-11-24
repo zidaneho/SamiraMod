@@ -44,13 +44,14 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 
 ### Custom Skills
 
-| Skill           | Slot      | Description                                                                                                                                                                       | Stats                                          |
-|:----------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
-| Explosive Shot  | Primary   | Samira only fires bullets, additionally shooting an explosive bullet every 4 attacks.                                                                                             | DMG: `400%`                                    |
-| Slashing Maniac | Primary   | Samira only swings her sword, gaining an attack speed and movement speed buff on-hit. She additionally has a cleave, giving an extra style point.                                 | AS: `1%` <br/>MS: `2%`                         |
-| Exposing Whirl  | Secondary | Samira fires bullets at nearby enemies, inflicting armor penetration.                                                                                                             | Proc: `1.0`, CD: `10 sec`                      |
+| Skill           | Slot      | Description                                                                                                                                                                       | Stats                                         |
+|:----------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
+| Explosive Shot  | Primary   | Samira only fires bullets, additionally shooting an explosive bullet every 4 attacks.                                                                                             | DMG: `400%`                                   |
+| Slashing Maniac | Primary   | Samira only swings her sword, gaining an attack speed and movement speed buff on-hit. She additionally has a cleave, giving an extra style point.                                 | AS: `1%` <br/>MS: `2%`                        |
+| Exposing Whirl  | Secondary | Samira fires bullets at nearby enemies, inflicting armor penetration.                                                                                                             | Proc: `1.0`, CD: `10 sec`                     |
 | Quick Steps     | Utility   | Samira dashes forward slashing through any enemy in her path. On press, Samira gains attack speed.                                                                                | CD: `8 seconds`<br/>Stocks:`2`<br/> AS : `30%` |
-| Infinite Rain   | Special   | Samira unleashes a torrent of shots for `3 seconds`, dealing `100%` damage; the total shots is scaled by 70% attack speed. Killing an enemy will increase the ability's duration. | CD: `7 sec`<br/> +Duration: `0.25 sec`         |
+| Infinite Rain   | Special   | Samira unleashes a torrent of shots for `3 seconds`, dealing `100%` damage; the total shots is scaled by 70% attack speed. Killing an enemy will increase the ability's duration. | CD: `7 sec`<br/> +Duration: `0.25 sec`        |
+| Flying Kite     | Special   | Samira blinks and slashes nearby enemies 15 times, dealing `150%` damage, and `130%` attack speed.                                                                                | CD: `11 sec`<br/>        |
 
 ### Emotes
 | Emote | Keybind | Action                                                                                                                                           | Buff                                                                                |
@@ -81,6 +82,12 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 ---
 
 # Patch Notes
+## Patch 1.6.1
+- Added a new special skill - Flying Kite - allowing Samira to blink and attack nearby enemies in a flash, gaining stacks of Slashing Maniac on each attack.
+  - This was designed to be a fun addition to slashing fantasy, inspired by Ara's Flying Kite move in the game 'Elsword'.
+## Patch 1.6.0
+- Thanks to KirboHQ for feedback!
+- Fixed Samira not being able to exit the escape pod in the Alloyed Collective update.
 ## Patch 1.5.9
 - Thanks to KiadraNerulia and Shira0ri for feedback!
 - Fixed Wild Rush's cooldown reset for multiplayer clients

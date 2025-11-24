@@ -51,6 +51,10 @@ namespace SamiraMod.Survivors.Samira
         public const float infiniteRainDurationExtend = 0.25f;
         public const float infiniteRainDMGMultiplier = 1f;
         public const float infiniteRainASMultiplier = 0.7f;
+        public const float flyingKiteDMGMultiplier = 1.5f;
+        public const float flyingKiteASMultiplier = 1.3f;
+        public const int flyingKiteHits = 15;
+        public const float lifeStealPercentage = 0.1f;
         #endregion
         
         public const int autoAttackID = 1;

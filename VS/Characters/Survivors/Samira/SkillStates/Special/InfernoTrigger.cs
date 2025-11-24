@@ -181,7 +181,8 @@ namespace SamiraMod.Survivors.Samira.SkillStates
             }
             if (enemyHealthComponent && enemyHealthComponent.alive && hitInfo.hitHurtBox.teamIndex != base.teamComponent.teamIndex)
             {
-                float lifeSteal = SamiraStaticValues.GetInfernoTriggerDamage(damageStat,characterBody.level) * lifeStealPercentage;
+                float lifeSteal = SamiraStaticValues.GetInfernoTriggerDamage(damageStat, characterBody.level) *
+                                  SamiraStaticValues.lifeStealPercentage;
 
                 var bodyID = characterBody.GetComponent<NetworkIdentity>();
                 if (bodyID)

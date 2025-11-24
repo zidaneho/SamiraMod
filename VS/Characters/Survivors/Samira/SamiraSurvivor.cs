@@ -502,8 +502,29 @@ namespace SamiraMod.Survivors.Samira
                 isCombatSkill = true,
                 mustKeyPress = false
             });
+            InfernoTriggerSkillDef specialSkillDef3 = Skills.CreateSkillDef<InfernoTriggerSkillDef>(new SkillDefInfo
+            {
+                skillName = "SamiraFlyingKite",
+                skillNameToken = SAMIRA_PREFIX + "SPECIAL_FLYING_KITE_NAME",
+                skillDescriptionToken = SAMIRA_PREFIX + "SPECIAL_FLYING_KITE_DESCRIPTION",
+                skillIcon = assetBundle.LoadAsset<Sprite>("texSamiraR6"),
+
+                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.FlyingKite)),
+                //setting this to the "weapon2" EntityStateMachine allows us to cast this skill at the same time primary, which is set to the "weapon" EntityStateMachine
+                activationStateMachineName = "Weapon", interruptPriority = EntityStates.InterruptPriority.Skill,
+
+                baseMaxStock = 1,
+                requiredStock = 1,
+                rechargeStock = 1,
+                stockToConsume = 1,
+                baseRechargeInterval = 11f,
+                beginSkillCooldownOnSkillEnd = false,
+
+                isCombatSkill = true,
+                mustKeyPress = false
+            });
             
-            Skills.AddSpecialSkills(bodyPrefab, specialSkillDef1, specialSkillDef2);
+            Skills.AddSpecialSkills(bodyPrefab, specialSkillDef1, specialSkillDef2,specialSkillDef3);
         }
         #endregion skills
         

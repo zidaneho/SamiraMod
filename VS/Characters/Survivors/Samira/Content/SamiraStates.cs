@@ -27,6 +27,8 @@ namespace SamiraMod.Survivors.Samira
             
             Modules.Content.AddEntityState(typeof(InfiniteRain));
             
+            Modules.Content.AddEntityState(typeof(FlyingKite));
+            
             Modules.Content.AddEntityState(typeof(SamiraDeathState));
             
             Modules.Content.AddEntityState(typeof(FlairDash));
