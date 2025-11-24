@@ -81,7 +81,7 @@ After her Shuriman home was destroyed as a child, Samira found her true calling 
 ---
 
 # Patch Notes
-## Patch 1.5.8
+## Patch 1.5.9
 - Thanks to KiadraNerulia and Shira0ri for feedback!
 - Fixed Wild Rush's cooldown reset for multiplayer clients
 - Significantly buffed Secondary and Utility damage.

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <OutDir>C:\Users\zidan\AppData\Roaming\r2modmanPlus-local\RiskOfRain2\profiles\di\BepInEx\plugins\Zidane Ho-SamiraMod\</OutDir>
+        <OutDir>C:\Users\zidan\AppData\Roaming\r2modmanPlus-local\RiskOfRain2\profiles\di\BepInEx\plugins\CafeHo-SamiraMod\</OutDir>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -28,15 +28,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="R2API.Networking" Version="1.0.2" />
+        <PackageReference Include="R2API.Networking" Version="1.0.4" />
         <PackageReference Include="RoR2BepInExPack" Version="*" />
         <PackageReference Include="BepInEx.Analyzers" Version="1.0.8">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="BepInEx.Core" Version="5.4.*"/>
-        <PackageReference Include="UnityEngine.Modules" Version="2021.3.33"/>
-        <PackageReference Include="MMHOOK.RoR2" Version="2025.3.4">
+        <PackageReference Include="BepInEx.Core" Version="5.4.21" />
+        <PackageReference Include="MMHOOK.RoR2" Version="*">
             <NoWarn>NU1701</NoWarn>
         </PackageReference>
         <PackageReference Include="R2API.Core" Version="*"/>

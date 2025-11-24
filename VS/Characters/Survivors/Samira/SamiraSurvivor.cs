@@ -17,6 +17,7 @@ using SamiraMain = SamiraMod.Survivors.Samira.SkillStates.SamiraMain;
 using R2API.Networking;
 using RiskOfOptions;
 using SamiraMod.Survivors.Samira.Networking;
+using EntityStateMachine = On.RoR2.EntityStateMachine;
 
 namespace SamiraMod.Survivors.Samira
 {
@@ -167,7 +168,7 @@ namespace SamiraMod.Survivors.Samira
                 r0, r1, r2, r3, r4, r5, r6
             };
             
-            displayPrefab.AddComponent<SamiraMenu>();
+            displayPrefab.AddComponent<SamiraMenu>();   
         }
 
         public void AddHitboxes()
@@ -182,7 +183,7 @@ namespace SamiraMod.Survivors.Samira
         {
             //clear existing state machines from your cloned body (probably commando)
             //omit all this if you want to just keep theirs
-            Prefabs.ClearEntityStateMachines(bodyPrefab);
+            //Prefabs.ClearEntityStateMachines(bodyPrefab);
 
             //the main "Body" state machine has some special properties
             Prefabs.AddMainEntityStateMachine(bodyPrefab, "Body", typeof(SamiraMain), typeof(EntityStates.SpawnTeleporterState));
@@ -613,8 +614,12 @@ namespace SamiraMod.Survivors.Samira
         {
             R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.SurvivorMannequins.SurvivorMannequinSlotController.ApplyLoadoutToMannequinInstance += SurvivorMannequinSlotController_OnApplyLoadoutToMannequinInstance;
+         
             
         }
+
+       
+        
 
         private void SetupRiskOfOptions()
         {
@@ -623,7 +628,7 @@ namespace SamiraMod.Survivors.Samira
             ModSettingsManager.SetModIcon(icon);
         }
 
-       
+      
 
         private void SurvivorMannequinSlotController_OnApplyLoadoutToMannequinInstance(SurvivorMannequinSlotController.orig_ApplyLoadoutToMannequinInstance orig, RoR2.SurvivorMannequins.SurvivorMannequinSlotController self)
         {
@@ -635,7 +640,7 @@ namespace SamiraMod.Survivors.Samira
                 BodyIndex bodyIndexFromSurvivorIndex = SurvivorCatalog.GetBodyIndexFromSurvivorIndex(self.currentSurvivorDef.survivorIndex);
                 if (bodyIndexFromSurvivorIndex == BodyIndex.None) return;
                 int skinIndex = (int)self.currentLoadout.bodyLoadoutManager.GetSkinIndex(bodyIndexFromSurvivorIndex);
-                SkinDef safe = ArrayUtils.GetSafe(BodyCatalog.GetBodySkins(bodyIndexFromSurvivorIndex), skinIndex);
+                SkinDef safe = ArrayUtils.GetSafe(SkinCatalog.GetBodySkinDefs(bodyIndexFromSurvivorIndex), skinIndex);
                 if (!safe) return;
                 if (self.currentSurvivorDef.bodyPrefab.gameObject != bodyPrefab.gameObject) return;
                

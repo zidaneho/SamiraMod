@@ -30,6 +30,7 @@ namespace SamiraMod.Modules.Characters
         protected virtual void InitializeDisplayPrefab()
         {
             displayPrefab = Prefabs.CreateDisplayPrefab(assetBundle, displayPrefabName, bodyPrefab);
+            
         }
 
         protected virtual void InitializeSurvivor()

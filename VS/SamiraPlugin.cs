@@ -45,8 +45,11 @@ namespace SamiraMod
 
             try
             {
+                
                 //easy to use logger
                 Log.Init(Logger);
+                Log.Debug("Initializing SamiraMod");
+                
 
                 Modules.Config.ReadConfig();
 

@@ -27,6 +27,8 @@ namespace SamiraMod.Survivors.Samira.Components
             _comboManager = GetComponent<SamiraComboManager>();
             _characterBody = GetComponent<CharacterBody>();
             childLocator = _characterBody.modelLocator.modelTransform.GetComponent<ChildLocator>();
+
+            
         }
         private void OnEnable()
         {
