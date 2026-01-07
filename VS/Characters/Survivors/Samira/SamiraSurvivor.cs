@@ -144,6 +144,14 @@ namespace SamiraMod.Survivors.Samira
         private void AdditionalBodySetup()
         {
             AddHitboxes();
+            
+            var childLocator = bodyPrefab.GetComponentInChildren<ChildLocator>();
+            if (childLocator)
+            {
+                Transform coinMesh = childLocator.FindChild("CoinMesh");
+                if (coinMesh) coinMesh.gameObject.SetActive(false);
+            }
+            
             var comboManager = bodyPrefab.AddComponent<SamiraComboManager>();
             bodyPrefab.AddComponent<SamiraVoiceController>();
             bodyPrefab.AddComponent<SamiraBladeWhirlHandler>();

@@ -37,6 +37,7 @@ namespace SamiraMod.Survivors.Samira.SkillStates.Emotes
         public override void OnExit()
         {
             base.OnExit();
+            DisableCoinVisual();
             if (voID != 0) AkSoundEngine.StopPlayingID(voID); 
             if (sfxID != 0) AkSoundEngine.StopPlayingID(sfxID);
         }

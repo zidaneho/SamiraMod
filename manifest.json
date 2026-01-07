@@ -1,9 +1,9 @@
 {
     "name": "SamiraMod",
     "author": "Zidane Ho",
-    "version_number": "1.6.1",
+    "version_number": "1.7.0",
     "website_url": "https://github.com/zidaneho/SamiraMod",
-    "description": "You can play as Samira from League of Legends. Features: Dante from Devil May Cry, Emotes, and Multiplayer Support!",
+    "description": "You can play as Samira from League of Legends. Features: Custom Abilities, Dante from Devil May Cry, Emotes, and Multiplayer Support!",
     "dependencies": [
         "bbepis-BepInExPack-5.4.1905",
         "RiskofThunder-R2API_Core-5.0.3",
